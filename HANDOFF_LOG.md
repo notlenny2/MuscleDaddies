@@ -198,3 +198,80 @@
 - Replaced Point Guard with Golf Trick Shot (recovery‑focused).
 - Updated class list and weights (INT primary, END secondary).
 - File: /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
+
+## 2026-02-07 Update: Pixel Card Restyle
+- Pixel (Fantasy) card restyled to match sprite art: hard edges, pixel dividers, flat palette.
+- Sprite rendering set to no interpolation for crisp pixels.
+- Switched art mapping to fantasyArtAsset.
+- File: /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/PixelArtTheme.swift
+
+## 2026-02-07 Update: Trading Card Restyle
+- Trading card now uses a dedicated art slot panel instead of class art.
+- Gold gradients tightened for a more authentic trading-card look.
+- File: /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/TradingCardTheme.swift
+
+## 2026-02-07 Update: Sports Art Frame
+- Trading card art area restyled to a sports trading-card frame (stripe band + badge).
+- File: /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/TradingCardTheme.swift
+
+## 2026-02-07 Update: Sports Badge Text
+- Trading card art badge now shows class name instead of "POS".
+- File: /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/TradingCardTheme.swift
+
+## 2026-02-07 Update: Onboarding Intake Expansion
+- Added priority selection (top 2), body basics (height/weight or height/body type), goals, and class suggestion logic.
+- HealthKitService can fetch most recent height/weight.
+- Onboarding now computes suggested class options (best, second, opposite) and auto-updates selection.
+- New user fields: priorities, height/weight or categories, goals.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/AuthService.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/HealthKitService.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Models/User.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
+
+## 2026-02-07 Update: Re-Run Onboarding for Class
+- Added onboarding re-entry via Settings: “Suggest Class for Me” and “Select Your Class.”
+- Onboarding now supports class selection modes (suggest vs select) and pre-fills from current user.
+- AuthService adds applyOnboardingUpdates to update existing users.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/AuthService.swift
+
+## 2026-02-07 Update: Theme Unlock Level + Reset Priorities
+- Sports theme unlock moved to Level 5; Sci‑Fi set to Level 15.
+- Added Reset Priorities action in Settings.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
+
+## 2026-02-07 Update: Achievement Celebration UI
+- Added unlock header with progress ring.
+- Added tap-to-celebrate overlay with confetti, haptics, and modal card.
+- Placeholder visuals use SF Symbols; ready to swap in custom art assets.
+- File: /Users/tj/MuscleDaddies/MuscleDaddies/Views/Achievements/AchievementsView.swift
+
+## 2026-02-07 Update: Demo Mode Tools
+- Added DEBUG Demo Tools in Settings to set total XP and apply level recalculation.
+- Added DEBUG buttons in Achievements to unlock all and trigger celebration.
+- Exposed StatCalculator.levelInfoFromXP for demo XP.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Achievements/AchievementsView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/StatCalculator.swift
+
+## 2026-02-07 Update: Belt System (Initial)
+- Added BeltChallenge and BeltHolders models; Firestore collections: beltChallenges, belts.
+- Challenge flow: create, accept/decline (accept +100 XP, decline -100 XP), active, resolve.
+- One active/pending challenge per user enforced on create.
+- Scoring uses stat XP within window and highest class stat weight applied to both.
+- Overall belt uses each player’s own class weights.
+- UI: ChallengeView now lists belt challenges and supports create/accept/decline/resolve; group label uses Fellowship/Squad/Crew.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Models/BeltChallenge.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Group/ChallengeView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/FirestoreService.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/StatCalculator.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
+  - /Users/tj/MuscleDaddies/firestore.rules

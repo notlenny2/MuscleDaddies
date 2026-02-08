@@ -9,6 +9,8 @@ enum Constants {
         static let challenges = "challenges"
         static let achievements = "achievements"
         static let recovery = "recovery"
+        static let beltChallenges = "beltChallenges"
+        static let belts = "belts"
     }
 
     enum WorkoutType: String, CaseIterable, Codable {
@@ -77,6 +79,54 @@ enum Constants {
         }
     }
 
+    enum PriorityStat: String, CaseIterable, Codable {
+        case strength = "strength"
+        case speed = "speed"
+        case endurance = "endurance"
+        case intelligence = "intelligence"
+
+        var displayName: String {
+            switch self {
+            case .strength: return "Strength"
+            case .speed: return "Speed"
+            case .endurance: return "Endurance"
+            case .intelligence: return "Mobility"
+            }
+        }
+    }
+
+    enum HeightCategory: String, CaseIterable, Codable {
+        case medium = "medium"
+        case tall = "tall"
+        case veryTall = "very_tall"
+        case basketball = "basketball"
+
+        var displayName: String {
+            switch self {
+            case .medium: return "Medium"
+            case .tall: return "Tall"
+            case .veryTall: return "Very Tall"
+            case .basketball: return "Basketball Player"
+            }
+        }
+    }
+
+    enum BodyType: String, CaseIterable, Codable {
+        case slender = "slender"
+        case medium = "medium"
+        case stocky = "stocky"
+        case yuge = "yuge"
+
+        var displayName: String {
+            switch self {
+            case .slender: return "Slender"
+            case .medium: return "Medium"
+            case .stocky: return "Stocky"
+            case .yuge: return "Yuge"
+            }
+        }
+    }
+
     enum Reaction: String, CaseIterable {
         case fire = "🔥"
         case flex = "💪"
@@ -122,8 +172,16 @@ enum Constants {
         var unlockXP: Double {
             switch self {
             case .fantasy: return 0
-            case .sports: return 25000
+            case .sports: return 0
             case .scifi: return 60000
+            }
+        }
+
+        var unlockLevel: Int? {
+            switch self {
+            case .fantasy: return nil
+            case .sports: return 5
+            case .scifi: return 15
             }
         }
     }

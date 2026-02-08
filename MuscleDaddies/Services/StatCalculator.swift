@@ -30,6 +30,32 @@ class StatCalculator {
         workoutScore(workout)
     }
 
+    static func levelInfoFromXP(_ totalXP: Double) -> (level: Int, xpCurrent: Double, xpToNext: Double) {
+        levelFromXP(totalXP)
+    }
+
+    static func statXP(
+        for workouts: [Workout],
+        stat: Constants.PriorityStat,
+        classWeights: Constants.ClassWeights,
+        classMultiplier: Double
+    ) -> Double {
+        let statFactor: Double
+        switch stat {
+        case .strength: statFactor = classWeights.strength * classMultiplier
+        case .speed: statFactor = classWeights.speed * classMultiplier
+        case .endurance: statFactor = classWeights.endurance * classMultiplier
+        case .intelligence: statFactor = classWeights.intelligence * classMultiplier
+        }
+        return workouts.reduce(0.0) { $0 + (workoutScore($1) * statFactor) }
+    }
+
+    static func overallXP(for workouts: [Workout], classWeights: Constants.ClassWeights) -> Double {
+        let totalWeight = classWeights.strength + classWeights.speed + classWeights.endurance + classWeights.intelligence
+        let normalized = totalWeight > 0 ? totalWeight / 1.0 : 1.0
+        return workouts.reduce(0.0) { $0 + (workoutScore($1) * normalized) }
+    }
+
     /// Calculate current streak from workouts
     static func calculateStreak(workouts: [Workout]) -> (current: Int, longest: Int) {
         let sorted = workouts.sorted { $0.createdAt > $1.createdAt }

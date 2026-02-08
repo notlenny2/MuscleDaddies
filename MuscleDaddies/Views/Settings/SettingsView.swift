@@ -8,6 +8,10 @@ struct SettingsView: View {
     @State private var classTheme: Constants.ClassTheme = .fantasy
     @State private var selectedClass: Constants.MuscleClass = .warrior
     @State private var showHealthKitInfo = false
+    @State private var showClassSuggest = false
+    @State private var showClassSelect = false
+    @State private var tempDisplayName = ""
+    @State private var demoXP: Double = 0
 
     var body: some View {
         NavigationStack {
@@ -141,6 +145,49 @@ struct SettingsView: View {
                         .listRowBackground(Color.cardDarkGray)
                     }
 
+                    // Class Setup
+                    Section("Class Setup") {
+                        Button("Suggest Class for Me") {
+                            tempDisplayName = authService.currentUser?.displayName ?? ""
+                            showClassSuggest = true
+                        }
+                        .foregroundColor(.cardGold)
+                        .listRowBackground(Color.cardDarkGray)
+
+                        Button("Select Your Class") {
+                            tempDisplayName = authService.currentUser?.displayName ?? ""
+                            showClassSelect = true
+                        }
+                        .foregroundColor(.white)
+                        .listRowBackground(Color.cardDarkGray)
+
+                        Button("Reset Priorities") {
+                            Task { await resetPriorities() }
+                        }
+                        .foregroundColor(.white)
+                        .listRowBackground(Color.cardDarkGray)
+                    }
+
+#if DEBUG
+                    Section("Demo Tools") {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Total XP")
+                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.gray)
+                            Slider(value: $demoXP, in: 0...100_000, step: 100)
+                                .tint(.cardGold)
+                            Text("\(Int(demoXP)) XP")
+                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+                            Button("Apply XP") {
+                                Task { await applyDemoXP() }
+                            }
+                            .foregroundColor(.cardGold)
+                        }
+                        .listRowBackground(Color.cardDarkGray)
+                    }
+#endif
+
                     // Sign Out
                     Section {
                         Button(role: .destructive) {
@@ -160,6 +207,8 @@ struct SettingsView: View {
                 selectedClass = authService.currentUser?.selectedClass ?? .warrior
                 let derivedTheme = classTheme.cardTheme
                 selectedTheme = derivedTheme
+                tempDisplayName = authService.currentUser?.displayName ?? ""
+                demoXP = authService.currentUser?.stats.totalXP ?? 0
                 if authService.currentUser?.selectedTheme != derivedTheme {
                     updateTheme(derivedTheme)
                 }
@@ -170,6 +219,12 @@ struct SettingsView: View {
                         _ = await healthKitService.requestAuthorization()
                     }
                 }
+            }
+            .sheet(isPresented: $showClassSuggest) {
+                OnboardingView(displayName: $tempDisplayName, mode: .suggest)
+            }
+            .sheet(isPresented: $showClassSelect) {
+                OnboardingView(displayName: $tempDisplayName, mode: .select)
             }
         }
     }
@@ -207,7 +262,30 @@ struct SettingsView: View {
         }
     }
 
+    private func resetPriorities() async {
+        guard var user = authService.currentUser else { return }
+        user.priorityPrimary = .strength
+        user.prioritySecondary = .endurance
+        authService.currentUser = user
+        try? await firestoreService.updateUser(user)
+    }
+
+    private func applyDemoXP() async {
+        guard var user = authService.currentUser else { return }
+        let levelInfo = StatCalculator.levelInfoFromXP(demoXP)
+        user.stats.level = levelInfo.level
+        user.stats.xpCurrent = levelInfo.xpCurrent
+        user.stats.xpToNext = levelInfo.xpToNext
+        user.stats.totalXP = demoXP
+        authService.currentUser = user
+        try? await firestoreService.updateUser(user)
+    }
+
     private func isThemeUnlocked(_ theme: Constants.ClassTheme) -> Bool {
+        let level = authService.currentUser?.stats.level ?? 1
+        if let requiredLevel = theme.unlockLevel {
+            return level >= requiredLevel
+        }
         let totalXP = authService.currentUser?.stats.totalXP ?? 0
         return totalXP >= theme.unlockXP
     }
@@ -218,7 +296,11 @@ struct SettingsView: View {
             Text(theme.displayName)
                 .font(.system(size: 11, weight: .bold, design: .monospaced))
             if !unlocked {
-                Text("🔒 \(Int(theme.unlockXP)) XP")
+                if let requiredLevel = theme.unlockLevel {
+                    Text("🔒 LV \(requiredLevel)")
+                } else {
+                    Text("🔒 \(Int(theme.unlockXP)) XP")
+                }
                     .font(.system(size: 10, weight: .semibold, design: .monospaced))
                     .foregroundColor(.gray)
             } else {

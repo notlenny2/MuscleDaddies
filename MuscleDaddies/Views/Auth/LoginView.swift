@@ -68,7 +68,7 @@ struct LoginView: View {
             }
         }
         .sheet(isPresented: $showOnboarding) {
-            OnboardingView(displayName: $displayName)
+            OnboardingView(displayName: $displayName, mode: .suggest)
         }
         .onChange(of: authService.isAuthenticated) { _, isAuth in
             if isAuth && authService.currentUser == nil {
@@ -79,11 +79,27 @@ struct LoginView: View {
 }
 
 struct OnboardingView: View {
+    enum ClassSelectionMode {
+        case suggest
+        case select
+    }
+
     @EnvironmentObject var authService: AuthService
+    @EnvironmentObject var healthKitService: HealthKitService
     @Binding var displayName: String
     @Environment(\.dismiss) private var dismiss
     @State private var classTheme: Constants.ClassTheme = .fantasy
     @State private var selectedClass: Constants.MuscleClass = .warrior
+    @State private var primaryPriority: Constants.PriorityStat = .strength
+    @State private var secondaryPriority: Constants.PriorityStat = .endurance
+    @State private var heightCmText: String = ""
+    @State private var weightKgText: String = ""
+    @State private var heightCategory: Constants.HeightCategory = .medium
+    @State private var bodyType: Constants.BodyType = .medium
+    @State private var targetSpeedMph: String = ""
+    @State private var targetWeeklyDistanceMiles: String = ""
+    @State private var strengthChecksPerLevel: Int = 1
+    let mode: ClassSelectionMode
 
     var body: some View {
         NavigationStack {
@@ -172,36 +188,129 @@ struct OnboardingView: View {
                         .padding(.horizontal, 24)
 
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Choose Your Class")
+                            Text("Your Priorities (Pick Top 2)")
                                 .font(.system(size: 14, weight: .semibold, design: .monospaced))
                                 .foregroundColor(.white)
 
-                            VStack(spacing: 8) {
-                                ForEach(Constants.MuscleClass.allCases.filter { $0.theme == .fantasy }, id: \.rawValue) { cls in
-                                    Button {
-                                        selectedClass = cls
-                                    } label: {
-                                        HStack {
-                                            Text(cls.displayName)
-                                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                                                .foregroundColor(.white)
-                                            Spacer()
-                                            if selectedClass == cls {
-                                                Image(systemName: "checkmark.circle.fill")
-                                                    .foregroundColor(.cardGold)
-                                            }
-                                        }
-                                        .padding(.horizontal, 14)
-                                        .padding(.vertical, 12)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 4)
-                                                .fill(selectedClass == cls ? Color.cardGold.opacity(0.18) : Color.cardDarkGray)
-                                        )
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 4)
-                                                .stroke(selectedClass == cls ? Color.cardGold.opacity(0.6) : Color.white.opacity(0.15), lineWidth: 1)
-                                        )
+                            priorityPicker(title: "Primary", selection: $primaryPriority, excludes: nil)
+                            priorityPicker(title: "Secondary", selection: $secondaryPriority, excludes: primaryPriority)
+                        }
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.cardDarkGray)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.white.opacity(0.15), lineWidth: 1)
+                        )
+                        .padding(.horizontal, 24)
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Body Basics")
+                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+
+                            if healthKitService.isAuthorized {
+                                Button {
+                                    Task {
+                                        let hw = await healthKitService.fetchMostRecentHeightWeight()
+                                        if let h = hw.heightCm { heightCmText = String(format: "%.0f", h) }
+                                        if let w = hw.weightKg { weightKgText = String(format: "%.1f", w) }
                                     }
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "heart.fill")
+                                        Text("Pull Height/Weight from Apple Health")
+                                    }
+                                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                    .foregroundColor(.cardGold)
+                                }
+                            } else {
+                                Text("Apple Health not connected — you can enter body type instead.")
+                                    .font(.system(size: 11, design: .monospaced))
+                                    .foregroundColor(.gray)
+                            }
+
+                            HStack(spacing: 10) {
+                                TextField("Height (cm)", text: $heightCmText)
+                                    .textFieldStyle(.roundedBorder)
+                                TextField("Weight (kg)", text: $weightKgText)
+                                    .textFieldStyle(.roundedBorder)
+                            }
+
+                            HStack(spacing: 10) {
+                                heightPicker(title: "Height", selection: $heightCategory)
+                                bodyTypePicker(title: "Body", selection: $bodyType)
+                            }
+                        }
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.cardDarkGray)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.white.opacity(0.15), lineWidth: 1)
+                        )
+                        .padding(.horizontal, 24)
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Goals")
+                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+
+                            TextField("Target Speed (mph)", text: $targetSpeedMph)
+                                .textFieldStyle(.roundedBorder)
+
+                            TextField("Weekly Distance Goal (miles)", text: $targetWeeklyDistanceMiles)
+                                .textFieldStyle(.roundedBorder)
+
+                            Stepper("Strength Checks per Level: \(strengthChecksPerLevel)", value: $strengthChecksPerLevel, in: 0...3)
+                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+                        }
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.cardDarkGray)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.white.opacity(0.15), lineWidth: 1)
+                        )
+                        .padding(.horizontal, 24)
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(mode == .suggest ? "Suggested Class" : "Select Your Class")
+                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .foregroundColor(.white)
+
+                            let options = mode == .suggest ? classOptions() : allAvailableClasses()
+                            ForEach(options, id: \.self) { cls in
+                                Button {
+                                    selectedClass = cls
+                                } label: {
+                                    HStack {
+                                        Text(cls.displayName)
+                                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                            .foregroundColor(.white)
+                                        Spacer()
+                                        if selectedClass == cls {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.cardGold)
+                                        }
+                                    }
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(selectedClass == cls ? Color.cardGold.opacity(0.18) : Color.cardDarkGray)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .stroke(selectedClass == cls ? Color.cardGold.opacity(0.6) : Color.white.opacity(0.15), lineWidth: 1)
+                                    )
                                 }
                             }
                         }
@@ -218,10 +327,24 @@ struct OnboardingView: View {
 
                         Button {
                             Task {
-                                await authService.completeOnboarding(
+                                let heightCm = Double(heightCmText)
+                                let weightKg = Double(weightKgText)
+                                let goals = UserGoals(
+                                    targetSpeedMph: Double(targetSpeedMph),
+                                    targetWeeklyDistanceMiles: Double(targetWeeklyDistanceMiles),
+                                    targetStrengthChecksPerLevel: strengthChecksPerLevel
+                                )
+                                await authService.applyOnboardingUpdates(
                                     displayName: displayName,
                                     classTheme: classTheme,
-                                    selectedClass: selectedClass
+                                    selectedClass: selectedClass,
+                                    priorityPrimary: primaryPriority,
+                                    prioritySecondary: secondaryPriority,
+                                    heightCm: heightCm,
+                                    weightKg: weightKg,
+                                    heightCategory: heightCm != nil ? nil : heightCategory,
+                                    bodyType: weightKg != nil ? nil : bodyType,
+                                    goals: goals
                                 )
                                 dismiss()
                             }
@@ -242,6 +365,33 @@ struct OnboardingView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .onChange(of: primaryPriority) { _, _ in
+            if let first = classOptions().first { selectedClass = first }
+        }
+        .onChange(of: secondaryPriority) { _, _ in
+            if let first = classOptions().first { selectedClass = first }
+        }
+        .onAppear {
+            if let user = authService.currentUser {
+                displayName = user.displayName
+                classTheme = user.classTheme
+                selectedClass = user.selectedClass
+                primaryPriority = user.priorityPrimary
+                secondaryPriority = user.prioritySecondary
+                if let h = user.heightCm { heightCmText = String(format: "%.0f", h) }
+                if let w = user.weightKg { weightKgText = String(format: "%.1f", w) }
+                if let hc = user.heightCategory { heightCategory = hc }
+                if let bt = user.bodyType { bodyType = bt }
+                if let g = user.goals {
+                    if let v = g.targetSpeedMph { targetSpeedMph = String(format: "%.1f", v) }
+                    if let v = g.targetWeeklyDistanceMiles { targetWeeklyDistanceMiles = String(format: "%.0f", v) }
+                    if let v = g.targetStrengthChecksPerLevel { strengthChecksPerLevel = v }
+                }
+            }
+            if mode == .suggest, let first = classOptions().first {
+                selectedClass = first
+            }
         }
     }
 }
@@ -268,5 +418,125 @@ private extension OnboardingView {
             RoundedRectangle(cornerRadius: 4)
                 .fill(Color.cardDarkGray.opacity(0.6))
         )
+    }
+
+    func priorityPicker(title: String, selection: Binding<Constants.PriorityStat>, excludes: Constants.PriorityStat?) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundColor(.gray)
+
+            HStack(spacing: 8) {
+                ForEach(Constants.PriorityStat.allCases, id: \.rawValue) { stat in
+                    let isDisabled = excludes == stat
+                    Button {
+                        if !isDisabled { selection.wrappedValue = stat }
+                    } label: {
+                        Text(stat.displayName.uppercased())
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .foregroundColor(selection.wrappedValue == stat ? .black : .white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(selection.wrappedValue == stat ? Color.cardGold : Color.cardDark)
+                            )
+                            .opacity(isDisabled ? 0.4 : 1)
+                    }
+                    .disabled(isDisabled)
+                }
+            }
+        }
+    }
+
+    func heightPicker(title: String, selection: Binding<Constants.HeightCategory>) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundColor(.gray)
+            Picker(title, selection: selection) {
+                ForEach(Constants.HeightCategory.allCases, id: \.rawValue) { option in
+                    Text(option.displayName).tag(option)
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(.cardGold)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    func bodyTypePicker(title: String, selection: Binding<Constants.BodyType>) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundColor(.gray)
+            Picker(title, selection: selection) {
+                ForEach(Constants.BodyType.allCases, id: \.rawValue) { option in
+                    Text(option.displayName).tag(option)
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(.cardGold)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    func classOptions() -> [Constants.MuscleClass] {
+        let classes = Constants.MuscleClass.allCases.filter { $0.theme == .fantasy }
+        guard !classes.isEmpty else { return [] }
+
+        let scored = classes.map { cls -> (Constants.MuscleClass, Double) in
+            let w = cls.weights
+            let score = weight(for: primaryPriority, weights: w) * 0.6
+                + weight(for: secondaryPriority, weights: w) * 0.4
+            return (cls, score)
+        }
+        let sorted = scored.sorted { $0.1 > $1.1 }.map { $0.0 }
+        let best = sorted.first ?? .warrior
+        let second = sorted.dropFirst().first ?? best
+        let opposite = oppositeClass(for: primaryPriority, in: classes) ?? best
+        return Array(LinkedHashSet([best, second, opposite]))
+    }
+
+    func allAvailableClasses() -> [Constants.MuscleClass] {
+        Constants.MuscleClass.allCases.filter { $0.theme == classTheme }
+    }
+
+    func weight(for stat: Constants.PriorityStat, weights: Constants.ClassWeights) -> Double {
+        switch stat {
+        case .strength: return weights.strength
+        case .speed: return weights.speed
+        case .endurance: return weights.endurance
+        case .intelligence: return weights.intelligence
+        }
+    }
+
+    func oppositeClass(for stat: Constants.PriorityStat, in classes: [Constants.MuscleClass]) -> Constants.MuscleClass? {
+        let oppositeStat: Constants.PriorityStat
+        switch stat {
+        case .strength: oppositeStat = .speed
+        case .speed: oppositeStat = .strength
+        case .endurance: oppositeStat = .intelligence
+        case .intelligence: oppositeStat = .endurance
+        }
+        return classes.max { weight(for: oppositeStat, weights: $0.weights) < weight(for: oppositeStat, weights: $1.weights) }
+    }
+}
+
+private struct LinkedHashSet<Element: Hashable>: Sequence {
+    private var ordered: [Element] = []
+    private var set: Set<Element> = []
+
+    init(_ elements: [Element]) {
+        for element in elements {
+            if !set.contains(element) {
+                set.insert(element)
+                ordered.append(element)
+            }
+        }
+    }
+
+    func makeIterator() -> IndexingIterator<[Element]> {
+        ordered.makeIterator()
     }
 }

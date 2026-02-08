@@ -15,7 +15,8 @@ class HealthKitService: ObservableObject {
             .activeEnergyBurned, .basalEnergyBurned, .heartRate,
             .restingHeartRate, .heartRateVariabilitySDNN,
             .walkingHeartRateAverage, .heartRateRecoveryOneMinute,
-            .vo2Max, .distanceWalkingRunning, .distanceCycling,
+            .vo2Max, .height, .bodyMass,
+            .distanceWalkingRunning, .distanceCycling,
             .stepCount, .flightsClimbed, .appleExerciseTime, .appleStandTime
         ]
         return Set(ids.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
@@ -224,6 +225,18 @@ class HealthKitService: ObservableObject {
     ) async -> HKQuantitySample? {
         let samples = await fetchQuantitySamples(identifier: identifier, since: Date.distantPast, limit: 1)
         return samples.first
+    }
+
+    func fetchMostRecentHeightWeight() async -> (heightCm: Double?, weightKg: Double?) {
+        guard isAuthorized else { return (nil, nil) }
+
+        let heightSample = await fetchMostRecentQuantitySample(identifier: .height)
+        let weightSample = await fetchMostRecentQuantitySample(identifier: .bodyMass)
+
+        let heightCm = heightSample?.quantity.doubleValue(for: .meter()) * 100.0
+        let weightKg = weightSample?.quantity.doubleValue(for: .gramUnit(with: .kilo))
+
+        return (heightCm, weightKg)
     }
 
     // MARK: - Workout Routes

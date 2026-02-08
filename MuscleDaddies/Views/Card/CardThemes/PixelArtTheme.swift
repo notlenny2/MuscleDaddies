@@ -8,43 +8,47 @@ struct PixelArtCardContent: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Pixel-style header with border
-            HStack {
-                Text("★ \(user.displayName.uppercased()) ★")
-                    .font(.system(size: compact ? 14 : 18, weight: .black, design: .monospaced))
-                    .foregroundColor(.green)
+            // Pixel-style header with hard edges
+            VStack(spacing: 4) {
+                HStack {
+                    Text("★ \(user.displayName.uppercased()) ★")
+                        .font(.system(size: compact ? 14 : 18, weight: .black, design: .monospaced))
+                        .foregroundColor(.green)
 
-                Spacer()
+                    Spacer()
 
-                Text("LV\(card.levelDisplay)")
-                    .font(.system(size: compact ? 16 : 22, weight: .black, design: .monospaced))
-                    .foregroundColor(.yellow)
+                    Text("LV\(card.levelDisplay)")
+                        .font(.system(size: compact ? 16 : 22, weight: .black, design: .monospaced))
+                        .foregroundColor(.yellow)
+                }
+
+                Text("< \(card.title.uppercased()) >")
+                    .font(.system(size: compact ? 9 : 11, weight: .bold, design: .monospaced))
+                    .foregroundColor(.green.opacity(0.8))
+
+                Text("[\(user.selectedClass.displayName.uppercased())]")
+                    .font(.system(size: compact ? 9 : 10, weight: .bold, design: .monospaced))
+                    .foregroundColor(.green.opacity(0.7))
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
+            .padding(.horizontal, 14)
+            .padding(.top, 14)
+            .padding(.bottom, 8)
 
-            Text("< \(card.title) >")
-                .font(.system(size: compact ? 9 : 11, weight: .medium, design: .monospaced))
-                .foregroundColor(.green.opacity(0.7))
-                .padding(.top, 2)
-
-            Text("[\(user.selectedClass.displayName.uppercased())]")
-                .font(.system(size: compact ? 9 : 10, weight: .bold, design: .monospaced))
-                .foregroundColor(.green.opacity(0.7))
-
-            Divider()
-                .background(Color.green.opacity(0.5))
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
+            pixelDivider()
 
             if !compact {
-                if let asset = user.selectedClass.classArtAsset {
+                if let asset = user.selectedClass.fantasyArtAsset {
                     Image(asset)
                         .resizable()
+                        .interpolation(.none)
                         .scaledToFit()
                         .frame(height: 120)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 8)
+                        .background(
+                            Rectangle()
+                                .fill(Color.black.opacity(0.25))
+                        )
                 }
                 // Pixel-style stat display
                 VStack(spacing: 4) {
@@ -69,9 +73,7 @@ struct PixelArtCardContent: View {
                 .padding(.bottom, 8)
             }
 
-            Divider()
-                .background(Color.green.opacity(0.5))
-                .padding(.horizontal, 16)
+            pixelDivider()
 
             // Footer
             HStack {
@@ -99,16 +101,16 @@ struct PixelArtCardContent: View {
             .padding(.vertical, 10)
         }
         .background(
-            RoundedRectangle(cornerRadius: 4)
+            Rectangle()
                 .fill(Color(red: 0.05, green: 0.05, blue: 0.1))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(Color.green.opacity(0.6), lineWidth: 2)
+            Rectangle()
+                .stroke(Color.green.opacity(0.8), lineWidth: 3)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(Color.green.opacity(0.2), lineWidth: 1)
+            Rectangle()
+                .stroke(Color.green.opacity(0.25), lineWidth: 1)
                 .padding(3)
         )
     }
@@ -163,5 +165,13 @@ struct PixelArtCardContent: View {
                 .foregroundColor(.white)
                 .frame(width: 52, alignment: .trailing)
         }
+    }
+
+    private func pixelDivider() -> some View {
+        Rectangle()
+            .fill(Color.green.opacity(0.5))
+            .frame(height: 2)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
     }
 }

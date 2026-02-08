@@ -12,7 +12,7 @@ struct TradingCardContent: View {
             ZStack {
                 Rectangle()
                     .fill(
-                        LinearGradient(colors: [.cardGold, Color(red: 0.7, green: 0.55, blue: 0.2)], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [.cardGold, Color(red: 0.65, green: 0.5, blue: 0.18)], startPoint: .leading, endPoint: .trailing)
                     )
                     .frame(height: compact ? 36 : 44)
 
@@ -38,14 +38,48 @@ struct TradingCardContent: View {
                 .padding(.vertical, 4)
                 .background(Color(red: 0.12, green: 0.1, blue: 0.08))
 
-            // Class art
-            if !compact, let asset = user.selectedClass.classArtAsset {
-                Image(asset)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 120)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
+            // Player photo/art slot (sports trading card frame)
+            if !compact {
+                ZStack(alignment: .topLeading) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.black.opacity(0.35), Color.black.opacity(0.15)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(height: 130)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.cardGold.opacity(0.6), lineWidth: 1)
+                        )
+
+                    // Diagonal stripe band
+                    Rectangle()
+                        .fill(Color.cardGold.opacity(0.25))
+                        .frame(width: 220, height: 26)
+                        .rotationEffect(.degrees(-12))
+                        .offset(x: -40, y: 16)
+
+                    // Position badge
+                    Text(user.selectedClass.displayName.uppercased())
+                        .font(.system(size: 10, weight: .black, design: .serif))
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.cardGold)
+                        .cornerRadius(6)
+                        .padding(8)
+
+                    // Art placeholder
+                    Text("ART")
+                        .font(.system(size: 14, weight: .black, design: .serif))
+                        .foregroundColor(.cardGold.opacity(0.8))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
             }
 
             // Stats area
@@ -113,7 +147,7 @@ struct TradingCardContent: View {
             ZStack {
                 Rectangle()
                     .fill(
-                        LinearGradient(colors: [.cardGold, Color(red: 0.7, green: 0.55, blue: 0.2)], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [.cardGold, Color(red: 0.65, green: 0.5, blue: 0.18)], startPoint: .leading, endPoint: .trailing)
                     )
                     .frame(height: 32)
 

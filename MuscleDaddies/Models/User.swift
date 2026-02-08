@@ -15,6 +15,13 @@ struct AppUser: Codable, Identifiable {
     var selectedTheme: Constants.CardTheme
     var classTheme: Constants.ClassTheme
     var selectedClass: Constants.MuscleClass
+    var priorityPrimary: Constants.PriorityStat
+    var prioritySecondary: Constants.PriorityStat
+    var heightCm: Double?
+    var weightKg: Double?
+    var heightCategory: Constants.HeightCategory?
+    var bodyType: Constants.BodyType?
+    var goals: UserGoals?
     var pokesSent: Int
 
     init(
@@ -31,6 +38,13 @@ struct AppUser: Codable, Identifiable {
         selectedTheme: Constants.CardTheme = .modern,
         classTheme: Constants.ClassTheme = .fantasy,
         selectedClass: Constants.MuscleClass = .warrior,
+        priorityPrimary: Constants.PriorityStat = .strength,
+        prioritySecondary: Constants.PriorityStat = .endurance,
+        heightCm: Double? = nil,
+        weightKg: Double? = nil,
+        heightCategory: Constants.HeightCategory? = nil,
+        bodyType: Constants.BodyType? = nil,
+        goals: UserGoals? = nil,
         pokesSent: Int = 0
     ) {
         self.id = id
@@ -46,6 +60,13 @@ struct AppUser: Codable, Identifiable {
         self.selectedTheme = selectedTheme
         self.classTheme = classTheme
         self.selectedClass = selectedClass
+        self.priorityPrimary = priorityPrimary
+        self.prioritySecondary = prioritySecondary
+        self.heightCm = heightCm
+        self.weightKg = weightKg
+        self.heightCategory = heightCategory
+        self.bodyType = bodyType
+        self.goals = goals
         self.pokesSent = pokesSent
     }
 
@@ -63,6 +84,13 @@ struct AppUser: Codable, Identifiable {
         case selectedTheme
         case classTheme
         case selectedClass
+        case priorityPrimary
+        case prioritySecondary
+        case heightCm
+        case weightKg
+        case heightCategory
+        case bodyType
+        case goals
         case pokesSent
     }
 
@@ -81,6 +109,13 @@ struct AppUser: Codable, Identifiable {
         selectedTheme = try container.decodeIfPresent(Constants.CardTheme.self, forKey: .selectedTheme) ?? .modern
         classTheme = try container.decodeIfPresent(Constants.ClassTheme.self, forKey: .classTheme) ?? .fantasy
         selectedClass = try container.decodeIfPresent(Constants.MuscleClass.self, forKey: .selectedClass) ?? .warrior
+        priorityPrimary = try container.decodeIfPresent(Constants.PriorityStat.self, forKey: .priorityPrimary) ?? .strength
+        prioritySecondary = try container.decodeIfPresent(Constants.PriorityStat.self, forKey: .prioritySecondary) ?? .endurance
+        heightCm = try container.decodeIfPresent(Double.self, forKey: .heightCm)
+        weightKg = try container.decodeIfPresent(Double.self, forKey: .weightKg)
+        heightCategory = try container.decodeIfPresent(Constants.HeightCategory.self, forKey: .heightCategory)
+        bodyType = try container.decodeIfPresent(Constants.BodyType.self, forKey: .bodyType)
+        goals = try container.decodeIfPresent(UserGoals.self, forKey: .goals)
         pokesSent = try container.decodeIfPresent(Int.self, forKey: .pokesSent) ?? 0
     }
 
@@ -99,7 +134,30 @@ struct AppUser: Codable, Identifiable {
         try container.encode(selectedTheme, forKey: .selectedTheme)
         try container.encode(classTheme, forKey: .classTheme)
         try container.encode(selectedClass, forKey: .selectedClass)
+        try container.encode(priorityPrimary, forKey: .priorityPrimary)
+        try container.encode(prioritySecondary, forKey: .prioritySecondary)
+        try container.encodeIfPresent(heightCm, forKey: .heightCm)
+        try container.encodeIfPresent(weightKg, forKey: .weightKg)
+        try container.encodeIfPresent(heightCategory, forKey: .heightCategory)
+        try container.encodeIfPresent(bodyType, forKey: .bodyType)
+        try container.encodeIfPresent(goals, forKey: .goals)
         try container.encode(pokesSent, forKey: .pokesSent)
+    }
+}
+
+struct UserGoals: Codable {
+    var targetSpeedMph: Double?
+    var targetWeeklyDistanceMiles: Double?
+    var targetStrengthChecksPerLevel: Int?
+
+    init(
+        targetSpeedMph: Double? = nil,
+        targetWeeklyDistanceMiles: Double? = nil,
+        targetStrengthChecksPerLevel: Int? = nil
+    ) {
+        self.targetSpeedMph = targetSpeedMph
+        self.targetWeeklyDistanceMiles = targetWeeklyDistanceMiles
+        self.targetStrengthChecksPerLevel = targetStrengthChecksPerLevel
     }
 }
 

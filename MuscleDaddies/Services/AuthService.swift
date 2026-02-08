@@ -76,17 +76,77 @@ class AuthService: NSObject, ObservableObject {
         }
     }
 
-    func completeOnboarding(displayName: String, classTheme: Constants.ClassTheme, selectedClass: Constants.MuscleClass) async {
+    func completeOnboarding(
+        displayName: String,
+        classTheme: Constants.ClassTheme,
+        selectedClass: Constants.MuscleClass,
+        priorityPrimary: Constants.PriorityStat,
+        prioritySecondary: Constants.PriorityStat,
+        heightCm: Double?,
+        weightKg: Double?,
+        heightCategory: Constants.HeightCategory?,
+        bodyType: Constants.BodyType?,
+        goals: UserGoals?
+    ) async {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let user = AppUser(
             id: uid,
             displayName: displayName,
             selectedTheme: classTheme.cardTheme,
             classTheme: classTheme,
-            selectedClass: selectedClass
+            selectedClass: selectedClass,
+            priorityPrimary: priorityPrimary,
+            prioritySecondary: prioritySecondary,
+            heightCm: heightCm,
+            weightKg: weightKg,
+            heightCategory: heightCategory,
+            bodyType: bodyType,
+            goals: goals
         )
         do {
             try db.collection(Constants.Firestore.users).document(uid).setData(from: user)
+            self.currentUser = user
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    func applyOnboardingUpdates(
+        displayName: String,
+        classTheme: Constants.ClassTheme,
+        selectedClass: Constants.MuscleClass,
+        priorityPrimary: Constants.PriorityStat,
+        prioritySecondary: Constants.PriorityStat,
+        heightCm: Double?,
+        weightKg: Double?,
+        heightCategory: Constants.HeightCategory?,
+        bodyType: Constants.BodyType?,
+        goals: UserGoals?
+    ) async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        var user = currentUser ?? AppUser(
+            id: uid,
+            displayName: displayName,
+            selectedTheme: classTheme.cardTheme,
+            classTheme: classTheme,
+            selectedClass: selectedClass
+        )
+
+        user.displayName = displayName
+        user.classTheme = classTheme
+        user.selectedTheme = classTheme.cardTheme
+        user.selectedClass = selectedClass
+        user.priorityPrimary = priorityPrimary
+        user.prioritySecondary = prioritySecondary
+        user.heightCm = heightCm
+        user.weightKg = weightKg
+        user.heightCategory = heightCategory
+        user.bodyType = bodyType
+        user.goals = goals
+
+        do {
+            try db.collection(Constants.Firestore.users).document(uid).setData(from: user, merge: true)
             self.currentUser = user
         } catch {
             self.error = error.localizedDescription

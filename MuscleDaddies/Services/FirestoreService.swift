@@ -144,6 +144,19 @@ class FirestoreService: ObservableObject {
         return snapshot.documents.compactMap { try? $0.data(as: Workout.self) }
     }
 
+    func getWorkouts(userId: String, from startDate: Date, to endDate: Date) async throws -> [Workout] {
+        if isDemoMode {
+            return Self.demoWorkouts.filter { $0.userId == userId && $0.createdAt >= startDate && $0.createdAt <= endDate }
+        }
+        let snapshot = try await db.collection(Constants.Firestore.workouts)
+            .whereField("userId", isEqualTo: userId)
+            .whereField("createdAt", isGreaterThanOrEqualTo: Timestamp(date: startDate))
+            .whereField("createdAt", isLessThanOrEqualTo: Timestamp(date: endDate))
+            .order(by: "createdAt", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: Workout.self) }
+    }
+
     func getGroupWorkouts(groupId: String, limit: Int = 50) async throws -> [Workout] {
         if isDemoMode { return Self.demoWorkouts }
         let snapshot = try await db.collection(Constants.Firestore.workouts)
@@ -325,6 +338,63 @@ class FirestoreService: ObservableObject {
             .collection("unlocked")
             .getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Achievement.self) }
+    }
+
+    // MARK: - Belt Challenges
+
+    func createBeltChallenge(_ challenge: BeltChallenge) async throws {
+        if isDemoMode { return }
+        _ = try db.collection(Constants.Firestore.beltChallenges).addDocument(from: challenge)
+    }
+
+    func updateBeltChallenge(_ challenge: BeltChallenge) async throws {
+        if isDemoMode { return }
+        guard let id = challenge.id else { return }
+        try db.collection(Constants.Firestore.beltChallenges).document(id).setData(from: challenge, merge: true)
+    }
+
+    func getBeltChallenges(groupId: String) async throws -> [BeltChallenge] {
+        if isDemoMode { return [] }
+        let snapshot = try await db.collection(Constants.Firestore.beltChallenges)
+            .whereField("groupId", isEqualTo: groupId)
+            .order(by: "createdAt", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: BeltChallenge.self) }
+    }
+
+    func getActiveBeltChallenge(for userId: String) async throws -> BeltChallenge? {
+        if isDemoMode { return nil }
+        let snapshot = try await db.collection(Constants.Firestore.beltChallenges)
+            .whereFilter(Filter.orFilter([
+                Filter.whereField("challengerId", isEqualTo: userId),
+                Filter.whereField("opponentId", isEqualTo: userId)
+            ]))
+            .whereFilter(Filter.orFilter([
+                Filter.whereField("status", isEqualTo: BeltChallenge.Status.pending.rawValue),
+                Filter.whereField("status", isEqualTo: BeltChallenge.Status.active.rawValue)
+            ]))
+            .limit(to: 1)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: BeltChallenge.self) }.first
+    }
+
+    func getBeltHolders(groupId: String) async throws -> BeltHolders? {
+        if isDemoMode { return nil }
+        let doc = try await db.collection(Constants.Firestore.belts).document(groupId).getDocument()
+        return try doc.data(as: BeltHolders.self)
+    }
+
+    func setBeltHolder(groupId: String, stat: BeltChallenge.BeltStat, userId: String?) async throws {
+        if isDemoMode { return }
+        var data: [String: Any] = ["updatedAt": Timestamp(date: Date())]
+        switch stat {
+        case .strength: data["strengthHolderId"] = userId as Any
+        case .speed: data["speedHolderId"] = userId as Any
+        case .endurance: data["enduranceHolderId"] = userId as Any
+        case .intelligence: data["intelligenceHolderId"] = userId as Any
+        case .overall: data["overallHolderId"] = userId as Any
+        }
+        try await db.collection(Constants.Firestore.belts).document(groupId).setData(data, merge: true)
     }
 
     // MARK: - Helpers
