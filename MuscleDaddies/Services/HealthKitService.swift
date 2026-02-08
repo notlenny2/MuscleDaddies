@@ -76,10 +76,10 @@ class HealthKitService: ObservableObject {
 
                         let workout = Workout(
                             userId: "", // Will be set by caller
-                            type: Self.mapWorkoutType(hk.workoutActivityType),
+                            type: await Self.mapWorkoutType(hk.workoutActivityType),
                             source: .healthkit,
                             duration: Int(hk.duration / 60),
-                            intensity: Self.estimateIntensity(hk),
+                            intensity: await Self.estimateIntensity(hk),
                             energyBurned: energy,
                             distance: distance,
                             averageHeartRate: avgHR,
@@ -127,12 +127,14 @@ class HealthKitService: ObservableObject {
     }
 
     private func totalSleepMinutes(samples: [HKCategorySample]) -> Double {
-        var asleepValues: Set<Int> = [HKCategoryValueSleepAnalysis.asleep.rawValue]
+        var asleepValues: Set<Int> = []
         if #available(iOS 16.0, *) {
             asleepValues.insert(HKCategoryValueSleepAnalysis.asleepCore.rawValue)
             asleepValues.insert(HKCategoryValueSleepAnalysis.asleepDeep.rawValue)
             asleepValues.insert(HKCategoryValueSleepAnalysis.asleepREM.rawValue)
             asleepValues.insert(HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue)
+        } else {
+            asleepValues.insert(HKCategoryValueSleepAnalysis.asleep.rawValue)
         }
 
         return samples.reduce(0.0) { total, sample in
@@ -233,7 +235,7 @@ class HealthKitService: ObservableObject {
         let heightSample = await fetchMostRecentQuantitySample(identifier: .height)
         let weightSample = await fetchMostRecentQuantitySample(identifier: .bodyMass)
 
-        let heightCm = heightSample?.quantity.doubleValue(for: .meter()) * 100.0
+        let heightCm = heightSample.map { $0.quantity.doubleValue(for: .meter()) * 100.0 }
         let weightKg = weightSample?.quantity.doubleValue(for: .gramUnit(with: .kilo))
 
         return (heightCm, weightKg)

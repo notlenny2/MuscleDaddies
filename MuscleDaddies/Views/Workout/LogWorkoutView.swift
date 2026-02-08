@@ -31,7 +31,7 @@ struct LogWorkoutView: View {
                         // Workout Type
                         VStack(alignment: .leading, spacing: 10) {
                             Text("WORKOUT TYPE")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.pixel(8))
                                 .foregroundColor(.gray)
 
                             LazyVGrid(columns: [
@@ -47,7 +47,7 @@ struct LogWorkoutView: View {
                                             Image(systemName: type.icon)
                                                 .font(.system(size: 22))
                                             Text(type.displayName)
-                                                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                                                .font(.pixel(7))
                                         }
                                         .foregroundColor(selectedType == type ? .black : .white)
                                         .frame(maxWidth: .infinity)
@@ -68,7 +68,7 @@ struct LogWorkoutView: View {
                         // Duration
                         VStack(alignment: .leading, spacing: 10) {
                             Text("DURATION")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.pixel(8))
                                 .foregroundColor(.gray)
 
                             HStack(spacing: 16) {
@@ -77,7 +77,7 @@ struct LogWorkoutView: View {
                                         duration = mins
                                     } label: {
                                         Text("\(mins)m")
-                                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                            .font(.pixel(9))
                                             .foregroundColor(duration == mins ? .black : .white)
                                             .frame(maxWidth: .infinity)
                                             .frame(height: 40)
@@ -98,7 +98,7 @@ struct LogWorkoutView: View {
                         // Intensity
                         VStack(alignment: .leading, spacing: 10) {
                             Text("INTENSITY")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.pixel(8))
                                 .foregroundColor(.gray)
 
                             HStack(spacing: 12) {
@@ -127,7 +127,7 @@ struct LogWorkoutView: View {
                         // Notes
                         VStack(alignment: .leading, spacing: 10) {
                             Text("NOTES (OPTIONAL)")
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.pixel(8))
                                 .foregroundColor(.gray)
 
                             TextField("How was it?", text: $notes, axis: .vertical)
@@ -181,7 +181,7 @@ struct LogWorkoutView: View {
                                     .tint(.black)
                             } else {
                                 Text("LOG WORKOUT")
-                                    .font(.system(size: 16, weight: .black, design: .monospaced))
+                                    .font(.pixel(11))
                             }
                         }
                         .foregroundColor(.black)
@@ -225,7 +225,7 @@ struct LogWorkoutView: View {
         )
 
         do {
-            let saved = try await firestoreService.logWorkout(workout)
+            _ = try await firestoreService.logWorkout(workout)
 
             // Post to feed
             if let groupId = user.groupId {
