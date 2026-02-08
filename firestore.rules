@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users - can read group members, write own doc
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+
+    // Groups - members can read, creator can write, anyone authed can create
+    match /groups/{groupId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null
+        && request.auth.uid in resource.data.memberIds;
+    }
+
+    // Workouts - owner writes, group members read
+    match /workouts/{workoutId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow update, delete: if request.auth.uid == resource.data.userId;
+    }
+
+    // Feed - authed users in group can read/write
+    match /feed/{feedItemId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null;
+    }
+
+    // Challenges - authed group members
+    match /challenges/{challengeId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null;
+    }
+
+    // Achievements - owner writes, anyone authed reads
+    match /achievements/{userId}/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+
+    // Recovery metrics - owner only
+    match /recovery/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /daily/{dayId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

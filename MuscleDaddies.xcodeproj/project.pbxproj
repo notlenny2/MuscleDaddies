@@ -1,0 +1,855 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04B7ECA5D866ED66C9742FBE /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56760C050E8C09B765E69D47 /* FirestoreService.swift */; };
+		1706A864A1F3CD173BA005A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D606DACE3854CFFA2E7BCC /* Constants.swift */; };
+		1F236D8E95B3F0BD3F6BFBCB /* RecoveryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A85B40F603904ED8E4FD43 /* RecoveryMetrics.swift */; };
+		22151676ABEE3808FADB9B65 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C756E3C8D5EB1F167E12AF8B /* HealthKit.framework */; };
+		24D942F30C55D3D9A01B2C3C /* MuscleDaddiesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD763AE090A3C1DE6268B67 /* MuscleDaddiesApp.swift */; };
+		2C6590376F22283562745AA8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BF4EF3E142BD4F826409A6 /* SettingsView.swift */; };
+		2DFDAC35A0BF6EBF578E5FAA /* PixelArtTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1918C34143A4FCBDD3F2AD3 /* PixelArtTheme.swift */; };
+		2E28542A222531D2B6144424 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAEB769C6983B86F4D6765E /* CryptoKit.framework */; };
+		3129987E0F34C11F3C644BB5 /* PixelArtTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1918C34143A4FCBDD3F2AD3 /* PixelArtTheme.swift */; };
+		325B727928BC976818D2A36C /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7616CB76051C18D7F82AB4B5 /* AuthenticationServices.framework */; };
+		3DBE99DF835EF172FBE911B6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A399A9954A94FD120D3A7DEA /* AuthService.swift */; };
+		418AD8343BDD2D02C9DC7F94 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F5A067F033562813C6F52 /* LoginView.swift */; };
+		4352D49A07F1621D9C981AF7 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C76D7F36124C59FD452FAE /* FeedItem.swift */; };
+		48F50B5AAA9A4C871E2139CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62FE8ED6ACFEA060853D5C96 /* Assets.xcassets */; };
+		4A070FB5C3FEF2F390178A3F /* StatRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB7B188A7B522E4253F1BF /* StatRadarView.swift */; };
+		4CD7EBBDD09C6F9FADE1A8E0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D132B81E921ACA94BC756384 /* FirebaseAuth */; };
+		53F5926522B5587521DB53B1 /* RecoveryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A85B40F603904ED8E4FD43 /* RecoveryMetrics.swift */; };
+		540B887769D6694A63748360 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAEB769C6983B86F4D6765E /* CryptoKit.framework */; };
+		568DA18B92A48AE08AC30994 /* WorkoutHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A122E6FEB91E4EED01215 /* WorkoutHistoryView.swift */; };
+		5838D5EE1B671B2DA6DA856E /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C76D7F36124C59FD452FAE /* FeedItem.swift */; };
+		5DB7787AF5D74B9113A33428 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B573E2BE967428E3EF11206 /* FirebaseFirestore */; };
+		5F10EF6FF5A01EDC60965C4F /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAF6CC3929D0C3093D68B74 /* Challenge.swift */; };
+		619A099B529F4685B2365712 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56760C050E8C09B765E69D47 /* FirestoreService.swift */; };
+		62EDFE67C5EB2287F80185C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04CFB54BBADE1124490B903B /* GoogleService-Info.plist */; };
+		648E9D08261229863B33CBF7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F5A067F033562813C6F52 /* LoginView.swift */; };
+		6AACC2F9290DFF758A99DB10 /* LogWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669C9B4FBCC47D638437C412 /* LogWorkoutView.swift */; };
+		74ADD660EFF25F94961A0192 /* XPRecoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41641544204EDD377D7DA20F /* XPRecoveryView.swift */; };
+		74DD6B5CCB351CA8193426E8 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396F3CBE0EDA16A9E60F99B7 /* Workout.swift */; };
+		752A33E19D25BC6ED757FB73 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04CFB54BBADE1124490B903B /* GoogleService-Info.plist */; };
+		769FFD7FEA61E922B04E96B8 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7616CB76051C18D7F82AB4B5 /* AuthenticationServices.framework */; };
+		790903EB5C0CD2626C4E9D57 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE64C049112F884011BAFBE /* ContentView.swift */; };
+		7D427A2E1A8A9CCD6D623FF3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F157718280845A0F455985C /* User.swift */; };
+		86EFF4B2CC3CC789ED20705E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 97918D53FB1C0167EC0C4A11 /* FirebaseFirestore */; };
+		8734B0C70F6CEF7ADFA15338 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5B32A1C13740CBD84C866873 /* FirebaseMessaging */; };
+		88DDAD313C54C9F91434D936 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFFB6DFD8B30B72F874E3F /* NotificationService.swift */; };
+		8AC394FDB08D745C8C2237B3 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B11F83F95C349FD857336F /* FeedView.swift */; };
+		8B65AF77AFA82EE18514696A /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEEB980A27201D345490E6E /* CharacterCard.swift */; };
+		8F67C0C951B874207600E95F /* PreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404599FC57186BE392169DEF /* PreviewApp.swift */; };
+		903EAEA86F0D28FC0ED2D0A3 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A399A9954A94FD120D3A7DEA /* AuthService.swift */; };
+		919D7C6EDE8CA06805A8E1F9 /* CharacterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDCE4FBEC6D174F41B6C5D1 /* CharacterCardView.swift */; };
+		95A690E714AD2D3D94BDEE8F /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582496DC32DA85D9207EEAAF /* GroupView.swift */; };
+		962AB9020956E16E2528AF8A /* TradingCardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F2FB73EF4C1BAAA0DF92E /* TradingCardTheme.swift */; };
+		96832B6908FFFC0263DE2533 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200322B3BA9325EA342160A /* Extensions.swift */; };
+		9C76A3BC04939313D5845C9C /* FeedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A261DD5A8D827244F94BDBEA /* FeedItemView.swift */; };
+		9D8557A26D5682337268ED07 /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEEB980A27201D345490E6E /* CharacterCard.swift */; };
+		9F0F6638B00D9B9EB6594D95 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DF7530047FCF8C0CB5F0C2C0 /* FirebaseAuth */; };
+		9FCAAA16398C8EBE17A3C848 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE64C049112F884011BAFBE /* ContentView.swift */; };
+		9FE873D26760A2516E2E9456 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F157718280845A0F455985C /* User.swift */; };
+		A285DA0B816BF81F94AD6D26 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAF6CC3929D0C3093D68B74 /* Challenge.swift */; };
+		A8C69EA924210008EBF774CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62FE8ED6ACFEA060853D5C96 /* Assets.xcassets */; };
+		AC51D1F50806A51087B98F15 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE9B8C7891FD2B4481BB17E /* ChallengeView.swift */; };
+		B4CC0F60F83643804EB2B752 /* ModernTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B1837F52BAC564DFA2332 /* ModernTheme.swift */; };
+		B65815499E2AC53F6BFC13F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BF4EF3E142BD4F826409A6 /* SettingsView.swift */; };
+		B7B61F33BC5DD102902EA9A7 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B11F83F95C349FD857336F /* FeedView.swift */; };
+		B99F9682D868133151746CBB /* XPRecoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41641544204EDD377D7DA20F /* XPRecoveryView.swift */; };
+		B9C18B49F5F4B48DA2A70396 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582496DC32DA85D9207EEAAF /* GroupView.swift */; };
+		BB004FB35A02875423FF9359 /* ModernTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B1837F52BAC564DFA2332 /* ModernTheme.swift */; };
+		BEFAACCB563C92BD9F7298DC /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396F3CBE0EDA16A9E60F99B7 /* Workout.swift */; };
+		C209ACB74194B53AB4A8C5B0 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE9B8C7891FD2B4481BB17E /* ChallengeView.swift */; };
+		CC18D99836A9F230E918798C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E4F4210C27507A4FB3CB1EF6 /* FirebaseMessaging */; };
+		CCAEB8A464EC78FC63355F27 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E7718C65740D7A68445E9 /* Achievement.swift */; };
+		CECBF44106B4F61D8CD8458D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFFB6DFD8B30B72F874E3F /* NotificationService.swift */; };
+		CEDACF15881C66322FAEA293 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E7718C65740D7A68445E9 /* Achievement.swift */; };
+		CF7460F9ECF99629F1F5666A /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC093D38DF7BF7FE65002D53 /* AchievementsView.swift */; };
+		D003CA26B92D5B4A5D7BCBAA /* LogWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669C9B4FBCC47D638437C412 /* LogWorkoutView.swift */; };
+		D00FB8E7A25F9B552274BBEC /* StatCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE895C0C87AA705A32C5FA36 /* StatCalculator.swift */; };
+		D04A90FD27B34BFFD80DF6C6 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2564D8E0F707D850FE651D9 /* HealthKitService.swift */; };
+		D2375D81B7190891F90F8BEA /* CharacterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDCE4FBEC6D174F41B6C5D1 /* CharacterCardView.swift */; };
+		D2A7CB5CAC152B794A193188 /* TradingCardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F2FB73EF4C1BAAA0DF92E /* TradingCardTheme.swift */; };
+		D4C6A826A769E9AF2FC80DFD /* StatRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB7B188A7B522E4253F1BF /* StatRadarView.swift */; };
+		D75B5D532FC0E2E5D36E5D86 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1E7EEC0503ECF74079B7D1 /* LeaderboardView.swift */; };
+		DC40649FD8CC1F89700EDD42 /* WorkoutHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A122E6FEB91E4EED01215 /* WorkoutHistoryView.swift */; };
+		DD75DDE4C6556727A5009451 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2564D8E0F707D850FE651D9 /* HealthKitService.swift */; };
+		E3C39D051577D625CA87E7DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D606DACE3854CFFA2E7BCC /* Constants.swift */; };
+		EB17188E007CB0F08EDCCA48 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C756E3C8D5EB1F167E12AF8B /* HealthKit.framework */; };
+		EC5B2E206EC0384C62350949 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200322B3BA9325EA342160A /* Extensions.swift */; };
+		ED943B4666CD50203148306B /* FeedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A261DD5A8D827244F94BDBEA /* FeedItemView.swift */; };
+		EEDCBCC8E283A527095D43A7 /* StatCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE895C0C87AA705A32C5FA36 /* StatCalculator.swift */; };
+		F81EEF92D74E4DF8E42D4D0B /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1E7EEC0503ECF74079B7D1 /* LeaderboardView.swift */; };
+		FF2F7E66D414321FF342A14D /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC093D38DF7BF7FE65002D53 /* AchievementsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03CB7B188A7B522E4253F1BF /* StatRadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatRadarView.swift; sourceTree = "<group>"; };
+		04CFB54BBADE1124490B903B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		089B1837F52BAC564DFA2332 /* ModernTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTheme.swift; sourceTree = "<group>"; };
+		0C29187BD8B69C153A73BECD /* MuscleDaddies.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MuscleDaddies.entitlements; sourceTree = "<group>"; };
+		18A85B40F603904ED8E4FD43 /* RecoveryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryMetrics.swift; sourceTree = "<group>"; };
+		1B2F5A067F033562813C6F52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		396F3CBE0EDA16A9E60F99B7 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		3B1E7EEC0503ECF74079B7D1 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		3DAEB769C6983B86F4D6765E /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = System/Library/Frameworks/CryptoKit.framework; sourceTree = SDKROOT; };
+		3F157718280845A0F455985C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3FD763AE090A3C1DE6268B67 /* MuscleDaddiesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleDaddiesApp.swift; sourceTree = "<group>"; };
+		404599FC57186BE392169DEF /* PreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewApp.swift; sourceTree = "<group>"; };
+		41641544204EDD377D7DA20F /* XPRecoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPRecoveryView.swift; sourceTree = "<group>"; };
+		4200322B3BA9325EA342160A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		484E7718C65740D7A68445E9 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		56760C050E8C09B765E69D47 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		582496DC32DA85D9207EEAAF /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		62FE8ED6ACFEA060853D5C96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		669C9B4FBCC47D638437C412 /* LogWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWorkoutView.swift; sourceTree = "<group>"; };
+		75FFFB6DFD8B30B72F874E3F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		7616CB76051C18D7F82AB4B5 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		7FAF6CC3929D0C3093D68B74 /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		88C76D7F36124C59FD452FAE /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		89D606DACE3854CFFA2E7BCC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		92BF4EF3E142BD4F826409A6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9BEEB980A27201D345490E6E /* CharacterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCard.swift; sourceTree = "<group>"; };
+		A261DD5A8D827244F94BDBEA /* FeedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemView.swift; sourceTree = "<group>"; };
+		A399A9954A94FD120D3A7DEA /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		AA7FB765DF05440EDACF076F /* MuscleDaddiesPreview.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MuscleDaddiesPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE895C0C87AA705A32C5FA36 /* StatCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCalculator.swift; sourceTree = "<group>"; };
+		C66A122E6FEB91E4EED01215 /* WorkoutHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryView.swift; sourceTree = "<group>"; };
+		C756E3C8D5EB1F167E12AF8B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		CEDCE4FBEC6D174F41B6C5D1 /* CharacterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCardView.swift; sourceTree = "<group>"; };
+		D14F2FB73EF4C1BAAA0DF92E /* TradingCardTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingCardTheme.swift; sourceTree = "<group>"; };
+		DCE9B8C7891FD2B4481BB17E /* ChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeView.swift; sourceTree = "<group>"; };
+		DE1A09F3854B6CD5D969D298 /* MuscleDaddies.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MuscleDaddies.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1918C34143A4FCBDD3F2AD3 /* PixelArtTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelArtTheme.swift; sourceTree = "<group>"; };
+		E2564D8E0F707D850FE651D9 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		F9B11F83F95C349FD857336F /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		FC093D38DF7BF7FE65002D53 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		FDE64C049112F884011BAFBE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		59E8C174C64FB851C0771069 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F0F6638B00D9B9EB6594D95 /* FirebaseAuth in Frameworks */,
+				5DB7787AF5D74B9113A33428 /* FirebaseFirestore in Frameworks */,
+				CC18D99836A9F230E918798C /* FirebaseMessaging in Frameworks */,
+				EB17188E007CB0F08EDCCA48 /* HealthKit.framework in Frameworks */,
+				769FFD7FEA61E922B04E96B8 /* AuthenticationServices.framework in Frameworks */,
+				2E28542A222531D2B6144424 /* CryptoKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89CEA95E078DA7625841C865 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CD7EBBDD09C6F9FADE1A8E0 /* FirebaseAuth in Frameworks */,
+				86EFF4B2CC3CC789ED20705E /* FirebaseFirestore in Frameworks */,
+				8734B0C70F6CEF7ADFA15338 /* FirebaseMessaging in Frameworks */,
+				22151676ABEE3808FADB9B65 /* HealthKit.framework in Frameworks */,
+				325B727928BC976818D2A36C /* AuthenticationServices.framework in Frameworks */,
+				540B887769D6694A63748360 /* CryptoKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D147C3A45BA021E5108FE4D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84D91D0284C68F17542B1688 /* Achievements */,
+				5F98663E6AE56F521E406ED4 /* Auth */,
+				9DAAEA6CE098C9E5F0E9F9A9 /* Card */,
+				75532741F0967CEF7759E8B1 /* Feed */,
+				23054C610B0CFEA5D0696CD5 /* Group */,
+				7194E28A40966747EAB9FA74 /* Progress */,
+				97A4E7F83C49959505A1B62F /* Settings */,
+				82251E2B9E3935B0A55016AA /* Workout */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0D29DB48B63CA1EB4183CE7D /* MuscleDaddies */ = {
+			isa = PBXGroup;
+			children = (
+				04CFB54BBADE1124490B903B /* GoogleService-Info.plist */,
+				0C29187BD8B69C153A73BECD /* MuscleDaddies.entitlements */,
+				50759495593E623727AF9220 /* App */,
+				4D7AEB4D26D16B21835A182A /* Models */,
+				9D734DA2597B41003F2B8F38 /* Resources */,
+				8463C34E2DC9E526788A8108 /* Services */,
+				4C910AFDD01B111D6A8677EE /* Utilities */,
+				0D147C3A45BA021E5108FE4D /* Views */,
+			);
+			path = MuscleDaddies;
+			sourceTree = "<group>";
+		};
+		1AF8A2CEDC86193A72A1F8F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7616CB76051C18D7F82AB4B5 /* AuthenticationServices.framework */,
+				3DAEB769C6983B86F4D6765E /* CryptoKit.framework */,
+				C756E3C8D5EB1F167E12AF8B /* HealthKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		23054C610B0CFEA5D0696CD5 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				DCE9B8C7891FD2B4481BB17E /* ChallengeView.swift */,
+				582496DC32DA85D9207EEAAF /* GroupView.swift */,
+				3B1E7EEC0503ECF74079B7D1 /* LeaderboardView.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		28E5324CE46692AC1A17027B = {
+			isa = PBXGroup;
+			children = (
+				0D29DB48B63CA1EB4183CE7D /* MuscleDaddies */,
+				6268012A9419C1DA3A9C1815 /* MuscleDaddiesPreview */,
+				1AF8A2CEDC86193A72A1F8F0 /* Frameworks */,
+				67D55EFA6A71007F70D4A757 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4C910AFDD01B111D6A8677EE /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				89D606DACE3854CFFA2E7BCC /* Constants.swift */,
+				4200322B3BA9325EA342160A /* Extensions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		4D7AEB4D26D16B21835A182A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				484E7718C65740D7A68445E9 /* Achievement.swift */,
+				7FAF6CC3929D0C3093D68B74 /* Challenge.swift */,
+				9BEEB980A27201D345490E6E /* CharacterCard.swift */,
+				88C76D7F36124C59FD452FAE /* FeedItem.swift */,
+				18A85B40F603904ED8E4FD43 /* RecoveryMetrics.swift */,
+				3F157718280845A0F455985C /* User.swift */,
+				396F3CBE0EDA16A9E60F99B7 /* Workout.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		50759495593E623727AF9220 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FDE64C049112F884011BAFBE /* ContentView.swift */,
+				3FD763AE090A3C1DE6268B67 /* MuscleDaddiesApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5F98663E6AE56F521E406ED4 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				1B2F5A067F033562813C6F52 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		6268012A9419C1DA3A9C1815 /* MuscleDaddiesPreview */ = {
+			isa = PBXGroup;
+			children = (
+				404599FC57186BE392169DEF /* PreviewApp.swift */,
+			);
+			path = MuscleDaddiesPreview;
+			sourceTree = "<group>";
+		};
+		67D55EFA6A71007F70D4A757 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DE1A09F3854B6CD5D969D298 /* MuscleDaddies.app */,
+				AA7FB765DF05440EDACF076F /* MuscleDaddiesPreview.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7194E28A40966747EAB9FA74 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				41641544204EDD377D7DA20F /* XPRecoveryView.swift */,
+			);
+			path = Progress;
+			sourceTree = "<group>";
+		};
+		72CF01A43868EAA46A9BA102 /* CardThemes */ = {
+			isa = PBXGroup;
+			children = (
+				089B1837F52BAC564DFA2332 /* ModernTheme.swift */,
+				E1918C34143A4FCBDD3F2AD3 /* PixelArtTheme.swift */,
+				D14F2FB73EF4C1BAAA0DF92E /* TradingCardTheme.swift */,
+			);
+			path = CardThemes;
+			sourceTree = "<group>";
+		};
+		75532741F0967CEF7759E8B1 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				A261DD5A8D827244F94BDBEA /* FeedItemView.swift */,
+				F9B11F83F95C349FD857336F /* FeedView.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		82251E2B9E3935B0A55016AA /* Workout */ = {
+			isa = PBXGroup;
+			children = (
+				669C9B4FBCC47D638437C412 /* LogWorkoutView.swift */,
+				C66A122E6FEB91E4EED01215 /* WorkoutHistoryView.swift */,
+			);
+			path = Workout;
+			sourceTree = "<group>";
+		};
+		8463C34E2DC9E526788A8108 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A399A9954A94FD120D3A7DEA /* AuthService.swift */,
+				56760C050E8C09B765E69D47 /* FirestoreService.swift */,
+				E2564D8E0F707D850FE651D9 /* HealthKitService.swift */,
+				75FFFB6DFD8B30B72F874E3F /* NotificationService.swift */,
+				AE895C0C87AA705A32C5FA36 /* StatCalculator.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		84D91D0284C68F17542B1688 /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				FC093D38DF7BF7FE65002D53 /* AchievementsView.swift */,
+			);
+			path = Achievements;
+			sourceTree = "<group>";
+		};
+		97A4E7F83C49959505A1B62F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				92BF4EF3E142BD4F826409A6 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		9D734DA2597B41003F2B8F38 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				62FE8ED6ACFEA060853D5C96 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9DAAEA6CE098C9E5F0E9F9A9 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				CEDCE4FBEC6D174F41B6C5D1 /* CharacterCardView.swift */,
+				03CB7B188A7B522E4253F1BF /* StatRadarView.swift */,
+				72CF01A43868EAA46A9BA102 /* CardThemes */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1BE28029CA061300C53F2582 /* MuscleDaddies */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A3BD122C44CE0C8043057D4 /* Build configuration list for PBXNativeTarget "MuscleDaddies" */;
+			buildPhases = (
+				F8EFD6CE55781AF51706425F /* Sources */,
+				A60F324E83750C3D87EEBC3F /* Resources */,
+				59E8C174C64FB851C0771069 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MuscleDaddies;
+			packageProductDependencies = (
+				DF7530047FCF8C0CB5F0C2C0 /* FirebaseAuth */,
+				2B573E2BE967428E3EF11206 /* FirebaseFirestore */,
+				E4F4210C27507A4FB3CB1EF6 /* FirebaseMessaging */,
+			);
+			productName = MuscleDaddies;
+			productReference = DE1A09F3854B6CD5D969D298 /* MuscleDaddies.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B1900E73A77AD5D99008571F /* MuscleDaddiesPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 912ECA97EAFD2D193F0AFEB3 /* Build configuration list for PBXNativeTarget "MuscleDaddiesPreview" */;
+			buildPhases = (
+				264231AD5E4B8C2D600E900D /* Sources */,
+				AA00DD2D560C6EFB2890C80F /* Resources */,
+				89CEA95E078DA7625841C865 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MuscleDaddiesPreview;
+			packageProductDependencies = (
+				D132B81E921ACA94BC756384 /* FirebaseAuth */,
+				97918D53FB1C0167EC0C4A11 /* FirebaseFirestore */,
+				5B32A1C13740CBD84C866873 /* FirebaseMessaging */,
+			);
+			productName = MuscleDaddiesPreview;
+			productReference = AA7FB765DF05440EDACF076F /* MuscleDaddiesPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7BAA248AC880683B80056035 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1BE28029CA061300C53F2582 = {
+						ProvisioningStyle = Automatic;
+					};
+					B1900E73A77AD5D99008571F = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = EA9F6C7B2345077361917258 /* Build configuration list for PBXProject "MuscleDaddies" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 28E5324CE46692AC1A17027B;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1BE28029CA061300C53F2582 /* MuscleDaddies */,
+				B1900E73A77AD5D99008571F /* MuscleDaddiesPreview */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60F324E83750C3D87EEBC3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48F50B5AAA9A4C871E2139CE /* Assets.xcassets in Resources */,
+				752A33E19D25BC6ED757FB73 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA00DD2D560C6EFB2890C80F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8C69EA924210008EBF774CC /* Assets.xcassets in Resources */,
+				62EDFE67C5EB2287F80185C7 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		264231AD5E4B8C2D600E900D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEDACF15881C66322FAEA293 /* Achievement.swift in Sources */,
+				FF2F7E66D414321FF342A14D /* AchievementsView.swift in Sources */,
+				3DBE99DF835EF172FBE911B6 /* AuthService.swift in Sources */,
+				A285DA0B816BF81F94AD6D26 /* Challenge.swift in Sources */,
+				AC51D1F50806A51087B98F15 /* ChallengeView.swift in Sources */,
+				9D8557A26D5682337268ED07 /* CharacterCard.swift in Sources */,
+				D2375D81B7190891F90F8BEA /* CharacterCardView.swift in Sources */,
+				1706A864A1F3CD173BA005A1 /* Constants.swift in Sources */,
+				790903EB5C0CD2626C4E9D57 /* ContentView.swift in Sources */,
+				96832B6908FFFC0263DE2533 /* Extensions.swift in Sources */,
+				4352D49A07F1621D9C981AF7 /* FeedItem.swift in Sources */,
+				9C76A3BC04939313D5845C9C /* FeedItemView.swift in Sources */,
+				8AC394FDB08D745C8C2237B3 /* FeedView.swift in Sources */,
+				619A099B529F4685B2365712 /* FirestoreService.swift in Sources */,
+				95A690E714AD2D3D94BDEE8F /* GroupView.swift in Sources */,
+				DD75DDE4C6556727A5009451 /* HealthKitService.swift in Sources */,
+				F81EEF92D74E4DF8E42D4D0B /* LeaderboardView.swift in Sources */,
+				D003CA26B92D5B4A5D7BCBAA /* LogWorkoutView.swift in Sources */,
+				648E9D08261229863B33CBF7 /* LoginView.swift in Sources */,
+				B4CC0F60F83643804EB2B752 /* ModernTheme.swift in Sources */,
+				88DDAD313C54C9F91434D936 /* NotificationService.swift in Sources */,
+				2DFDAC35A0BF6EBF578E5FAA /* PixelArtTheme.swift in Sources */,
+				8F67C0C951B874207600E95F /* PreviewApp.swift in Sources */,
+				1F236D8E95B3F0BD3F6BFBCB /* RecoveryMetrics.swift in Sources */,
+				B65815499E2AC53F6BFC13F8 /* SettingsView.swift in Sources */,
+				D00FB8E7A25F9B552274BBEC /* StatCalculator.swift in Sources */,
+				4A070FB5C3FEF2F390178A3F /* StatRadarView.swift in Sources */,
+				D2A7CB5CAC152B794A193188 /* TradingCardTheme.swift in Sources */,
+				9FE873D26760A2516E2E9456 /* User.swift in Sources */,
+				BEFAACCB563C92BD9F7298DC /* Workout.swift in Sources */,
+				DC40649FD8CC1F89700EDD42 /* WorkoutHistoryView.swift in Sources */,
+				74ADD660EFF25F94961A0192 /* XPRecoveryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EFD6CE55781AF51706425F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCAEB8A464EC78FC63355F27 /* Achievement.swift in Sources */,
+				CF7460F9ECF99629F1F5666A /* AchievementsView.swift in Sources */,
+				903EAEA86F0D28FC0ED2D0A3 /* AuthService.swift in Sources */,
+				5F10EF6FF5A01EDC60965C4F /* Challenge.swift in Sources */,
+				C209ACB74194B53AB4A8C5B0 /* ChallengeView.swift in Sources */,
+				8B65AF77AFA82EE18514696A /* CharacterCard.swift in Sources */,
+				919D7C6EDE8CA06805A8E1F9 /* CharacterCardView.swift in Sources */,
+				E3C39D051577D625CA87E7DA /* Constants.swift in Sources */,
+				9FCAAA16398C8EBE17A3C848 /* ContentView.swift in Sources */,
+				EC5B2E206EC0384C62350949 /* Extensions.swift in Sources */,
+				5838D5EE1B671B2DA6DA856E /* FeedItem.swift in Sources */,
+				ED943B4666CD50203148306B /* FeedItemView.swift in Sources */,
+				B7B61F33BC5DD102902EA9A7 /* FeedView.swift in Sources */,
+				04B7ECA5D866ED66C9742FBE /* FirestoreService.swift in Sources */,
+				B9C18B49F5F4B48DA2A70396 /* GroupView.swift in Sources */,
+				D04A90FD27B34BFFD80DF6C6 /* HealthKitService.swift in Sources */,
+				D75B5D532FC0E2E5D36E5D86 /* LeaderboardView.swift in Sources */,
+				6AACC2F9290DFF758A99DB10 /* LogWorkoutView.swift in Sources */,
+				418AD8343BDD2D02C9DC7F94 /* LoginView.swift in Sources */,
+				BB004FB35A02875423FF9359 /* ModernTheme.swift in Sources */,
+				24D942F30C55D3D9A01B2C3C /* MuscleDaddiesApp.swift in Sources */,
+				CECBF44106B4F61D8CD8458D /* NotificationService.swift in Sources */,
+				3129987E0F34C11F3C644BB5 /* PixelArtTheme.swift in Sources */,
+				53F5926522B5587521DB53B1 /* RecoveryMetrics.swift in Sources */,
+				2C6590376F22283562745AA8 /* SettingsView.swift in Sources */,
+				EEDCBCC8E283A527095D43A7 /* StatCalculator.swift in Sources */,
+				D4C6A826A769E9AF2FC80DFD /* StatRadarView.swift in Sources */,
+				962AB9020956E16E2528AF8A /* TradingCardTheme.swift in Sources */,
+				7D427A2E1A8A9CCD6D623FF3 /* User.swift in Sources */,
+				74DD6B5CCB351CA8193426E8 /* Workout.swift in Sources */,
+				568DA18B92A48AE08AC30994 /* WorkoutHistoryView.swift in Sources */,
+				B99F9682D868133151746CBB /* XPRecoveryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		109C9332567BC5F825EC1654 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1CE0D327BA3BDE09B420DBFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MuscleDaddies/MuscleDaddies.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MuscleDaddies reads your workout data to calculate your RPG stats and track your fitness progress.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MuscleDaddies needs write access to sync workout data.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.muscledaddies.preview;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		31F510BA214C6343A7A7392C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MuscleDaddies/MuscleDaddies.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MuscleDaddies reads your workout data to calculate your RPG stats and track your fitness progress.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MuscleDaddies needs write access to sync workout data.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.muscledaddies.preview;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		569906C7027B52D2094D8FB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MuscleDaddies/MuscleDaddies.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MuscleDaddies reads your workout data to calculate your RPG stats and track your fitness progress.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MuscleDaddies needs write access to sync workout data.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.muscledaddies.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		803BB1EBC65B1A6D1AC799D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8DB940CE4369D1190523837B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MuscleDaddies/MuscleDaddies.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MuscleDaddies reads your workout data to calculate your RPG stats and track your fitness progress.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MuscleDaddies needs write access to sync workout data.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.muscledaddies.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		912ECA97EAFD2D193F0AFEB3 /* Build configuration list for PBXNativeTarget "MuscleDaddiesPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CE0D327BA3BDE09B420DBFB /* Debug */,
+				31F510BA214C6343A7A7392C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9A3BD122C44CE0C8043057D4 /* Build configuration list for PBXNativeTarget "MuscleDaddies" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DB940CE4369D1190523837B /* Debug */,
+				569906C7027B52D2094D8FB3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EA9F6C7B2345077361917258 /* Build configuration list for PBXProject "MuscleDaddies" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				803BB1EBC65B1A6D1AC799D5 /* Debug */,
+				109C9332567BC5F825EC1654 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2B573E2BE967428E3EF11206 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		5B32A1C13740CBD84C866873 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		97918D53FB1C0167EC0C4A11 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		D132B81E921ACA94BC756384 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		DF7530047FCF8C0CB5F0C2C0 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		E4F4210C27507A4FB3CB1EF6 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C033A8097E1662FB73B8427B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 7BAA248AC880683B80056035 /* Project object */;
+}

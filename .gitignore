@@ -1,0 +1,28 @@
+# Xcode
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# CocoaPods / SPM
+Pods/
+.build/
+
+# Firebase
+GoogleService-Info.plist
+
+# Node (Cloud Functions)
+functions/node_modules/
+
+# Misc
+*.swp
+*~
