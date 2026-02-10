@@ -95,6 +95,18 @@ enum Constants {
         }
     }
 
+    enum UnitsSystem: String, CaseIterable, Codable {
+        case imperial = "imperial"
+        case metric = "metric"
+
+        var displayName: String {
+            switch self {
+            case .imperial: return "Imperial"
+            case .metric: return "Metric"
+            }
+        }
+    }
+
     enum HeightCategory: String, CaseIterable, Codable {
         case medium = "medium"
         case tall = "tall"
@@ -206,9 +218,9 @@ enum Constants {
         // Sports
         case shortstop
         case quarterback
-        case runningBack
-        case linebacker
-        case golfTrickShot
+        case racecarDriver
+        case enforcer
+        case golfer
         case powerForward
         case goalie
         case striker
@@ -234,9 +246,9 @@ enum Constants {
             case .elf: return "Elf"
             case .shortstop: return "Shortstop"
             case .quarterback: return "Quarterback"
-            case .runningBack: return "Running Back"
-            case .linebacker: return "Linebacker"
-            case .golfTrickShot: return "Golf Trick Shot"
+            case .racecarDriver: return "Racecar Driver"
+            case .enforcer: return "Enforcer"
+            case .golfer: return "Golfer"
             case .powerForward: return "Power Forward"
             case .goalie: return "Goalie"
             case .striker: return "Striker"
@@ -255,7 +267,7 @@ enum Constants {
             switch self {
             case .warrior, .scout, .knight, .wizard, .thief, .berserker, .swordmaster, .elf:
                 return .fantasy
-            case .shortstop, .quarterback, .runningBack, .linebacker, .golfTrickShot, .powerForward, .goalie, .striker:
+            case .shortstop, .quarterback, .racecarDriver, .enforcer, .golfer, .powerForward, .goalie, .striker:
                 return .sports
             case .starfighterPilot, .starfleetCaptain, .borgJuggernaut, .xenomorph, .androidMedic, .warpEngineer, .zeroGRanger, .voidMonk:
                 return .scifi
@@ -280,10 +292,12 @@ enum Constants {
             switch self {
             case .shortstop: return "Shortstop"
             case .quarterback: return "Quarterback"
+            case .racecarDriver: return "Racecar Driver"
+            case .enforcer: return "Enforcer"
             case .powerForward: return "PowerForward"
             case .goalie: return "Goalie"
             case .striker: return "Striker"
-            case .golfTrickShot: return "Golfer"
+            case .golfer: return "Golfer"
             default: return nil
             }
         }
@@ -304,14 +318,14 @@ enum Constants {
             case .swordmaster: return ClassWeights(strength: 0.35, speed: 0.30, endurance: 0.20, intelligence: 0.15)
             case .elf: return ClassWeights(strength: 0.15, speed: 0.20, endurance: 0.30, intelligence: 0.35)
             // Sports
-            case .shortstop: return ClassWeights(strength: 0.15, speed: 0.35, endurance: 0.30, intelligence: 0.20)
-            case .quarterback: return ClassWeights(strength: 0.30, speed: 0.20, endurance: 0.15, intelligence: 0.35)
-            case .runningBack: return ClassWeights(strength: 0.30, speed: 0.35, endurance: 0.20, intelligence: 0.15)
-            case .linebacker: return ClassWeights(strength: 0.35, speed: 0.15, endurance: 0.30, intelligence: 0.20)
-            case .golfTrickShot: return ClassWeights(strength: 0.15, speed: 0.20, endurance: 0.30, intelligence: 0.35)
-            case .powerForward: return ClassWeights(strength: 0.35, speed: 0.15, endurance: 0.30, intelligence: 0.20)
-            case .goalie: return ClassWeights(strength: 0.20, speed: 0.15, endurance: 0.30, intelligence: 0.35)
-            case .striker: return ClassWeights(strength: 0.20, speed: 0.35, endurance: 0.30, intelligence: 0.15)
+            case .shortstop: return ClassWeights(strength: 0.10, speed: 0.40, endurance: 0.20, intelligence: 0.30)
+            case .quarterback: return ClassWeights(strength: 0.35, speed: 0.20, endurance: 0.15, intelligence: 0.30)
+            case .racecarDriver: return ClassWeights(strength: 0.15, speed: 0.40, endurance: 0.30, intelligence: 0.15)
+            case .enforcer: return ClassWeights(strength: 0.40, speed: 0.15, endurance: 0.30, intelligence: 0.15)
+            case .golfer: return ClassWeights(strength: 0.20, speed: 0.15, endurance: 0.30, intelligence: 0.35)
+            case .powerForward: return ClassWeights(strength: 0.40, speed: 0.30, endurance: 0.20, intelligence: 0.10)
+            case .goalie: return ClassWeights(strength: 0.35, speed: 0.15, endurance: 0.20, intelligence: 0.30)
+            case .striker: return ClassWeights(strength: 0.30, speed: 0.40, endurance: 0.20, intelligence: 0.10)
             // Sci‑Fi
             case .starfighterPilot: return ClassWeights(strength: 0.15, speed: 0.35, endurance: 0.30, intelligence: 0.20)
             case .starfleetCaptain: return ClassWeights(strength: 0.20, speed: 0.15, endurance: 0.30, intelligence: 0.35)

@@ -7,8 +7,13 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        // Force demo mode for preview — flip to false when ready for real Firebase
-        let forceDemo = true
+        // Demo mode can be overridden via UserDefaults("forceDemo").
+        #if DEBUG
+        let defaultDemo = true
+        #else
+        let defaultDemo = false
+        #endif
+        let forceDemo = UserDefaults.standard.object(forKey: "forceDemo") as? Bool ?? defaultDemo
 
         if !forceDemo,
            let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),

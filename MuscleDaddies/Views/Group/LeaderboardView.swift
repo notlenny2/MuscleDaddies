@@ -31,7 +31,7 @@ struct LeaderboardView: View {
                                 selectedStat = filter
                             } label: {
                                 Text(filter.rawValue)
-                                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                                    .font(.pixel(9))
                                     .foregroundColor(selectedStat == filter ? .black : .white)
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
@@ -63,13 +63,13 @@ struct LeaderboardView: View {
                                             .frame(width: 32, height: 32)
                                     }
                                     Text("\(index + 1)")
-                                        .font(.system(size: 14, weight: .black, design: .monospaced))
+                                        .font(.pixel(9))
                                         .foregroundColor(index < 3 ? .black : .white)
                                 }
 
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(member.displayName)
-                                        .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                        .font(.pixel(9))
                                         .foregroundColor(.white)
 
                                     Text("Level \(member.stats.level)")
@@ -80,7 +80,7 @@ struct LeaderboardView: View {
                                 Spacer()
 
                                 Text("\(Int(statValue(for: member)))")
-                                    .font(.system(size: 24, weight: .black, design: .monospaced))
+                                    .font(.pixel(14))
                                     .foregroundColor(.cardGold)
 
                                 if member.currentStreak > 0 {

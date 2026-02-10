@@ -203,6 +203,35 @@ class AuthService: NSObject, ObservableObject {
         }
     }
 
+    func signInAsDemo() {
+        currentUser = AppUser(
+            id: "demo",
+            displayName: "Demo Daddy",
+            groupId: "demo-group",
+            stats: UserStats(
+                strength: 42,
+                speed: 35,
+                endurance: 55,
+                intelligence: 28,
+                level: 12,
+                xpCurrent: 420,
+                xpToNext: 1200,
+                totalXP: 15420,
+                hpCurrent: 76,
+                hpMax: 100,
+                xpMultiplier: 1.12
+            ),
+            currentStreak: 4,
+            longestStreak: 14,
+            selectedTheme: .pixel,
+            classTheme: .fantasy,
+            selectedClass: .warrior
+        )
+        isAuthenticated = true
+        isLoading = false
+        error = nil
+    }
+
     // MARK: - Nonce helpers
 
     private func randomNonceString(length: Int = 32) -> String {

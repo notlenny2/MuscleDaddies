@@ -3,6 +3,7 @@ import AuthenticationServices
 
 struct LoginView: View {
     @EnvironmentObject var authService: AuthService
+    @EnvironmentObject var healthKitService: HealthKitService
     @State private var showOnboarding = false
     @State private var displayName = ""
 
@@ -27,7 +28,7 @@ struct LoginView: View {
                         )
 
                     Text("MUSCLE\nDADDIES")
-                        .font(.system(size: 48, weight: .black, design: .monospaced))
+                        .font(.pixel(28))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(
                             LinearGradient(colors: [.white, .gray], startPoint: .top, endPoint: .bottom)
@@ -56,6 +57,37 @@ struct LoginView: View {
                 .cornerRadius(4)
                 .padding(.horizontal, 40)
 
+#if DEBUG
+                Button {
+                    authService.signInAsDemo()
+                    showOnboarding = false
+                } label: {
+                    Text("Skip Sign In (Demo)")
+                        .font(.system(.subheadline, design: .monospaced))
+                        .foregroundColor(.cardGold)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color.cardGold, lineWidth: 1)
+                        )
+                }
+                .padding(.horizontal, 40)
+
+                Button {
+                    showOnboarding = true
+                } label: {
+                    Text("Test Onboarding")
+                        .font(.system(.subheadline, design: .monospaced))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1)
+                        )
+                }
+                .padding(.horizontal, 40)
+#endif
+
                 if let error = authService.error {
                     Text(error)
                         .font(.system(.caption, design: .monospaced))
@@ -67,8 +99,10 @@ struct LoginView: View {
                     .frame(height: 40)
             }
         }
-        .sheet(isPresented: $showOnboarding) {
-            OnboardingView(displayName: $displayName, mode: .suggest)
+        .fullScreenCover(isPresented: $showOnboarding) {
+            GuidedOnboardingFlowView()
+                .environmentObject(authService)
+                .environmentObject(healthKitService)
         }
         .onChange(of: authService.isAuthenticated) { _, isAuth in
             if isAuth && authService.currentUser == nil {
@@ -88,18 +122,31 @@ struct OnboardingView: View {
     @EnvironmentObject var healthKitService: HealthKitService
     @Binding var displayName: String
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("unitsSystem") private var unitsSystemRaw: String = Constants.UnitsSystem.imperial.rawValue
     @State private var classTheme: Constants.ClassTheme = .fantasy
     @State private var selectedClass: Constants.MuscleClass = .warrior
     @State private var primaryPriority: Constants.PriorityStat = .strength
     @State private var secondaryPriority: Constants.PriorityStat = .endurance
-    @State private var heightCmText: String = ""
-    @State private var weightKgText: String = ""
+    @State private var heightText: String = ""
+    @State private var weightText: String = ""
     @State private var heightCategory: Constants.HeightCategory = .medium
     @State private var bodyType: Constants.BodyType = .medium
     @State private var targetSpeedMph: String = ""
     @State private var targetWeeklyDistanceMiles: String = ""
     @State private var strengthChecksPerLevel: Int = 1
     let mode: ClassSelectionMode
+
+    private var usesImperial: Bool {
+        unitsSystemRaw == Constants.UnitsSystem.imperial.rawValue
+    }
+
+    private var heightPlaceholder: String {
+        usesImperial ? "Height (in)" : "Height (cm)"
+    }
+
+    private var weightPlaceholder: String {
+        usesImperial ? "Weight (lb)" : "Weight (kg)"
+    }
 
     var body: some View {
         NavigationStack {
@@ -115,36 +162,36 @@ struct OnboardingView: View {
                     VStack(spacing: 24) {
                         VStack(spacing: 8) {
                             Text("MUSCLE DADDIES")
-                                .font(.system(size: 22, weight: .heavy, design: .monospaced))
+                                .font(.pixel(14))
                                 .foregroundColor(.white)
                                 .tracking(2)
 
                             Text("Create Your Card")
-                                .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                                .font(.pixel(10))
                                 .foregroundColor(.cardGold)
                         }
                         .padding(.top, 10)
 
                         HStack(spacing: 8) {
                             Text("STEP 1")
-                                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                                .font(.pixel(7))
                                 .foregroundColor(.cardGold)
                             Text("Profile")
-                                .font(.system(size: 11, design: .monospaced))
+                                .font(.pixel(7))
                                 .foregroundColor(.gray)
                             Text("•")
                                 .foregroundColor(.gray)
                             Text("STEP 2")
-                                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                                .font(.pixel(7))
                                 .foregroundColor(.cardGold.opacity(0.7))
                             Text("Class")
-                                .font(.system(size: 11, design: .monospaced))
+                                .font(.pixel(7))
                                 .foregroundColor(.gray)
                         }
 
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Your Name")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             TextField("Display Name", text: $displayName)
@@ -163,7 +210,7 @@ struct OnboardingView: View {
 
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Theme (Unlocks)")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             HStack(spacing: 10) {
@@ -189,7 +236,7 @@ struct OnboardingView: View {
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Your Priorities (Pick Top 2)")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             priorityPicker(title: "Primary", selection: $primaryPriority, excludes: nil)
@@ -208,15 +255,15 @@ struct OnboardingView: View {
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Body Basics")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             if healthKitService.isAuthorized {
                                 Button {
                                     Task {
                                         let hw = await healthKitService.fetchMostRecentHeightWeight()
-                                        if let h = hw.heightCm { heightCmText = String(format: "%.0f", h) }
-                                        if let w = hw.weightKg { weightKgText = String(format: "%.1f", w) }
+                                        if let h = hw.heightCm { heightText = displayHeightText(fromCm: h) }
+                                        if let w = hw.weightKg { weightText = displayWeightText(fromKg: w) }
                                     }
                                 } label: {
                                     HStack {
@@ -233,9 +280,9 @@ struct OnboardingView: View {
                             }
 
                             HStack(spacing: 10) {
-                                TextField("Height (cm)", text: $heightCmText)
+                                TextField(heightPlaceholder, text: $heightText)
                                     .textFieldStyle(.roundedBorder)
-                                TextField("Weight (kg)", text: $weightKgText)
+                                TextField(weightPlaceholder, text: $weightText)
                                     .textFieldStyle(.roundedBorder)
                             }
 
@@ -257,7 +304,7 @@ struct OnboardingView: View {
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Goals")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             TextField("Target Speed (mph)", text: $targetSpeedMph)
@@ -283,7 +330,7 @@ struct OnboardingView: View {
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text(mode == .suggest ? "Suggested Class" : "Select Your Class")
-                                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             let options = mode == .suggest ? classOptions() : allAvailableClasses()
@@ -327,8 +374,8 @@ struct OnboardingView: View {
 
                         Button {
                             Task {
-                                let heightCm = Double(heightCmText)
-                                let weightKg = Double(weightKgText)
+                                let heightCm = parseHeightCm()
+                                let weightKg = parseWeightKg()
                                 let goals = UserGoals(
                                     targetSpeedMph: Double(targetSpeedMph),
                                     targetWeeklyDistanceMiles: Double(targetWeeklyDistanceMiles),
@@ -350,7 +397,7 @@ struct OnboardingView: View {
                             }
                         } label: {
                             Text("Forge My Card")
-                                .font(.system(size: 16, weight: .heavy, design: .monospaced))
+                                .font(.pixel(11))
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
@@ -372,6 +419,9 @@ struct OnboardingView: View {
         .onChange(of: secondaryPriority) { _, _ in
             if let first = classOptions().first { selectedClass = first }
         }
+        .onChange(of: unitsSystemRaw) { oldValue, newValue in
+            convertDisplayedMeasurements(from: oldValue, to: newValue)
+        }
         .onAppear {
             if let user = authService.currentUser {
                 displayName = user.displayName
@@ -379,8 +429,8 @@ struct OnboardingView: View {
                 selectedClass = user.selectedClass
                 primaryPriority = user.priorityPrimary
                 secondaryPriority = user.prioritySecondary
-                if let h = user.heightCm { heightCmText = String(format: "%.0f", h) }
-                if let w = user.weightKg { weightKgText = String(format: "%.1f", w) }
+                if let h = user.heightCm { heightText = displayHeightText(fromCm: h) }
+                if let w = user.weightKg { weightText = displayWeightText(fromKg: w) }
                 if let hc = user.heightCategory { heightCategory = hc }
                 if let bt = user.bodyType { bodyType = bt }
                 if let g = user.goals {
@@ -397,6 +447,48 @@ struct OnboardingView: View {
 }
 
 private extension OnboardingView {
+    func displayHeightText(fromCm cm: Double) -> String {
+        if usesImperial {
+            let inches = cm / 2.54
+            return String(format: "%.0f", inches)
+        }
+        return String(format: "%.0f", cm)
+    }
+
+    func displayWeightText(fromKg kg: Double) -> String {
+        if usesImperial {
+            let pounds = kg / 0.45359237
+            return String(format: "%.1f", pounds)
+        }
+        return String(format: "%.1f", kg)
+    }
+
+    func parseHeightCm() -> Double? {
+        guard let value = Double(heightText) else { return nil }
+        return usesImperial ? value * 2.54 : value
+    }
+
+    func parseWeightKg() -> Double? {
+        guard let value = Double(weightText) else { return nil }
+        return usesImperial ? value * 0.45359237 : value
+    }
+
+    func convertDisplayedMeasurements(from oldRaw: String, to newRaw: String) {
+        let oldImperial = oldRaw == Constants.UnitsSystem.imperial.rawValue
+        let newImperial = newRaw == Constants.UnitsSystem.imperial.rawValue
+        guard oldImperial != newImperial else { return }
+
+        if let value = Double(heightText) {
+            let cm = oldImperial ? value * 2.54 : value
+            heightText = newImperial ? String(format: "%.0f", cm / 2.54) : String(format: "%.0f", cm)
+        }
+
+        if let value = Double(weightText) {
+            let kg = oldImperial ? value * 0.45359237 : value
+            weightText = newImperial ? String(format: "%.1f", kg / 0.45359237) : String(format: "%.1f", kg)
+        }
+    }
+
     func themeBadge(_ theme: Constants.ClassTheme, totalXP: Double) -> some View {
         let unlocked = totalXP >= theme.unlockXP
         return HStack(spacing: 6) {

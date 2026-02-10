@@ -4,6 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject var authService: AuthService
     @EnvironmentObject var firestoreService: FirestoreService
     @EnvironmentObject var healthKitService: HealthKitService
+    @AppStorage("unitsSystem") private var unitsSystemRaw: String = Constants.UnitsSystem.imperial.rawValue
     @State private var selectedTheme: Constants.CardTheme = .modern
     @State private var classTheme: Constants.ClassTheme = .fantasy
     @State private var selectedClass: Constants.MuscleClass = .warrior
@@ -12,6 +13,7 @@ struct SettingsView: View {
     @State private var showClassSelect = false
     @State private var tempDisplayName = ""
     @State private var demoXP: Double = 0
+    @State private var showGuidedOnboarding = false
 
     var body: some View {
         NavigationStack {
@@ -27,13 +29,13 @@ struct SettingsView: View {
                                 .frame(width: 50, height: 50)
                                 .overlay(
                                     Text(String(authService.currentUser?.displayName.prefix(1).uppercased() ?? "?"))
-                                        .font(.system(size: 22, weight: .black, design: .monospaced))
+                                        .font(.pixel(14))
                                         .foregroundColor(.black)
                                 )
 
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(authService.currentUser?.displayName ?? "")
-                                    .font(.system(.headline, design: .monospaced))
+                                    .font(.pixel(10))
                                     .foregroundColor(.white)
                                 Text("Level \(authService.currentUser?.stats.level ?? 1)")
                                     .font(.system(.subheadline, design: .monospaced))
@@ -124,6 +126,17 @@ struct SettingsView: View {
                         }
                     }
 
+                    // Units
+                    Section("Units") {
+                        Picker("Measurement System", selection: $unitsSystemRaw) {
+                            ForEach(Constants.UnitsSystem.allCases, id: \.rawValue) { system in
+                                Text(system.displayName).tag(system.rawValue)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .listRowBackground(Color.cardDarkGray)
+                    }
+
                     // Navigation
                     Section {
                         NavigationLink(destination: WorkoutHistoryView()) {
@@ -185,6 +198,12 @@ struct SettingsView: View {
                             .foregroundColor(.cardGold)
                         }
                         .listRowBackground(Color.cardDarkGray)
+
+                        Button("Launch Onboarding") {
+                            showGuidedOnboarding = true
+                        }
+                        .foregroundColor(.white)
+                        .listRowBackground(Color.cardDarkGray)
                     }
 #endif
 
@@ -225,6 +244,11 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showClassSelect) {
                 OnboardingView(displayName: $tempDisplayName, mode: .select)
+            }
+            .fullScreenCover(isPresented: $showGuidedOnboarding) {
+                GuidedOnboardingFlowView()
+                    .environmentObject(authService)
+                    .environmentObject(healthKitService)
             }
         }
     }
@@ -298,14 +322,16 @@ struct SettingsView: View {
             if !unlocked {
                 if let requiredLevel = theme.unlockLevel {
                     Text("🔒 LV \(requiredLevel)")
+                        .font(.pixel(7))
+                        .foregroundColor(.gray)
                 } else {
                     Text("🔒 \(Int(theme.unlockXP)) XP")
+                        .font(.pixel(7))
+                        .foregroundColor(.gray)
                 }
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                    .foregroundColor(.gray)
             } else {
                 Text("Unlocked")
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                    .font(.pixel(7))
                     .foregroundColor(.green)
             }
         }
@@ -333,7 +359,7 @@ private struct HealthKitEducationView: View {
                         .foregroundColor(.cardGold)
 
                     Text("Connect Apple Health")
-                        .font(.system(.title2, design: .monospaced, weight: .bold))
+                        .font(.pixel(12))
                         .foregroundColor(.white)
 
                     VStack(alignment: .leading, spacing: 10) {
@@ -348,7 +374,7 @@ private struct HealthKitEducationView: View {
                         dismiss()
                     } label: {
                         Text("Continue")
-                            .font(.system(.headline, design: .monospaced))
+                            .font(.pixel(10))
                             .foregroundColor(.black)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)

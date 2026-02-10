@@ -127,15 +127,12 @@ class HealthKitService: ObservableObject {
     }
 
     private func totalSleepMinutes(samples: [HKCategorySample]) -> Double {
-        var asleepValues: Set<Int> = []
-        if #available(iOS 16.0, *) {
-            asleepValues.insert(HKCategoryValueSleepAnalysis.asleepCore.rawValue)
-            asleepValues.insert(HKCategoryValueSleepAnalysis.asleepDeep.rawValue)
-            asleepValues.insert(HKCategoryValueSleepAnalysis.asleepREM.rawValue)
-            asleepValues.insert(HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue)
-        } else {
-            asleepValues.insert(HKCategoryValueSleepAnalysis.asleep.rawValue)
-        }
+        let asleepValues: Set<Int> = [
+            HKCategoryValueSleepAnalysis.asleepCore.rawValue,
+            HKCategoryValueSleepAnalysis.asleepDeep.rawValue,
+            HKCategoryValueSleepAnalysis.asleepREM.rawValue,
+            HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue
+        ]
 
         return samples.reduce(0.0) { total, sample in
             guard asleepValues.contains(sample.value) else { return total }

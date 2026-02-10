@@ -11,6 +11,14 @@ extension Color {
     static let cardDarkGray = Color(red: 0.15, green: 0.15, blue: 0.2)
 }
 
+extension Font {
+    /// SNES-style pixel font for headings, labels, and stat values.
+    /// Falls back to system monospaced if font not loaded.
+    static func pixel(_ size: CGFloat) -> Font {
+        .custom("PressStart2P-Regular", size: size)
+    }
+}
+
 extension Date {
     var timeAgoDisplay: String {
         let seconds = Int(-self.timeIntervalSinceNow)

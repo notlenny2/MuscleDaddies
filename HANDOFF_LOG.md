@@ -275,3 +275,44 @@
   - /Users/tj/MuscleDaddies/MuscleDaddies/Services/StatCalculator.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
   - /Users/tj/MuscleDaddies/firestore.rules
+
+## 2026-02-07 Update: Incoming Uncommitted Changes (Other Agent)
+Summary of current uncommitted changes in repo:
+- Added pixel font helper `Font.pixel` and applied it broadly across UI (Card bars, Achievements, Login/Onboarding, ContentView quick stats, Feed/Group/Progress/Workout views).
+- Added `PressStart2P-Regular.ttf` at `/Users/tj/MuscleDaddies/MuscleDaddies/Resources/Fonts`.
+- Added `MuscleDaddies/Info.plist` with `UIAppFonts` entry.
+- Updated `project.yml` to include Fonts resources and Info.plist path.
+- `project.pbxproj` updated (likely regenerated).
+- Modified multiple UI views to use the pixel font and small layout tweaks.
+
+Untracked files currently:
+- `/Users/tj/MuscleDaddies/MuscleDaddies/Info.plist`
+- `/Users/tj/MuscleDaddies/MuscleDaddies/Resources/Fonts/PressStart2P-Regular.ttf`
+
+Modified files (not committed):
+- MuscleDaddies.xcodeproj/project.pbxproj
+- MuscleDaddies/App/ContentView.swift
+- MuscleDaddies/Utilities/Extensions.swift
+- MuscleDaddies/Views/Achievements/AchievementsView.swift
+- MuscleDaddies/Views/Auth/LoginView.swift
+- MuscleDaddies/Views/Card/CharacterCardView.swift
+- MuscleDaddies/Views/Feed/FeedItemView.swift
+- MuscleDaddies/Views/Feed/FeedView.swift
+- MuscleDaddies/Views/Group/GroupView.swift
+- MuscleDaddies/Views/Group/LeaderboardView.swift
+- MuscleDaddies/Views/Progress/XPRecoveryView.swift
+- MuscleDaddies/Views/Settings/SettingsView.swift
+- MuscleDaddies/Views/Workout/LogWorkoutView.swift
+- MuscleDaddies/Views/Workout/WorkoutHistoryView.swift
+- project.yml
+
+## 2026-02-10 Update: Guided Onboarding Flow + Debug Entry Points
+- Added GuidedOnboardingFlowView (multi-screen, non-skippable) for first sign-in.
+- Updated onboarding copy to Warrior/He-Man style tone ("Forge Your Legend", "Begin the Trial", "Forge My Card").
+- Added DEBUG-only login buttons:
+  - "Skip Sign In (Demo)" to jump straight to My Card with a demo user.
+  - "Test Onboarding" to open the onboarding flow directly from Login.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/GuidedOnboardingFlow.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Services/AuthService.swift

@@ -59,7 +59,7 @@ struct AchievementsView: View {
             }
 
             Text(type.displayName)
-                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                .font(.pixel(8))
                 .foregroundColor(isUnlocked ? .white : .gray)
                 .multilineTextAlignment(.center)
 
@@ -104,7 +104,7 @@ struct AchievementsView: View {
         return VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("Unlocked \(unlockedCount) / \(total)")
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .font(.pixel(9))
                     .foregroundColor(.white)
                 Spacer()
                 ProgressRing(progress: progress)
@@ -179,7 +179,7 @@ private struct CelebrationOverlay: View {
                         .foregroundColor(.cardGold)
                 }
                 Text(achievement.displayName)
-                    .font(.system(size: 20, weight: .black, design: .monospaced))
+                    .font(.pixel(12))
                     .foregroundColor(.white)
                 Text(achievement.description)
                     .font(.system(size: 12, design: .monospaced))
@@ -188,7 +188,7 @@ private struct CelebrationOverlay: View {
                     .padding(.horizontal, 30)
 
                 Text("UNLOCKED")
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .font(.pixel(8))
                     .foregroundColor(.black)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 6)

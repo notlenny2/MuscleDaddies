@@ -193,7 +193,7 @@ struct XPRecoveryView: View {
                 }
                 HStack {
                     Text("Multiplier: x\(String(format: "%.2f", authService.currentUser?.stats.xpMultiplier ?? 1.0))")
-                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .font(.pixel(7))
                         .foregroundColor(.gray)
                     Spacer()
                 }
@@ -333,7 +333,7 @@ struct XPRecoveryView: View {
                 .font(.system(size: 14, weight: .bold))
                 .foregroundColor(.cardGold)
             Text(title)
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .font(.pixel(10))
                 .foregroundColor(.white)
             if let infoText {
                 Button {
@@ -352,10 +352,10 @@ struct XPRecoveryView: View {
     private func statPill(label: String, value: String, color: Color) -> some View {
         VStack(spacing: 4) {
             Text(value)
-                .font(.system(size: 14, weight: .black, design: .monospaced))
+                .font(.pixel(10))
                 .foregroundColor(color)
             Text(label)
-                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                .font(.pixel(7))
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity)
@@ -373,7 +373,7 @@ struct XPRecoveryView: View {
                 .foregroundColor(.gray)
             Spacer()
             Text(value)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.pixel(8))
                 .foregroundColor(.white)
         }
     }
@@ -394,19 +394,26 @@ struct XPRecoveryView: View {
 
 private struct DailyXPChart: View {
     let series: [(Date, Double)]
+    private let segments = 5
 
     var body: some View {
         let maxValue = max(series.map { $0.1 }.max() ?? 1, 1)
         HStack(alignment: .bottom, spacing: 4) {
             ForEach(series.indices, id: \.self) { index in
                 let value = series[index].1
+                let ratio = value / maxValue
+                let filled = Int(ratio * Double(segments))
                 VStack(spacing: 4) {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.cardGold)
-                        .frame(height: CGFloat(value / maxValue) * 80)
+                    VStack(spacing: 2) {
+                        ForEach((0..<segments).reversed(), id: \.self) { i in
+                            Rectangle()
+                                .fill(i < filled ? Color.cardGold : Color.white.opacity(0.06))
+                                .frame(height: 14)
+                        }
+                    }
 
                     Text(shortDay(series[index].0))
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.pixel(6))
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity)
@@ -423,19 +430,26 @@ private struct DailyXPChart: View {
 
 private struct DailyRecoveryChart: View {
     let series: [(Date, Double)]
+    private let segments = 5
 
     var body: some View {
         let maxValue = max(series.map { $0.1 }.max() ?? 1, 1)
         HStack(alignment: .bottom, spacing: 4) {
             ForEach(series.indices, id: \.self) { index in
                 let value = series[index].1
+                let ratio = value / maxValue
+                let filled = Int(ratio * Double(segments))
                 VStack(spacing: 4) {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.statPurple)
-                        .frame(height: CGFloat(value / maxValue) * 80)
+                    VStack(spacing: 2) {
+                        ForEach((0..<segments).reversed(), id: \.self) { i in
+                            Rectangle()
+                                .fill(i < filled ? Color.statPurple : Color.white.opacity(0.06))
+                                .frame(height: 14)
+                        }
+                    }
 
                     Text(shortDay(series[index].0))
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.pixel(6))
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity)

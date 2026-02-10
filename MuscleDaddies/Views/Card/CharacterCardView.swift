@@ -21,34 +21,32 @@ struct CharacterCardView: View {
     }
 }
 
-// MARK: - Shared stat bar
+// MARK: - Shared SNES-style segmented stat bar
 struct StatBar: View {
     let label: String
     let value: Int
     let color: Color
     let maxValue: Int = 99
+    private let segments = 10
 
     var body: some View {
         HStack(spacing: 8) {
             Text(label)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.pixel(7))
                 .foregroundColor(color)
                 .frame(width: 32, alignment: .leading)
 
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.white.opacity(0.1))
-
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(color)
-                        .frame(width: geo.size.width * CGFloat(value) / CGFloat(maxValue))
+            HStack(spacing: 2) {
+                let filled = Int(Double(value) / Double(maxValue) * Double(segments))
+                ForEach(0..<segments, id: \.self) { i in
+                    Rectangle()
+                        .fill(i < filled ? color : Color.white.opacity(0.1))
+                        .frame(height: 8)
                 }
             }
-            .frame(height: 8)
 
             Text("\(value)")
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.pixel(7))
                 .foregroundColor(.white)
                 .frame(width: 28, alignment: .trailing)
         }
@@ -60,28 +58,26 @@ struct ProgressBar: View {
     let progress: Double
     let valueText: String
     let color: Color
+    private let segments = 10
 
     var body: some View {
         HStack(spacing: 8) {
             Text(label)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.pixel(7))
                 .foregroundColor(color)
                 .frame(width: 32, alignment: .leading)
 
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.white.opacity(0.08))
-
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(color)
-                        .frame(width: geo.size.width * CGFloat(min(max(progress, 0), 1)))
+            HStack(spacing: 2) {
+                let filled = Int(min(max(progress, 0), 1) * Double(segments))
+                ForEach(0..<segments, id: \.self) { i in
+                    Rectangle()
+                        .fill(i < filled ? color : Color.white.opacity(0.08))
+                        .frame(height: 8)
                 }
             }
-            .frame(height: 8)
 
             Text(valueText)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .font(.pixel(6))
                 .foregroundColor(.white)
                 .frame(width: 50, alignment: .trailing)
         }

@@ -20,7 +20,7 @@ struct FeedView: View {
                             .font(.system(size: 48))
                             .foregroundColor(.gray)
                         Text("No activity yet")
-                            .font(.system(.body, design: .monospaced))
+                            .font(.pixel(10))
                             .foregroundColor(.gray)
                         Text("Log a workout to get started!")
                             .font(.system(.caption, design: .monospaced))

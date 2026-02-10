@@ -26,7 +26,7 @@ struct FeedItemView: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.userName)
-                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .font(.pixel(9))
                         .foregroundColor(.white)
 
                     Text(item.createdAt.timeAgoDisplay)
@@ -164,7 +164,7 @@ struct FeedItemView: View {
 
     private var feedTypeBadge: some View {
         Text(item.type.rawValue.uppercased())
-            .font(.system(size: 9, weight: .bold, design: .monospaced))
+            .font(.pixel(7))
             .foregroundColor(iconColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)

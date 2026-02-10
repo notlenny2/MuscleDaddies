@@ -54,7 +54,7 @@ struct GroupView: View {
                 .foregroundColor(.cardGold)
 
             Text("Join a Group")
-                .font(.system(.title2, design: .monospaced, weight: .bold))
+                .font(.pixel(14))
                 .foregroundColor(.white)
 
             Text("Get an invite code from your friends\nor create a new group")
@@ -66,7 +66,7 @@ struct GroupView: View {
                 showJoinSheet = true
             } label: {
                 Text("JOIN WITH CODE")
-                    .font(.system(.headline, design: .monospaced))
+                    .font(.pixel(10))
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
@@ -79,7 +79,7 @@ struct GroupView: View {
                 showCreateSheet = true
             } label: {
                 Text("CREATE NEW GROUP")
-                    .font(.system(.headline, design: .monospaced))
+                    .font(.pixel(10))
                     .foregroundColor(.cardGold)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
@@ -102,10 +102,10 @@ struct GroupView: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("INVITE CODE")
-                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                .font(.pixel(7))
                                 .foregroundColor(.gray)
                             Text(code)
-                                .font(.system(size: 20, weight: .black, design: .monospaced))
+                                .font(.pixel(14))
                                 .foregroundColor(.cardGold)
                         }
                         Spacer()
@@ -191,7 +191,7 @@ struct JoinGroupSheet: View {
 
                 VStack(spacing: 20) {
                     Text("Enter Invite Code")
-                        .font(.system(.title3, design: .monospaced, weight: .bold))
+                        .font(.pixel(12))
                         .foregroundColor(.white)
 
                     TextField("CODE", text: $inviteCode)
@@ -214,7 +214,7 @@ struct JoinGroupSheet: View {
                             ProgressView().tint(.black)
                         } else {
                             Text("JOIN")
-                                .font(.system(.headline, design: .monospaced))
+                                .font(.pixel(10))
                         }
                     }
                     .foregroundColor(.black)
@@ -265,7 +265,7 @@ struct CreateGroupSheet: View {
 
                 VStack(spacing: 20) {
                     Text("Create a Group")
-                        .font(.system(.title3, design: .monospaced, weight: .bold))
+                        .font(.pixel(12))
                         .foregroundColor(.white)
 
                     TextField("Group Name", text: $groupName)
@@ -279,7 +279,7 @@ struct CreateGroupSheet: View {
                             ProgressView().tint(.black)
                         } else {
                             Text("CREATE")
-                                .font(.system(.headline, design: .monospaced))
+                                .font(.pixel(10))
                         }
                     }
                     .foregroundColor(.black)

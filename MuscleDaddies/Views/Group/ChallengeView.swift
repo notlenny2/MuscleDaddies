@@ -370,7 +370,7 @@ struct CreateBeltChallengeSheet: View {
         )
         do {
             // one challenge at a time
-            if let existing = try? await firestoreService.getActiveBeltChallenge(for: uid), existing != nil {
+            if (try? await firestoreService.getActiveBeltChallenge(for: uid)) != nil {
                 isCreating = false
                 return
             }

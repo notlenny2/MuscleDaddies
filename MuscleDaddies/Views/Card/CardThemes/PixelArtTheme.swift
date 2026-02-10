@@ -5,9 +5,21 @@ struct PixelArtCardContent: View {
     let user: AppUser
     var compact: Bool = false
     var onPoke: (() -> Void)? = nil
+    @State private var showStatsOverlay = false
 
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
+            StatRadarView(
+                strength: user.stats.strength,
+                speed: user.stats.speed,
+                endurance: user.stats.endurance,
+                intelligence: user.stats.intelligence,
+                size: 200
+            )
+            .opacity(0.08)
+            .blur(radius: 0.5)
+
+            VStack(spacing: 0) {
             // Pixel-style header with hard edges
             VStack(spacing: 4) {
                 HStack {
@@ -22,9 +34,9 @@ struct PixelArtCardContent: View {
                         .foregroundColor(.yellow)
                 }
 
-                Text("< \(card.title.uppercased()) >")
-                    .font(.system(size: compact ? 9 : 11, weight: .bold, design: .monospaced))
-                    .foregroundColor(.green.opacity(0.8))
+                if !compact {
+                    xpHpHeader
+                }
 
                 Text("[\(user.selectedClass.displayName.uppercased())]")
                     .font(.system(size: compact ? 9 : 10, weight: .bold, design: .monospaced))
@@ -37,18 +49,23 @@ struct PixelArtCardContent: View {
             pixelDivider()
 
             if !compact {
-                if let asset = user.selectedClass.fantasyArtAsset {
+                if let asset = user.selectedClass.classArtAsset {
                     Image(asset)
                         .resizable()
                         .interpolation(.none)
                         .scaledToFit()
-                        .frame(height: 120)
+                        .frame(height: 170)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 8)
                         .background(
                             Rectangle()
                                 .fill(Color.black.opacity(0.25))
                         )
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                showStatsOverlay.toggle()
+                            }
+                        }
                 }
                 // Pixel-style stat display
                 VStack(spacing: 4) {
@@ -56,9 +73,7 @@ struct PixelArtCardContent: View {
                     pixelStatRow(icon: "⚡", label: "SPD", value: card.speedDisplay)
                     pixelStatRow(icon: "🛡️", label: "END", value: card.enduranceDisplay)
                     pixelStatRow(icon: "📖", label: "INT", value: card.intelligenceDisplay)
-                    pixelProgressRow(label: "XP", valueText: "\(card.xpCurrentDisplay)/\(card.xpToNextDisplay)", progress: card.xpProgress)
-                    pixelProgressRow(label: "REC", valueText: "\(card.intelligenceDisplay)", progress: Double(card.intelligenceDisplay) / 99.0)
-                    pixelProgressRow(label: "HP", valueText: "\(card.hpCurrentDisplay)/\(card.hpMaxDisplay)", progress: card.hpProgress)
+                    
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
@@ -99,6 +114,28 @@ struct PixelArtCardContent: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
+            }
+            .blur(radius: showStatsOverlay ? 6 : 0)
+
+            if showStatsOverlay {
+                ZStack {
+                    Rectangle()
+                        .fill(Color.black.opacity(0.55))
+                    StatRadarView(
+                        strength: user.stats.strength,
+                        speed: user.stats.speed,
+                        endurance: user.stats.endurance,
+                        intelligence: user.stats.intelligence,
+                        size: 220
+                    )
+                }
+                .padding(10)
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showStatsOverlay = false
+                    }
+                }
+            }
         }
         .background(
             Rectangle()
@@ -148,7 +185,7 @@ struct PixelArtCardContent: View {
         }
     }
 
-    private func pixelProgressRow(label: String, valueText: String, progress: Double) -> some View {
+    private func pixelProgressRow(label: String, valueText: String, progress: Double, barColor: Color = .green) -> some View {
         HStack(spacing: 8) {
             Text(label)
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
@@ -158,7 +195,7 @@ struct PixelArtCardContent: View {
             let blocks = Int(min(max(progress, 0), 1) * 20)
             Text(String(repeating: "█", count: blocks) + String(repeating: "░", count: 20 - blocks))
                 .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(.green)
+                .foregroundColor(barColor)
 
             Text(valueText)
                 .font(.system(size: 10, weight: .bold, design: .monospaced))
@@ -173,5 +210,31 @@ struct PixelArtCardContent: View {
             .frame(height: 2)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
+    }
+
+    private var xpHpHeader: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            pixelHeaderBar(label: "XP", valueText: "\(card.xpCurrentDisplay)/\(card.xpToNextDisplay)", progress: card.xpProgress, color: .yellow)
+            pixelHeaderBar(label: "HP", valueText: "\(card.hpCurrentDisplay)/\(card.hpMaxDisplay)", progress: card.hpProgress, color: .statRed)
+        }
+    }
+
+    private func pixelHeaderBar(label: String, valueText: String, progress: Double, color: Color) -> some View {
+        HStack(spacing: 6) {
+            Text(label)
+                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .foregroundColor(color)
+                .frame(width: 26, alignment: .leading)
+
+            let blocks = Int(min(max(progress, 0), 1) * 16)
+            Text(String(repeating: "█", count: blocks) + String(repeating: "░", count: 16 - blocks))
+                .font(.system(size: 9, design: .monospaced))
+                .foregroundColor(color)
+
+            Text(valueText)
+                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .foregroundColor(.white)
+                .frame(width: 52, alignment: .trailing)
+        }
     }
 }

@@ -18,7 +18,7 @@ struct WorkoutHistoryView: View {
                         .font(.system(size: 48))
                         .foregroundColor(.gray)
                     Text("No workouts yet")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.pixel(10))
                         .foregroundColor(.gray)
                 }
             } else {
@@ -33,7 +33,7 @@ struct WorkoutHistoryView: View {
 
                         VStack(alignment: .leading, spacing: 3) {
                             Text(workout.type.displayName)
-                                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                                .font(.pixel(9))
                                 .foregroundColor(.white)
 
                             HStack(spacing: 8) {

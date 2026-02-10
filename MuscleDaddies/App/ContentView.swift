@@ -118,22 +118,29 @@ struct ContentView: View {
                 UITabBar.appearance().scrollEdgeAppearance = appearance
             }
 
-            // Floating log workout button
-            Button {
-                showLogWorkout = true
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.cardGold)
-                        .frame(width: 56, height: 56)
-                        .shadow(color: .black.opacity(0.5), radius: 0, x: 2, y: 2)
+            // Floating log workout button (top-right)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        showLogWorkout = true
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.cardGold)
+                                .frame(width: 48, height: 48)
+                                .shadow(color: .black.opacity(0.5), radius: 0, x: 2, y: 2)
 
-                    Image(systemName: "plus")
-                        .font(.system(size: 24, weight: .bold, design: .monospaced))
-                        .foregroundColor(.black)
+                            Image(systemName: "plus")
+                                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                                .foregroundColor(.black)
+                        }
+                    }
+                    .padding(.trailing, 16)
+                    .padding(.top, 10)
                 }
+                Spacer()
             }
-            .offset(y: -20)
         }
         .sheet(isPresented: $showLogWorkout) {
             LogWorkoutView()
@@ -181,11 +188,11 @@ struct ContentView: View {
                 .foregroundColor(color)
 
             Text(value)
-                .font(.system(size: 22, weight: .black, design: .monospaced))
+                .font(.pixel(14))
                 .foregroundColor(.white)
 
             Text(label)
-                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .font(.pixel(7))
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity)

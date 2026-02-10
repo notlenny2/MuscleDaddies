@@ -5,6 +5,7 @@ struct LogWorkoutView: View {
     @EnvironmentObject var firestoreService: FirestoreService
     @EnvironmentObject var healthKitService: HealthKitService
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("unitsSystem") private var unitsSystemRaw: String = Constants.UnitsSystem.imperial.rawValue
 
     @State private var selectedType: Constants.WorkoutType = .strength
     @State private var duration: Int = 30
@@ -19,6 +20,10 @@ struct LogWorkoutView: View {
     enum StrengthUnit: String, CaseIterable {
         case lb = "lb"
         case kg = "kg"
+    }
+
+    private var preferredStrengthUnit: StrengthUnit {
+        unitsSystemRaw == Constants.UnitsSystem.metric.rawValue ? .kg : .lb
     }
 
     var body: some View {
@@ -205,6 +210,12 @@ struct LogWorkoutView: View {
                 }
             }
         }
+        .onAppear {
+            applyPreferredUnitIfNeeded()
+        }
+        .onChange(of: unitsSystemRaw) { _, _ in
+            applyPreferredUnitIfNeeded()
+        }
     }
 
     private func saveWorkout() async {
@@ -289,6 +300,22 @@ struct LogWorkoutView: View {
         switch strengthUnit {
         case .kg: return strengthWeight
         case .lb: return strengthWeight * 0.45359237
+        }
+    }
+
+    private func applyPreferredUnitIfNeeded() {
+        let preferred = preferredStrengthUnit
+        guard strengthUnit != preferred else { return }
+        strengthWeight = convertWeight(strengthWeight, from: strengthUnit, to: preferred)
+        strengthUnit = preferred
+    }
+
+    private func convertWeight(_ value: Double, from: StrengthUnit, to: StrengthUnit) -> Double {
+        guard from != to else { return value }
+        switch (from, to) {
+        case (.lb, .kg): return value * 0.45359237
+        case (.kg, .lb): return value / 0.45359237
+        default: return value
         }
     }
 
