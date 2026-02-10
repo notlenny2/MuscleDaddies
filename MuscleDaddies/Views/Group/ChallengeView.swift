@@ -27,6 +27,7 @@ struct ChallengeView: View {
                 ScrollView {
                     VStack(spacing: 12) {
                         beltHeader
+                        groupRoster
                         ForEach(challenges) { challenge in
                             BeltChallengeCard(
                                 challenge: challenge,
@@ -69,6 +70,42 @@ struct ChallengeView: View {
             Text("One challenge at a time. Win the belt by gaining the most XP in the chosen stat.")
                 .font(.secondary(11))
                 .foregroundColor(.gray)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.cardDarkGray)
+        )
+    }
+
+    private var groupRoster: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(groupLabel) Roster")
+                .font(.secondary(14, weight: .bold))
+                .foregroundColor(.white)
+
+            if groupMembers.isEmpty {
+                Text("No \(groupLabel.lowercased()) members yet.")
+                    .font(.secondary(11))
+                    .foregroundColor(.gray)
+            } else {
+                ForEach(groupMembers) { member in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(member.displayName)
+                                .font(.secondary(12, weight: .semibold))
+                                .foregroundColor(.white)
+                            Text(member.selectedClass.displayName)
+                                .font(.secondary(11))
+                                .foregroundColor(.gray)
+                        }
+                        Spacer()
+                        Image(systemName: "shield.fill")
+                            .foregroundColor(.cardGold.opacity(0.7))
+                    }
+                    .padding(.vertical, 6)
+                }
+            }
         }
         .padding(12)
         .background(

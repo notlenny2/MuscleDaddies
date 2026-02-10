@@ -360,3 +360,12 @@ Modified files (not committed):
 - Files:
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/GuidedOnboardingFlow.swift
+
+## 2026-02-10 Update: Challenges Tab + Roster
+- Challenges moved to a dedicated bottom tab.
+- Removed Challenges entry from Settings navigation.
+- Challenge screen now shows group roster with member names and their class.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/App/ContentView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Group/ChallengeView.swift

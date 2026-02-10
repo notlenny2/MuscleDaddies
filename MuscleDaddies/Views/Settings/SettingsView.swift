@@ -166,11 +166,6 @@ struct SettingsView: View {
                         }
                         .listRowBackground(Color.cardDarkGray)
 
-                        NavigationLink(destination: ChallengeView()) {
-                            Label("Challenges", systemImage: "trophy.fill")
-                                .foregroundColor(.white)
-                        }
-                        .listRowBackground(Color.cardDarkGray)
                     }
 
                     // Daddy Setup

@@ -99,6 +99,14 @@ struct ContentView: View {
                         Label("Feed", systemImage: "bubble.left.and.bubble.right")
                     }
 
+                // Challenges
+                NavigationStack {
+                    ChallengeView()
+                }
+                .tabItem {
+                    Label("Challenges", systemImage: "trophy.fill")
+                }
+
                 // Log Workout (placeholder for center button)
                 Color.clear
                     .tabItem {
