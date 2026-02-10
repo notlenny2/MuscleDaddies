@@ -448,6 +448,21 @@ struct SettingsView: View {
 
     private func updateClass(_ cls: Constants.MuscleClass) {
         guard var user = authService.currentUser else { return }
+
+        // Track class changes
+        let previousClass = user.selectedClass
+        let previousTheme = user.classTheme
+        if previousClass != cls {
+            user.classChanges += 1
+            user.classStartDate = Date() // Reset class start date
+            print("🔄 Class changed! Total changes: \(user.classChanges)")
+        }
+
+        // Track theme usage
+        var themes = user.themesUsed
+        themes.insert(cls.theme)
+        user.themesUsed = themes
+
         user.selectedClass = cls
         authService.currentUser = user
         Task {

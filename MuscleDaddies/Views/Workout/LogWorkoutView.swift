@@ -309,6 +309,25 @@ struct LogWorkoutView: View {
             updatedUser.currentStreak = streak.current
             updatedUser.longestStreak = streak.longest
             updatedUser.lastWorkoutDate = Date()
+
+            // Track time-based achievements
+            let hour = Calendar.current.component(.hour, from: Date())
+            if hour < 7 {
+                updatedUser.earlyWorkouts += 1
+                print("⏰ Early workout logged! Total: \(updatedUser.earlyWorkouts)")
+            }
+            if hour >= 20 { // 8pm in 24-hour format
+                updatedUser.lateWorkouts += 1
+                print("🌙 Late workout logged! Total: \(updatedUser.lateWorkouts)")
+            }
+
+            // Track cumulative metrics
+            updatedUser.totalWorkoutMinutes += duration
+            if let distKm = distanceInKm() {
+                updatedUser.totalDistanceKm += distKm
+                print("📏 Distance tracked: \(String(format: "%.2f", distKm)) km (Total: \(String(format: "%.2f", updatedUser.totalDistanceKm)) km)")
+            }
+
             try await firestoreService.updateUser(updatedUser)
             authService.currentUser = updatedUser
 

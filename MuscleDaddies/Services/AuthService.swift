@@ -89,7 +89,7 @@ class AuthService: NSObject, ObservableObject {
         goals: UserGoals?
     ) async {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let user = AppUser(
+        var user = AppUser(
             id: uid,
             displayName: displayName,
             selectedTheme: classTheme.cardTheme,
@@ -101,8 +101,13 @@ class AuthService: NSObject, ObservableObject {
             weightKg: weightKg,
             heightCategory: heightCategory,
             bodyType: bodyType,
-            goals: goals
+            goals: goals,
+            classStartDate: Date() // Initialize class start date
         )
+
+        // Track initial theme
+        var themes: Set<Constants.ClassTheme> = [classTheme]
+        user.themesUsed = themes
         do {
             try db.collection(Constants.Firestore.users).document(uid).setData(from: user)
             self.currentUser = user

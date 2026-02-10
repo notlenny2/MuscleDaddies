@@ -173,10 +173,22 @@ struct ContentView: View {
             guard !hasSynced, let user = authService.currentUser, let uid = user.id else { return }
             hasSynced = true
 
+            // Track app open date for Consistent User achievement
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let today = dateFormatter.string(from: Date())
+
+            var updated = user
+            if !updated.appOpenDates.contains(today) {
+                updated.appOpenDates.append(today)
+                print("📅 App opened today! Total unique days: \(updated.appOpenDates.count)")
+                try? await firestoreService.updateUser(updated)
+                authService.currentUser = updated
+            }
+
             // Request notification permission + save FCM token
             _ = await notificationService.requestAuthorization()
             if let token = notificationService.getFCMToken(), token != user.fcmToken {
-                var updated = user
                 updated.fcmToken = token
                 try? await firestoreService.updateUser(updated)
                 authService.currentUser = updated

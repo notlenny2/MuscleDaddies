@@ -499,8 +499,8 @@ enum Constants {
             case .beltMaster: return "Win 5 belt challenges"
             case .challengeChampion: return "Complete 10 group challenges"
             case .squadGoals: return "Be in a group with 8+ members"
-            case .earlyRiser: return "Log 10 workouts before 8am"
-            case .nightWarrior: return "Log 10 workouts after 9pm"
+            case .earlyRiser: return "Log 10 workouts before 7am"
+            case .nightWarrior: return "Log 10 workouts after 8pm"
             case .consistentUser: return "Open app 30 days in a row"
             }
         }
