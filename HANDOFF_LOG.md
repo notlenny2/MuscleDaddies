@@ -352,3 +352,11 @@ Modified files (not committed):
 ## Notes
 - Simulator install via simctl still fails due to CoreSimulatorService connection issues in this environment; run in Xcode.
 - Build last succeeded after font/name fixes; rerun if needed.
+
+## 2026-02-10 Update: Onboarding Height + Copy Tweaks
+- Onboarding height input now supports feet/inches in the first-screen onboarding view (imperial) and cm for metric.
+- Added conversions for ft/in <-> cm in OnboardingView, matching GuidedOnboardingFlow behavior.
+- Copy tweak: "Forge" headings updated to "Build" in guided onboarding.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/GuidedOnboardingFlow.swift

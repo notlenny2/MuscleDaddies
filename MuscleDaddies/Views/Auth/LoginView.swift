@@ -128,6 +128,8 @@ struct OnboardingView: View {
     @State private var primaryPriority: Constants.PriorityStat = .strength
     @State private var secondaryPriority: Constants.PriorityStat = .endurance
     @State private var heightText: String = ""
+    @State private var heightFeetText: String = ""
+    @State private var heightInchesText: String = ""
     @State private var weightText: String = ""
     @State private var heightCategory: Constants.HeightCategory = .medium
     @State private var bodyType: Constants.BodyType = .medium
@@ -141,7 +143,7 @@ struct OnboardingView: View {
     }
 
     private var heightPlaceholder: String {
-        usesImperial ? "Height (in)" : "Height (cm)"
+        usesImperial ? "Height (ft/in)" : "Height (cm)"
     }
 
     private var weightPlaceholder: String {
@@ -280,10 +282,23 @@ struct OnboardingView: View {
                             }
 
                             HStack(spacing: 10) {
-                                TextField(heightPlaceholder, text: $heightText)
-                                    .textFieldStyle(.roundedBorder)
+                                if usesImperial {
+                                    HStack(spacing: 6) {
+                                        TextField("ft", text: $heightFeetText)
+                                            .textFieldStyle(.roundedBorder)
+                                            .keyboardType(.numberPad)
+                                        TextField("in", text: $heightInchesText)
+                                            .textFieldStyle(.roundedBorder)
+                                            .keyboardType(.numberPad)
+                                    }
+                                } else {
+                                    TextField(heightPlaceholder, text: $heightText)
+                                        .textFieldStyle(.roundedBorder)
+                                        .keyboardType(.numberPad)
+                                }
                                 TextField(weightPlaceholder, text: $weightText)
                                     .textFieldStyle(.roundedBorder)
+                                    .keyboardType(.numberPad)
                             }
 
                             HStack(spacing: 10) {
@@ -400,7 +415,7 @@ struct OnboardingView: View {
                                 dismiss()
                             }
                         } label: {
-                            Text("Forge My Card")
+                            Text("Build My Daddy")
                                 .font(.pixel(11))
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
@@ -454,7 +469,11 @@ private extension OnboardingView {
     func displayHeightText(fromCm cm: Double) -> String {
         if usesImperial {
             let inches = cm / 2.54
-            return String(format: "%.0f", inches)
+            let feet = Int(inches) / 12
+            let remInches = Int(round(inches)) % 12
+            heightFeetText = "\(feet)"
+            heightInchesText = "\(remInches)"
+            return ""
         }
         return String(format: "%.0f", cm)
     }
@@ -468,8 +487,16 @@ private extension OnboardingView {
     }
 
     func parseHeightCm() -> Double? {
-        guard let value = Double(heightText) else { return nil }
-        return usesImperial ? value * 2.54 : value
+        if usesImperial {
+            let feet = Double(heightFeetText) ?? 0
+            let inches = Double(heightInchesText) ?? 0
+            let totalInches = feet * 12 + inches
+            guard totalInches > 0 else { return nil }
+            return totalInches * 2.54
+        } else {
+            guard let value = Double(heightText) else { return nil }
+            return value
+        }
     }
 
     func parseWeightKg() -> Double? {
@@ -482,9 +509,32 @@ private extension OnboardingView {
         let newImperial = newRaw == Constants.UnitsSystem.imperial.rawValue
         guard oldImperial != newImperial else { return }
 
-        if let value = Double(heightText) {
-            let cm = oldImperial ? value * 2.54 : value
-            heightText = newImperial ? String(format: "%.0f", cm / 2.54) : String(format: "%.0f", cm)
+        if oldImperial {
+            let feet = Double(heightFeetText) ?? 0
+            let inches = Double(heightInchesText) ?? 0
+            let totalInches = feet * 12 + inches
+            if totalInches > 0 {
+                let cm = totalInches * 2.54
+                if newImperial {
+                    let newFeet = Int(totalInches) / 12
+                    let newInches = Int(round(totalInches)) % 12
+                    heightFeetText = "\(newFeet)"
+                    heightInchesText = "\(newInches)"
+                } else {
+                    heightText = String(format: "%.0f", cm)
+                }
+            }
+        } else if let value = Double(heightText) {
+            let cm = value
+            if newImperial {
+                let totalInches = cm / 2.54
+                let feet = Int(totalInches) / 12
+                let inches = Int(round(totalInches)) % 12
+                heightFeetText = "\(feet)"
+                heightInchesText = "\(inches)"
+            } else {
+                heightText = String(format: "%.0f", cm)
+            }
         }
 
         if let value = Double(weightText) {
