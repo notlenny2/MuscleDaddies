@@ -16,7 +16,7 @@ struct TradingCardContent: View {
                 intelligence: user.stats.intelligence,
                 size: 220
             )
-            .opacity(0.08)
+            .opacity(0.12)
             .blur(radius: 0.5)
 
             VStack(spacing: 0) {

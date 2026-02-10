@@ -30,7 +30,7 @@ struct FeedItemView: View {
                         .foregroundColor(.white)
 
                     Text(item.createdAt.timeAgoDisplay)
-                        .font(.system(size: 11, design: .monospaced))
+                        .font(.secondary(11))
                         .foregroundColor(.gray)
                 }
 
@@ -41,7 +41,7 @@ struct FeedItemView: View {
 
             // Content
             Text(item.content)
-                .font(.system(size: 14, design: .monospaced))
+                .font(.secondary(14))
                 .foregroundColor(.white.opacity(0.9))
 
             // Reactions
@@ -65,7 +65,7 @@ struct FeedItemView: View {
                                 .font(.system(size: 16))
                             if !users.isEmpty {
                                 Text("\(users.count)")
-                                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                    .font(.secondary(11, weight: .bold))
                                     .foregroundColor(isActive ? .cardGold : .gray)
                             }
                         }
@@ -88,7 +88,7 @@ struct FeedItemView: View {
                             .font(.system(size: 12))
                         if !item.comments.isEmpty {
                             Text("\(item.comments.count)")
-                                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                .font(.secondary(11, weight: .bold))
                         }
                     }
                     .foregroundColor(.gray)
@@ -101,10 +101,10 @@ struct FeedItemView: View {
                     ForEach(item.comments) { comment in
                         HStack(alignment: .top, spacing: 8) {
                             Text(comment.userName)
-                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .font(.secondary(12, weight: .bold))
                                 .foregroundColor(.cardGold)
                             Text(comment.text)
-                                .font(.system(size: 12, design: .monospaced))
+                                .font(.secondary(12))
                                 .foregroundColor(.white.opacity(0.8))
                         }
                     }
@@ -112,7 +112,7 @@ struct FeedItemView: View {
                     HStack(spacing: 8) {
                         TextField("Comment...", text: $commentText)
                             .textFieldStyle(.roundedBorder)
-                            .font(.system(size: 13, design: .monospaced))
+                            .font(.secondary(13))
 
                         Button("Send") {
                             guard let itemId = item.id, !commentText.isEmpty else { return }
@@ -126,7 +126,7 @@ struct FeedItemView: View {
                                 commentText = ""
                             }
                         }
-                        .font(.system(size: 13, weight: .bold, design: .monospaced))
+                        .font(.secondary(13, weight: .bold))
                         .foregroundColor(.cardGold)
                     }
                 }

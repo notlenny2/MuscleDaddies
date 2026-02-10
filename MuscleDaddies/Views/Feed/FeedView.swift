@@ -23,7 +23,7 @@ struct FeedView: View {
                             .font(.pixel(10))
                             .foregroundColor(.gray)
                         Text("Log a workout to get started!")
-                            .font(.system(.caption, design: .monospaced))
+                            .font(.secondary(12))
                             .foregroundColor(.gray.opacity(0.7))
                     }
                 } else {

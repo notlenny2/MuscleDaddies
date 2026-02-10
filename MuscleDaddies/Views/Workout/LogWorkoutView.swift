@@ -95,7 +95,7 @@ struct LogWorkoutView: View {
                             }
 
                             Stepper("Custom: \(duration) min", value: $duration, in: 5...300, step: 5)
-                                .font(.system(size: 13, design: .monospaced))
+                                .font(.secondary(13))
                                 .foregroundColor(.white)
                                 .tint(.cardGold)
                         }
@@ -115,7 +115,7 @@ struct LogWorkoutView: View {
                                             Text(intensityEmoji(level))
                                                 .font(.system(size: 24))
                                             Text(intensityLabel(level))
-                                                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                                                .font(.secondary(9, weight: .medium))
                                                 .foregroundColor(intensity == level ? .black : .gray)
                                         }
                                         .frame(maxWidth: .infinity)
@@ -143,7 +143,7 @@ struct LogWorkoutView: View {
         if selectedType == .strength {
             VStack(alignment: .leading, spacing: 10) {
                 Text("STRENGTH SET (OPTIONAL)")
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .font(.secondary(12, weight: .bold))
                     .foregroundColor(.gray)
 
                                 TextField("Exercise (e.g., Bench Press)", text: $strengthExercise)
@@ -151,7 +151,7 @@ struct LogWorkoutView: View {
 
                                 HStack(spacing: 12) {
                                     Stepper("Reps: \(strengthReps)", value: $strengthReps, in: 1...30)
-                                        .font(.system(size: 13, design: .monospaced))
+                                        .font(.secondary(13))
                                         .foregroundColor(.white)
 
                                     Spacer()
@@ -159,7 +159,7 @@ struct LogWorkoutView: View {
 
                                 HStack(spacing: 12) {
                                     Stepper("Weight: \(Int(strengthWeight))", value: $strengthWeight, in: 5...800, step: 5)
-                                        .font(.system(size: 13, design: .monospaced))
+                                        .font(.secondary(13))
                                         .foregroundColor(.white)
 
                                     Picker("Unit", selection: $strengthUnit) {
@@ -172,7 +172,7 @@ struct LogWorkoutView: View {
                                 }
 
                                 Text("Tip: enter your best working set for the day.")
-                                    .font(.system(size: 11, design: .monospaced))
+                                    .font(.secondary(11))
                                     .foregroundColor(.gray.opacity(0.7))
                             }
                         }

@@ -75,7 +75,7 @@ struct XPRecoveryView: View {
                     }
                 } else {
                     Text("No XP data yet.")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.secondary(17))
                         .foregroundColor(.gray)
                 }
             }
@@ -101,7 +101,7 @@ struct XPRecoveryView: View {
                     }
                 } else {
                     Text(healthKitService.isAuthorized ? "No recovery data yet." : "Authorize HealthKit to see recovery data.")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.secondary(17))
                         .foregroundColor(.gray)
                 }
             }
@@ -129,7 +129,7 @@ struct XPRecoveryView: View {
 
                 if series.isEmpty {
                     Text("No recovery history yet.")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.secondary(17))
                         .foregroundColor(.gray)
                 } else {
                     DailyRecoveryChart(series: series)
@@ -166,7 +166,7 @@ struct XPRecoveryView: View {
                     }
                 } else {
                     Text("No HP data yet.")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.secondary(17))
                         .foregroundColor(.gray)
                 }
             }
@@ -200,7 +200,7 @@ struct XPRecoveryView: View {
 
                 if series.isEmpty {
                     Text("No recent workouts.")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.secondary(17))
                         .foregroundColor(.gray)
                 } else {
                     DailyXPChart(series: series)
@@ -369,7 +369,7 @@ struct XPRecoveryView: View {
     private func recoveryRow(label: String, value: String) -> some View {
         HStack {
             Text(label)
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .font(.secondary(12, weight: .medium))
                 .foregroundColor(.gray)
             Spacer()
             Text(value)

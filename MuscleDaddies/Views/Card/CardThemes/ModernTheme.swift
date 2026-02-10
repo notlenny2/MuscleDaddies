@@ -16,7 +16,7 @@ struct ModernCardContent: View {
                 intelligence: user.stats.intelligence,
                 size: 220
             )
-            .opacity(0.08)
+            .opacity(0.12)
             .blur(radius: 0.5)
 
             VStack(spacing: 0) {
@@ -173,10 +173,10 @@ struct ModernCardContent: View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 6) {
                 Text(label)
-                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .font(.secondary(9, weight: .bold))
                     .foregroundColor(color)
                 Text(value)
-                    .font(.system(size: 9, weight: .medium, design: .monospaced))
+                    .font(.secondary(9, weight: .medium))
                     .foregroundColor(.gray)
             }
             ZStack(alignment: .leading) {

@@ -64,7 +64,7 @@ struct AchievementsView: View {
                 .multilineTextAlignment(.center)
 
             Text(type.description)
-                .font(.system(size: 10, design: .monospaced))
+                .font(.secondary(10))
                 .foregroundColor(.gray.opacity(0.7))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
@@ -111,7 +111,7 @@ struct AchievementsView: View {
                     .frame(width: 40, height: 40)
             }
             Text("Tap an unlocked badge to celebrate.")
-                .font(.system(size: 11, design: .monospaced))
+                .font(.secondary(11))
                 .foregroundColor(.gray)
 
 #if DEBUG
@@ -119,14 +119,14 @@ struct AchievementsView: View {
                 Button("Unlock All (Demo)") {
                     unlockedAchievements = Set(Constants.AchievementType.allCases.map { $0.rawValue })
                 }
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.secondary(11, weight: .bold))
                 .foregroundColor(.cardGold)
 
                 Button("Test Celebration") {
                     selectedAchievement = Constants.AchievementType.allCases.first
                     triggerCelebration()
                 }
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.secondary(11, weight: .bold))
                 .foregroundColor(.white)
             }
 #endif
@@ -182,7 +182,7 @@ private struct CelebrationOverlay: View {
                     .font(.pixel(12))
                     .foregroundColor(.white)
                 Text(achievement.description)
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.secondary(12))
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)

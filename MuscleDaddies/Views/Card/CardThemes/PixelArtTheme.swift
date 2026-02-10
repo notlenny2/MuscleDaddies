@@ -16,7 +16,7 @@ struct PixelArtCardContent: View {
                 intelligence: user.stats.intelligence,
                 size: 200
             )
-            .opacity(0.08)
+            .opacity(0.12)
             .blur(radius: 0.5)
 
             VStack(spacing: 0) {
@@ -24,13 +24,13 @@ struct PixelArtCardContent: View {
             VStack(spacing: 4) {
                 HStack {
                     Text("★ \(user.displayName.uppercased()) ★")
-                        .font(.system(size: compact ? 14 : 18, weight: .black, design: .monospaced))
+                        .font(.secondary(compact ? 14 : 18, weight: .black))
                         .foregroundColor(.green)
 
                     Spacer()
 
                     Text("LV\(card.levelDisplay)")
-                        .font(.system(size: compact ? 16 : 22, weight: .black, design: .monospaced))
+                        .font(.secondary(compact ? 16 : 22, weight: .black))
                         .foregroundColor(.yellow)
                 }
 
@@ -39,7 +39,7 @@ struct PixelArtCardContent: View {
                 }
 
                 Text("[\(user.selectedClass.displayName.uppercased())]")
-                    .font(.system(size: compact ? 9 : 10, weight: .bold, design: .monospaced))
+                    .font(.secondary(compact ? 9 : 10, weight: .bold))
                     .foregroundColor(.green.opacity(0.7))
             }
             .padding(.horizontal, 14)
@@ -94,7 +94,7 @@ struct PixelArtCardContent: View {
             HStack {
                 if user.currentStreak > 0 {
                     Text("🔥 x\(user.currentStreak)")
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .font(.secondary(12, weight: .bold))
                         .foregroundColor(.orange)
                 }
 
@@ -103,7 +103,7 @@ struct PixelArtCardContent: View {
                 if let onPoke {
                     Button(action: onPoke) {
                         Text("👉 POKE")
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .font(.secondary(11, weight: .bold))
                             .foregroundColor(.yellow)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 4)
@@ -157,18 +157,16 @@ struct PixelArtCardContent: View {
             Text(icon)
                 .font(.system(size: 14))
             Text(label)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.secondary(12, weight: .bold))
                 .foregroundColor(.green)
                 .frame(width: 30, alignment: .leading)
 
-            // Pixel bar using block characters
-            let blocks = Int(Double(value) / 99.0 * 20)
-            Text(String(repeating: "█", count: blocks) + String(repeating: "░", count: 20 - blocks))
-                .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(.green)
+            // Pixel bar using block rectangles
+            let blocks = Int(min(max(Double(value) / 99.0, 0), 1) * 20)
+            pixelBlocks(filled: blocks, total: 20, color: .green, height: 8)
 
             Text("\(value)")
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.secondary(12, weight: .bold))
                 .foregroundColor(.white)
                 .frame(width: 28, alignment: .trailing)
         }
@@ -177,10 +175,10 @@ struct PixelArtCardContent: View {
     private func pixelStatCompact(_ label: String, _ value: Int) -> some View {
         VStack(spacing: 2) {
             Text(label)
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(.secondary(9, weight: .bold))
                 .foregroundColor(.green.opacity(0.7))
             Text("\(value)")
-                .font(.system(size: 14, weight: .black, design: .monospaced))
+                .font(.secondary(14, weight: .black))
                 .foregroundColor(.green)
         }
     }
@@ -188,17 +186,15 @@ struct PixelArtCardContent: View {
     private func pixelProgressRow(label: String, valueText: String, progress: Double, barColor: Color = .green) -> some View {
         HStack(spacing: 8) {
             Text(label)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.secondary(12, weight: .bold))
                 .foregroundColor(.green)
                 .frame(width: 30, alignment: .leading)
 
             let blocks = Int(min(max(progress, 0), 1) * 20)
-            Text(String(repeating: "█", count: blocks) + String(repeating: "░", count: 20 - blocks))
-                .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(barColor)
+            pixelBlocks(filled: blocks, total: 20, color: barColor, height: 8)
 
             Text(valueText)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .font(.secondary(10, weight: .bold))
                 .foregroundColor(.white)
                 .frame(width: 52, alignment: .trailing)
         }
@@ -222,19 +218,27 @@ struct PixelArtCardContent: View {
     private func pixelHeaderBar(label: String, valueText: String, progress: Double, color: Color) -> some View {
         HStack(spacing: 6) {
             Text(label)
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(.secondary(9, weight: .bold))
                 .foregroundColor(color)
                 .frame(width: 26, alignment: .leading)
 
             let blocks = Int(min(max(progress, 0), 1) * 16)
-            Text(String(repeating: "█", count: blocks) + String(repeating: "░", count: 16 - blocks))
-                .font(.system(size: 9, design: .monospaced))
-                .foregroundColor(color)
+            pixelBlocks(filled: blocks, total: 16, color: color, height: 6)
 
             Text(valueText)
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(.secondary(9, weight: .bold))
                 .foregroundColor(.white)
                 .frame(width: 52, alignment: .trailing)
+        }
+    }
+
+    private func pixelBlocks(filled: Int, total: Int, color: Color, height: CGFloat) -> some View {
+        HStack(spacing: 2) {
+            ForEach(0..<total, id: \.self) { index in
+                Rectangle()
+                    .fill(index < filled ? color : color.opacity(0.2))
+                    .frame(width: 6, height: height)
+            }
         }
     }
 }

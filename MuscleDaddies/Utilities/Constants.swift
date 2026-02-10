@@ -263,6 +263,62 @@ enum Constants {
             }
         }
 
+        var flavorDescription: String {
+            switch self {
+            // Fantasy
+            case .warrior:
+                return "Frontline bruiser forged for strength and grit."
+            case .scout:
+                return "Fast mover who thrives on speed and steady endurance."
+            case .knight:
+                return "A stalwart tank with endurance to outlast any fight."
+            case .wizard:
+                return "Arcane tactician—mobility and endurance over raw force."
+            case .thief:
+                return "Quick and cunning, striking with speed and strength."
+            case .berserker:
+                return "Rage-fueled powerhouse built for strength and stamina."
+            case .swordmaster:
+                return "Precision fighter—speed and strength in perfect balance."
+            case .elf:
+                return "Agile and mindful, favoring mobility and endurance."
+            // Sports
+            case .shortstop:
+                return "Lightning reflexes and sharp reads rule the field."
+            case .quarterback:
+                return "Commanding leader—strength and mobility set the pace."
+            case .racecarDriver:
+                return "Speed demon with endurance to hold the line."
+            case .enforcer:
+                return "Hockey bruiser—strength first, endurance to finish."
+            case .golfer:
+                return "Calm precision—mobility and endurance win the day."
+            case .powerForward:
+                return "Explosive force—strength with a quick step."
+            case .goalie:
+                return "Reactive wall—strength and mobility under pressure."
+            case .striker:
+                return "Aggressive finisher—speed and strength in attack."
+            // Sci‑Fi
+            case .starfighterPilot:
+                return "Ace pilot—speed with endurance for long runs."
+            case .starfleetCaptain:
+                return "Strategic leader—mobility and endurance in command."
+            case .borgJuggernaut:
+                return "Relentless unit—strength and endurance above all."
+            case .xenomorph:
+                return "Predator class—speed and strength in lethal bursts."
+            case .androidMedic:
+                return "Precision support—mobility and endurance to sustain."
+            case .warpEngineer:
+                return "Systems specialist—mobility with solid strength."
+            case .zeroGRanger:
+                return "Zero‑G scout—speed and endurance in the void."
+            case .voidMonk:
+                return "Focused and resilient—mobility and endurance aligned."
+            }
+        }
+
         var theme: ClassTheme {
             switch self {
             case .warrior, .scout, .knight, .wizard, .thief, .berserker, .swordmaster, .elf:

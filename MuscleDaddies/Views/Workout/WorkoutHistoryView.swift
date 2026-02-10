@@ -38,7 +38,7 @@ struct WorkoutHistoryView: View {
 
                             HStack(spacing: 8) {
                                 Text("\(workout.duration) min")
-                                    .font(.system(size: 12, design: .monospaced))
+                                    .font(.secondary(12))
                                     .foregroundColor(.gray)
 
                                 Text("•")
@@ -55,7 +55,7 @@ struct WorkoutHistoryView: View {
 
                             if let notes = workout.notes {
                                 Text(notes)
-                                    .font(.system(size: 11, design: .monospaced))
+                                    .font(.secondary(11))
                                     .foregroundColor(.gray.opacity(0.7))
                                     .lineLimit(1)
                             }
@@ -65,7 +65,7 @@ struct WorkoutHistoryView: View {
 
                         VStack(alignment: .trailing, spacing: 2) {
                             Text(workout.createdAt.timeAgoDisplay)
-                                .font(.system(size: 11, design: .monospaced))
+                                .font(.secondary(11))
                                 .foregroundColor(.gray)
 
                             if workout.source == .healthkit {

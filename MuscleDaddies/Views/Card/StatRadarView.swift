@@ -62,7 +62,7 @@ struct StatRadarView: View {
 
                 let labelPt = point(at: i, scale: 1.2)
                 Text(labels[i])
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .font(.secondary(10, weight: .bold))
                     .foregroundColor(colors[i])
                     .position(labelPt)
             }

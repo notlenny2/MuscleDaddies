@@ -21,6 +21,8 @@ struct GuidedOnboardingFlowView: View {
     @State private var isSaving = false
     @State private var isTalking = false
     @State private var talkPhase = 0
+    @State private var showClassConfirmSheet = false
+    @State private var pendingClassSelection: Constants.MuscleClass = .warrior
 
     private let totalSteps = 4
 
@@ -80,6 +82,9 @@ struct GuidedOnboardingFlowView: View {
         .onChange(of: unitsSystemRaw) { oldValue, newValue in
             convertDisplayedMeasurements(from: oldValue, to: newValue)
         }
+        .sheet(isPresented: $showClassConfirmSheet) {
+            classConfirmSheet
+        }
     }
 
     private var header: some View {
@@ -92,7 +97,7 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.cardGold)
 
             Text("Step \(stepIndex + 1) of \(totalSteps)")
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .font(.secondary(11, weight: .semibold))
                 .foregroundColor(.gray)
         }
         .padding(.top, 4)
@@ -160,7 +165,7 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.white)
 
             Text("By the power of the Forge, we will shape your legend in moments.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
 
             VStack(alignment: .leading, spacing: 10) {
@@ -179,7 +184,7 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.white)
 
             Text("Warrior: Speak your name, hero. Let it thunder across the realm.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
 
             TextField("Display Name", text: $displayName)
@@ -190,7 +195,7 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.white)
 
             Text("Warrior: Choose your might and speed, and the forge will follow your will.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
 
             priorityPicker(title: "Primary", selection: $primaryPriority, excludes: nil)
@@ -205,7 +210,7 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.white)
 
             Text("Warrior: Temper your frame. Strength and stature shape your legend.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
 
             if healthKitService.isAuthorized {
@@ -220,7 +225,7 @@ struct GuidedOnboardingFlowView: View {
                         Image(systemName: "heart.fill")
                         Text("Pull from Apple Health")
                     }
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(.secondary(12, weight: .semibold))
                     .foregroundColor(.cardGold)
                 }
             } else {
@@ -229,7 +234,7 @@ struct GuidedOnboardingFlowView: View {
                         _ = await healthKitService.requestAuthorization()
                     }
                 }
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.cardGold)
             }
 
@@ -246,7 +251,7 @@ struct GuidedOnboardingFlowView: View {
             }
 
             Text("Units default to Imperial. Change them anytime in Settings.")
-                .font(.system(size: 11, design: .monospaced))
+                .font(.secondary(11))
                 .foregroundColor(.gray)
         }
     }
@@ -258,17 +263,18 @@ struct GuidedOnboardingFlowView: View {
                 .foregroundColor(.white)
 
             Text("Warrior: Choose the path that sings to your soul, and I will empower it.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
 
             let options = classOptions()
             ForEach(options, id: \.self) { cls in
                 Button {
-                    selectedClass = cls
+                    pendingClassSelection = cls
+                    showClassConfirmSheet = true
                 } label: {
                     HStack {
                         Text(cls.displayName)
-                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                            .font(.secondary(14, weight: .semibold))
                             .foregroundColor(.white)
                         Spacer()
                         if selectedClass == cls {
@@ -301,7 +307,7 @@ struct GuidedOnboardingFlowView: View {
                 .textFieldStyle(.roundedBorder)
 
             Stepper("Strength Checks per Level: \(strengthChecksPerLevel)", value: $strengthChecksPerLevel, in: 0...3)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.white)
         }
     }
@@ -316,6 +322,65 @@ struct GuidedOnboardingFlowView: View {
             return true
         default:
             return true
+        }
+    }
+
+    private var classConfirmSheet: some View {
+        let baseUser = authService.currentUser ?? AppUser(displayName: displayName.isEmpty ? "Demo Daddy" : displayName)
+        var previewUser = baseUser
+        previewUser.selectedClass = pendingClassSelection
+        previewUser.classTheme = .fantasy
+        previewUser.selectedTheme = Constants.ClassTheme.fantasy.cardTheme
+
+        return NavigationStack {
+            ZStack {
+                Color.cardDark.ignoresSafeArea()
+                VStack(spacing: 16) {
+                    Text("Confirm Class")
+                        .font(.pixel(12))
+                        .foregroundColor(.white)
+
+                    CharacterCardView(user: previewUser)
+                        .padding(.horizontal)
+
+                    StatRadarView(
+                        strength: pendingClassSelection.weights.strength * 100,
+                        speed: pendingClassSelection.weights.speed * 100,
+                        endurance: pendingClassSelection.weights.endurance * 100,
+                        intelligence: pendingClassSelection.weights.intelligence * 100,
+                        size: 200
+                    )
+                    .padding(.vertical, 4)
+
+                    Text(pendingClassSelection.flavorDescription)
+                        .font(.secondary(12))
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+
+                    HStack(spacing: 12) {
+                        Button("Cancel") {
+                            showClassConfirmSheet = false
+                        }
+                        .foregroundColor(.gray)
+
+                        Spacer()
+
+                        Button("Confirm") {
+                            selectedClass = pendingClassSelection
+                            showClassConfirmSheet = false
+                        }
+                        .foregroundColor(.black)
+                        .frame(width: 140, height: 44)
+                        .background(Color.cardGold)
+                        .cornerRadius(6)
+                    }
+                    .padding(.horizontal, 24)
+
+                    Spacer()
+                }
+                .padding(.top, 20)
+            }
         }
     }
 
@@ -351,10 +416,10 @@ struct GuidedOnboardingFlowView: View {
     private func infoRow(title: String, text: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.secondary(12, weight: .bold))
                 .foregroundColor(.cardGold)
             Text(text)
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
         }
     }
@@ -365,8 +430,10 @@ private extension GuidedOnboardingFlowView {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(text)
-                    .font(.system(size: 21, weight: .semibold, design: .monospaced))
+                    .font(.secondary(14, weight: .semibold))
                     .foregroundColor(.white)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
 
                 HStack(spacing: 4) {
                     ForEach(0..<3) { index in
@@ -439,7 +506,7 @@ private extension GuidedOnboardingFlowView {
     func priorityPicker(title: String, selection: Binding<Constants.PriorityStat>, excludes: Constants.PriorityStat?) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
 
             HStack(spacing: 8) {
@@ -449,7 +516,7 @@ private extension GuidedOnboardingFlowView {
                         if !isDisabled { selection.wrappedValue = stat }
                     } label: {
                         Text(stat.displayName.uppercased())
-                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .font(.secondary(10, weight: .bold))
                             .foregroundColor(selection.wrappedValue == stat ? .black : .white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
@@ -468,7 +535,7 @@ private extension GuidedOnboardingFlowView {
     func heightPicker(title: String, selection: Binding<Constants.HeightCategory>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
             Picker(title, selection: selection) {
                 ForEach(Constants.HeightCategory.allCases, id: \.rawValue) { option in
@@ -484,7 +551,7 @@ private extension GuidedOnboardingFlowView {
     func bodyTypePicker(title: String, selection: Binding<Constants.BodyType>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
             Picker(title, selection: selection) {
                 ForEach(Constants.BodyType.allCases, id: \.rawValue) { option in

@@ -12,10 +12,20 @@ extension Color {
 }
 
 extension Font {
-    /// SNES-style pixel font for headings, labels, and stat values.
-    /// Falls back to system monospaced if font not loaded.
+    /// Primary display font.
+    static func primary(_ size: CGFloat) -> Font {
+        .custom("GodofThunder", size: size * 1.5)
+    }
+
+    /// Secondary display font.
+    static func secondary(_ size: CGFloat, weight: Font.Weight = .regular) -> Font {
+        .custom("Solander-Demo", size: size * 1.5)
+            .weight(weight)
+    }
+
+    /// Legacy alias used throughout the UI for headings.
     static func pixel(_ size: CGFloat) -> Font {
-        .custom("PressStart2P-Regular", size: size)
+        .primary(size)
     }
 }
 

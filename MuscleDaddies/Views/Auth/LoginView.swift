@@ -35,7 +35,7 @@ struct LoginView: View {
                         )
 
                     Text("Turn your workouts into an RPG")
-                        .font(.system(.subheadline, design: .monospaced))
+                        .font(.secondary(15))
                         .foregroundColor(.gray)
                 }
 
@@ -63,7 +63,7 @@ struct LoginView: View {
                     showOnboarding = false
                 } label: {
                     Text("Skip Sign In (Demo)")
-                        .font(.system(.subheadline, design: .monospaced))
+                        .font(.secondary(15))
                         .foregroundColor(.cardGold)
                         .frame(maxWidth: .infinity, minHeight: 48)
                         .overlay(
@@ -77,7 +77,7 @@ struct LoginView: View {
                     showOnboarding = true
                 } label: {
                     Text("Test Onboarding")
-                        .font(.system(.subheadline, design: .monospaced))
+                        .font(.secondary(15))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, minHeight: 48)
                         .overlay(
@@ -90,7 +90,7 @@ struct LoginView: View {
 
                 if let error = authService.error {
                     Text(error)
-                        .font(.system(.caption, design: .monospaced))
+                        .font(.secondary(12))
                         .foregroundColor(.red)
                         .padding(.horizontal)
                 }
@@ -166,7 +166,7 @@ struct OnboardingView: View {
                                 .foregroundColor(.white)
                                 .tracking(2)
 
-                            Text("Create Your Card")
+                            Text("Build your Muscle Daddy")
                                 .font(.pixel(10))
                                 .foregroundColor(.cardGold)
                         }
@@ -220,7 +220,7 @@ struct OnboardingView: View {
                             }
 
                             Text("Fantasy is default. Other themes unlock with XP.")
-                                .font(.system(size: 11, design: .monospaced))
+                                .font(.secondary(11))
                                 .foregroundColor(.gray)
                         }
                         .padding(16)
@@ -270,12 +270,12 @@ struct OnboardingView: View {
                                         Image(systemName: "heart.fill")
                                         Text("Pull Height/Weight from Apple Health")
                                     }
-                                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                    .font(.secondary(12, weight: .semibold))
                                     .foregroundColor(.cardGold)
                                 }
                             } else {
                                 Text("Apple Health not connected — you can enter body type instead.")
-                                    .font(.system(size: 11, design: .monospaced))
+                                    .font(.secondary(11))
                                     .foregroundColor(.gray)
                             }
 
@@ -314,7 +314,7 @@ struct OnboardingView: View {
                                 .textFieldStyle(.roundedBorder)
 
                             Stepper("Strength Checks per Level: \(strengthChecksPerLevel)", value: $strengthChecksPerLevel, in: 0...3)
-                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .font(.secondary(12, weight: .semibold))
                                 .foregroundColor(.white)
                         }
                         .padding(16)
@@ -333,31 +333,35 @@ struct OnboardingView: View {
                                 .font(.pixel(9))
                                 .foregroundColor(.white)
 
-                            let options = mode == .suggest ? classOptions() : allAvailableClasses()
-                            ForEach(options, id: \.self) { cls in
-                                Button {
-                                    selectedClass = cls
-                                } label: {
-                                    HStack {
-                                        Text(cls.displayName)
-                                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        if selectedClass == cls {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.cardGold)
+                            if mode == .suggest {
+                                suggestedClassCard(classOptions().first ?? .warrior)
+                            } else {
+                                let options = allAvailableClasses()
+                                ForEach(options, id: \.self) { cls in
+                                    Button {
+                                        selectedClass = cls
+                                    } label: {
+                                        HStack {
+                                            Text(cls.displayName)
+                                                .font(.secondary(14, weight: .semibold))
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                            if selectedClass == cls {
+                                                Image(systemName: "checkmark.circle.fill")
+                                                    .foregroundColor(.cardGold)
+                                            }
                                         }
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 12)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .fill(selectedClass == cls ? Color.cardGold.opacity(0.18) : Color.cardDarkGray)
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .stroke(selectedClass == cls ? Color.cardGold.opacity(0.6) : Color.white.opacity(0.15), lineWidth: 1)
+                                        )
                                     }
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 12)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 4)
-                                            .fill(selectedClass == cls ? Color.cardGold.opacity(0.18) : Color.cardDarkGray)
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 4)
-                                            .stroke(selectedClass == cls ? Color.cardGold.opacity(0.6) : Color.white.opacity(0.15), lineWidth: 1)
-                                    )
                                 }
                             }
                         }
@@ -493,14 +497,14 @@ private extension OnboardingView {
         let unlocked = totalXP >= theme.unlockXP
         return HStack(spacing: 6) {
             Text(theme.displayName)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.secondary(11, weight: .bold))
             if !unlocked {
                 Text("🔒 \(Int(theme.unlockXP)) XP")
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                    .font(.secondary(10, weight: .semibold))
                     .foregroundColor(.gray)
             } else {
                 Text("Unlocked")
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                    .font(.secondary(10, weight: .semibold))
                     .foregroundColor(.green)
             }
         }
@@ -515,7 +519,7 @@ private extension OnboardingView {
     func priorityPicker(title: String, selection: Binding<Constants.PriorityStat>, excludes: Constants.PriorityStat?) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
 
             HStack(spacing: 8) {
@@ -525,7 +529,7 @@ private extension OnboardingView {
                         if !isDisabled { selection.wrappedValue = stat }
                     } label: {
                         Text(stat.displayName.uppercased())
-                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .font(.secondary(10, weight: .bold))
                             .foregroundColor(selection.wrappedValue == stat ? .black : .white)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
@@ -544,7 +548,7 @@ private extension OnboardingView {
     func heightPicker(title: String, selection: Binding<Constants.HeightCategory>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
             Picker(title, selection: selection) {
                 ForEach(Constants.HeightCategory.allCases, id: \.rawValue) { option in
@@ -560,7 +564,7 @@ private extension OnboardingView {
     func bodyTypePicker(title: String, selection: Binding<Constants.BodyType>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.secondary(12, weight: .semibold))
                 .foregroundColor(.gray)
             Picker(title, selection: selection) {
                 ForEach(Constants.BodyType.allCases, id: \.rawValue) { option in
@@ -571,6 +575,47 @@ private extension OnboardingView {
             .tint(.cardGold)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    func suggestedClassCard(_ cls: Constants.MuscleClass) -> some View {
+        let w = cls.weights
+        let strength = w.strength * 100
+        let speed = w.speed * 100
+        let endurance = w.endurance * 100
+        let intelligence = w.intelligence * 100
+
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(cls.displayName)
+                    .font(.pixel(11))
+                    .foregroundColor(.white)
+                Spacer()
+                Image(systemName: "sparkles")
+                    .foregroundColor(.cardGold)
+            }
+
+            StatRadarView(
+                strength: strength,
+                speed: speed,
+                endurance: endurance,
+                intelligence: intelligence,
+                size: 180
+            )
+            .padding(.vertical, 6)
+
+            Text(cls.flavorDescription)
+                .font(.secondary(12))
+                .foregroundColor(.gray)
+        }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.cardDark)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(Color.cardGold.opacity(0.4), lineWidth: 1)
+        )
     }
 
     func classOptions() -> [Constants.MuscleClass] {

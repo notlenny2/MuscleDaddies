@@ -11,6 +11,10 @@ struct SettingsView: View {
     @State private var showHealthKitInfo = false
     @State private var showClassSuggest = false
     @State private var showClassSelect = false
+    @State private var showSuggestedClassSheet = false
+    @State private var suggestedClass: Constants.MuscleClass = .warrior
+    @State private var pendingClassSelection: Constants.MuscleClass?
+    @State private var displayNameDraft = ""
     @State private var tempDisplayName = ""
     @State private var demoXP: Double = 0
     @State private var showGuidedOnboarding = false
@@ -38,12 +42,24 @@ struct SettingsView: View {
                                     .font(.pixel(10))
                                     .foregroundColor(.white)
                                 Text("Level \(authService.currentUser?.stats.level ?? 1)")
-                                    .font(.system(.subheadline, design: .monospaced))
+                                    .font(.secondary(15))
                                     .foregroundColor(.gray)
                             }
                         }
                         .listRowBackground(Color.cardDarkGray)
                     }
+
+                    Section("Display Name") {
+                        TextField("Display Name", text: $displayNameDraft)
+                            .textFieldStyle(.roundedBorder)
+
+                        Button("Save Display Name") {
+                            Task { await updateDisplayName() }
+                        }
+                        .foregroundColor(.cardGold)
+                        .disabled(displayNameDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                    .listRowBackground(Color.cardDarkGray)
 
                     // Class Theme
                     Section("Class Theme") {
@@ -63,7 +79,7 @@ struct SettingsView: View {
                             .pickerStyle(.segmented)
 
                             Text("Fantasy is default. Earn XP to unlock Sports and Sci‑Fi.")
-                                .font(.system(.caption, design: .monospaced))
+                                .font(.secondary(12))
                                 .foregroundColor(.gray)
                         }
                         .listRowBackground(Color.cardDarkGray)
@@ -86,12 +102,11 @@ struct SettingsView: View {
                     Section("Class") {
                         ForEach(Constants.MuscleClass.allCases.filter { $0.theme == classTheme }, id: \.rawValue) { cls in
                             Button {
-                                selectedClass = cls
-                                updateClass(cls)
+                                pendingClassSelection = cls
                             } label: {
                                 HStack {
                                     Text(cls.displayName)
-                                        .font(.system(.body, design: .monospaced))
+                                        .font(.secondary(17))
                                         .foregroundColor(.white)
                                     Spacer()
                                     if selectedClass == cls {
@@ -113,7 +128,7 @@ struct SettingsView: View {
                                 Spacer()
                                 if healthKitService.isAuthorized {
                                     Text("Connected")
-                                        .font(.system(.caption, design: .monospaced))
+                                        .font(.secondary(12))
                                         .foregroundColor(.green)
                                 } else {
                                     Button("Connect") {
@@ -158,16 +173,16 @@ struct SettingsView: View {
                         .listRowBackground(Color.cardDarkGray)
                     }
 
-                    // Class Setup
-                    Section("Class Setup") {
-                        Button("Suggest Class for Me") {
-                            tempDisplayName = authService.currentUser?.displayName ?? ""
-                            showClassSuggest = true
+                    // Daddy Setup
+                    Section("Daddy Setup") {
+                        Button("Suggest Daddy for Me") {
+                            suggestedClass = suggestClass()
+                            showSuggestedClassSheet = true
                         }
                         .foregroundColor(.cardGold)
                         .listRowBackground(Color.cardDarkGray)
 
-                        Button("Select Your Class") {
+                        Button("Build Your Daddy") {
                             tempDisplayName = authService.currentUser?.displayName ?? ""
                             showClassSelect = true
                         }
@@ -185,12 +200,12 @@ struct SettingsView: View {
                     Section("Demo Tools") {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Total XP")
-                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .font(.secondary(12, weight: .semibold))
                                 .foregroundColor(.gray)
                             Slider(value: $demoXP, in: 0...100_000, step: 100)
                                 .tint(.cardGold)
                             Text("\(Int(demoXP)) XP")
-                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                .font(.secondary(12, weight: .semibold))
                                 .foregroundColor(.white)
                             Button("Apply XP") {
                                 Task { await applyDemoXP() }
@@ -227,6 +242,7 @@ struct SettingsView: View {
                 let derivedTheme = classTheme.cardTheme
                 selectedTheme = derivedTheme
                 tempDisplayName = authService.currentUser?.displayName ?? ""
+                displayNameDraft = authService.currentUser?.displayName ?? ""
                 demoXP = authService.currentUser?.stats.totalXP ?? 0
                 if authService.currentUser?.selectedTheme != derivedTheme {
                     updateTheme(derivedTheme)
@@ -244,6 +260,17 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showClassSelect) {
                 OnboardingView(displayName: $tempDisplayName, mode: .select)
+            }
+            .sheet(isPresented: $showSuggestedClassSheet) {
+                suggestedClassSheet
+            }
+            .sheet(isPresented: Binding(
+                get: { pendingClassSelection != nil },
+                set: { if !$0 { pendingClassSelection = nil } }
+            )) {
+                if let cls = pendingClassSelection {
+                    classConfirmSheet(for: cls)
+                }
             }
             .fullScreenCover(isPresented: $showGuidedOnboarding) {
                 GuidedOnboardingFlowView()
@@ -269,6 +296,159 @@ struct SettingsView: View {
         Task {
             try? await firestoreService.updateUser(user)
         }
+    }
+
+    private func updateDisplayName() async {
+        guard var user = authService.currentUser else { return }
+        let trimmed = displayNameDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        user.displayName = trimmed
+        authService.currentUser = user
+        try? await firestoreService.updateUser(user)
+    }
+
+    private func weight(for stat: Constants.PriorityStat, weights: Constants.ClassWeights) -> Double {
+        switch stat {
+        case .strength: return weights.strength
+        case .speed: return weights.speed
+        case .endurance: return weights.endurance
+        case .intelligence: return weights.intelligence
+        }
+    }
+
+    private var suggestedClassSheet: some View {
+        let baseUser = authService.currentUser ?? AppUser(displayName: "Demo Daddy")
+        var previewUser = baseUser
+        previewUser.selectedClass = suggestedClass
+        previewUser.classTheme = classTheme
+        previewUser.selectedTheme = classTheme.cardTheme
+
+        return NavigationStack {
+            ZStack {
+                Color.cardDark.ignoresSafeArea()
+                VStack(spacing: 16) {
+                    Text("Suggested Class")
+                        .font(.pixel(12))
+                        .foregroundColor(.white)
+
+                    CharacterCardView(user: previewUser)
+                        .padding(.horizontal)
+
+                    StatRadarView(
+                        strength: suggestedClass.weights.strength * 100,
+                        speed: suggestedClass.weights.speed * 100,
+                        endurance: suggestedClass.weights.endurance * 100,
+                        intelligence: suggestedClass.weights.intelligence * 100,
+                        size: 200
+                    )
+                    .padding(.vertical, 4)
+
+                    Text(suggestedClass.flavorDescription)
+                        .font(.secondary(12))
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+
+                    HStack(spacing: 12) {
+                        Button("Cancel") {
+                            showSuggestedClassSheet = false
+                        }
+                        .foregroundColor(.gray)
+
+                        Spacer()
+
+                        Button("Confirm") {
+                            selectedClass = suggestedClass
+                            updateClass(suggestedClass)
+                            showSuggestedClassSheet = false
+                        }
+                        .foregroundColor(.black)
+                        .frame(width: 140, height: 44)
+                        .background(Color.cardGold)
+                        .cornerRadius(6)
+                    }
+                    .padding(.horizontal, 24)
+
+                    Spacer()
+                }
+                .padding(.top, 20)
+            }
+        }
+    }
+
+    private func classConfirmSheet(for cls: Constants.MuscleClass) -> some View {
+        let baseUser = authService.currentUser ?? AppUser(displayName: "Demo Daddy")
+        var previewUser = baseUser
+        previewUser.selectedClass = cls
+        previewUser.classTheme = classTheme
+        previewUser.selectedTheme = classTheme.cardTheme
+
+        return NavigationStack {
+            ZStack {
+                Color.cardDark.ignoresSafeArea()
+                VStack(spacing: 16) {
+                    Text("Confirm Class")
+                        .font(.pixel(12))
+                        .foregroundColor(.white)
+
+                    CharacterCardView(user: previewUser)
+                        .padding(.horizontal)
+
+                    StatRadarView(
+                        strength: cls.weights.strength * 100,
+                        speed: cls.weights.speed * 100,
+                        endurance: cls.weights.endurance * 100,
+                        intelligence: cls.weights.intelligence * 100,
+                        size: 200
+                    )
+                    .padding(.vertical, 4)
+
+                    Text(cls.flavorDescription)
+                        .font(.secondary(12))
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+
+                    HStack(spacing: 12) {
+                        Button("Cancel") {
+                            pendingClassSelection = nil
+                        }
+                        .foregroundColor(.gray)
+
+                        Spacer()
+
+                        Button("Confirm") {
+                            selectedClass = cls
+                            updateClass(cls)
+                            pendingClassSelection = nil
+                        }
+                        .foregroundColor(.black)
+                        .frame(width: 140, height: 44)
+                        .background(Color.cardGold)
+                        .cornerRadius(6)
+                    }
+                    .padding(.horizontal, 24)
+
+                    Spacer()
+                }
+                .padding(.top, 20)
+            }
+        }
+    }
+
+    private func suggestClass() -> Constants.MuscleClass {
+        let classes = Constants.MuscleClass.allCases.filter { $0.theme == classTheme }
+        guard !classes.isEmpty else { return .warrior }
+        let primary = authService.currentUser?.priorityPrimary ?? .strength
+        let secondary = authService.currentUser?.prioritySecondary ?? .endurance
+
+        let scored = classes.map { cls -> (Constants.MuscleClass, Double) in
+            let w = cls.weights
+            let score = weight(for: primary, weights: w) * 0.6
+                + weight(for: secondary, weights: w) * 0.4
+            return (cls, score)
+        }
+        return scored.max(by: { $0.1 < $1.1 })?.0 ?? classes[0]
     }
 
     private func updateClass(_ cls: Constants.MuscleClass) {
@@ -318,7 +498,7 @@ struct SettingsView: View {
         let unlocked = isThemeUnlocked(theme)
         return HStack(spacing: 6) {
             Text(theme.displayName)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.secondary(11, weight: .bold))
             if !unlocked {
                 if let requiredLevel = theme.unlockLevel {
                     Text("🔒 LV \(requiredLevel)")
@@ -397,10 +577,10 @@ private struct HealthKitEducationView: View {
     private func infoRow(title: String, text: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.secondary(12, weight: .bold))
                 .foregroundColor(.cardGold)
             Text(text)
-                .font(.system(size: 12, design: .monospaced))
+                .font(.secondary(12))
                 .foregroundColor(.gray)
         }
     }

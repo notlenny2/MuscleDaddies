@@ -43,6 +43,9 @@
 		790903EB5C0CD2626C4E9D57 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE64C049112F884011BAFBE /* ContentView.swift */; };
 		7D427A2E1A8A9CCD6D623FF3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F157718280845A0F455985C /* User.swift */; };
 		81F7B48C5B81783D2CB18969 /* PressStart2P-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 183D83D88D8B1951FDFCA348 /* PressStart2P-Regular.ttf */; };
+		F1A2B3C4D5E6F708192A3B50 /* Godofthunder-0WO1P.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E6F708192A3B4C /* Godofthunder-0WO1P.ttf */; };
+		F1A2B3C4D5E6F708192A3B51 /* 300Trojans-x3zZR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E6F708192A3B4D /* 300Trojans-x3zZR.ttf */; };
+		F2A2B3C4D5E6F708192A3B60 /* solander demo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2A2B3C4D5E6F708192A3B5C /* solander demo.ttf */; };
 		86EFF4B2CC3CC789ED20705E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 97918D53FB1C0167EC0C4A11 /* FirebaseFirestore */; };
 		8734B0C70F6CEF7ADFA15338 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5B32A1C13740CBD84C866873 /* FirebaseMessaging */; };
 		88DDAD313C54C9F91434D936 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFFB6DFD8B30B72F874E3F /* NotificationService.swift */; };
@@ -63,6 +66,9 @@
 		A8C69EA924210008EBF774CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62FE8ED6ACFEA060853D5C96 /* Assets.xcassets */; };
 		AC51D1F50806A51087B98F15 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE9B8C7891FD2B4481BB17E /* ChallengeView.swift */; };
 		B1C169253BB4608C8CE9AAE3 /* PressStart2P-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 183D83D88D8B1951FDFCA348 /* PressStart2P-Regular.ttf */; };
+		F1A2B3C4D5E6F708192A3B52 /* Godofthunder-0WO1P.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E6F708192A3B4C /* Godofthunder-0WO1P.ttf */; };
+		F1A2B3C4D5E6F708192A3B53 /* 300Trojans-x3zZR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E6F708192A3B4D /* 300Trojans-x3zZR.ttf */; };
+		F2A2B3C4D5E6F708192A3B61 /* solander demo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2A2B3C4D5E6F708192A3B5C /* solander demo.ttf */; };
 		B4CC0F60F83643804EB2B752 /* ModernTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B1837F52BAC564DFA2332 /* ModernTheme.swift */; };
 		B65815499E2AC53F6BFC13F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BF4EF3E142BD4F826409A6 /* SettingsView.swift */; };
 		B7B61F33BC5DD102902EA9A7 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B11F83F95C349FD857336F /* FeedView.swift */; };
@@ -101,6 +107,9 @@
 		089B1837F52BAC564DFA2332 /* ModernTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTheme.swift; sourceTree = "<group>"; };
 		0C29187BD8B69C153A73BECD /* MuscleDaddies.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MuscleDaddies.entitlements; sourceTree = "<group>"; };
 		183D83D88D8B1951FDFCA348 /* PressStart2P-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PressStart2P-Regular.ttf"; sourceTree = "<group>"; };
+		F1A2B3C4D5E6F708192A3B4C /* Godofthunder-0WO1P.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Godofthunder-0WO1P.ttf"; sourceTree = "<group>"; };
+		F1A2B3C4D5E6F708192A3B4D /* 300Trojans-x3zZR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "300Trojans-x3zZR.ttf"; sourceTree = "<group>"; };
+		F2A2B3C4D5E6F708192A3B5C /* solander demo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "solander demo.ttf"; sourceTree = "<group>"; };
 		18A85B40F603904ED8E4FD43 /* RecoveryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryMetrics.swift; sourceTree = "<group>"; };
 		1B2F5A067F033562813C6F52 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E1F2 /* GuidedOnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidedOnboardingFlow.swift; sourceTree = "<group>"; };
@@ -380,6 +389,9 @@
 			isa = PBXGroup;
 			children = (
 				183D83D88D8B1951FDFCA348 /* PressStart2P-Regular.ttf */,
+				F1A2B3C4D5E6F708192A3B4C /* Godofthunder-0WO1P.ttf */,
+				F1A2B3C4D5E6F708192A3B4D /* 300Trojans-x3zZR.ttf */,
+				F2A2B3C4D5E6F708192A3B5C /* solander demo.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -479,6 +491,9 @@
 				48F50B5AAA9A4C871E2139CE /* Assets.xcassets in Resources */,
 				752A33E19D25BC6ED757FB73 /* GoogleService-Info.plist in Resources */,
 				81F7B48C5B81783D2CB18969 /* PressStart2P-Regular.ttf in Resources */,
+				F1A2B3C4D5E6F708192A3B50 /* Godofthunder-0WO1P.ttf in Resources */,
+				F1A2B3C4D5E6F708192A3B51 /* 300Trojans-x3zZR.ttf in Resources */,
+				F2A2B3C4D5E6F708192A3B60 /* solander demo.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +504,9 @@
 				A8C69EA924210008EBF774CC /* Assets.xcassets in Resources */,
 				62EDFE67C5EB2287F80185C7 /* GoogleService-Info.plist in Resources */,
 				B1C169253BB4608C8CE9AAE3 /* PressStart2P-Regular.ttf in Resources */,
+				F1A2B3C4D5E6F708192A3B52 /* Godofthunder-0WO1P.ttf in Resources */,
+				F1A2B3C4D5E6F708192A3B53 /* 300Trojans-x3zZR.ttf in Resources */,
+				F2A2B3C4D5E6F708192A3B61 /* solander demo.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

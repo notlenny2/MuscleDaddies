@@ -64,10 +64,10 @@ struct ChallengeView: View {
     private var beltHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Belts")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .font(.secondary(14, weight: .bold))
                 .foregroundColor(.white)
             Text("One challenge at a time. Win the belt by gaining the most XP in the chosen stat.")
-                .font(.system(size: 11, design: .monospaced))
+                .font(.secondary(11))
                 .foregroundColor(.gray)
         }
         .padding(12)

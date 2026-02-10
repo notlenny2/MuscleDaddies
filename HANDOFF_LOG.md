@@ -316,3 +316,39 @@ Modified files (not committed):
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/GuidedOnboardingFlow.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/LoginView.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Services/AuthService.swift
+
+## 2026-02-10 Update: Onboarding + Settings UX
+- Guided onboarding now shows Warrior bubble at bottom with animated dots; class selection opens a confirm sheet with card + radar + description.
+- Onboarding class confirm uses fantasy class theme for preview card.
+- Settings now includes display name edit (save without rebuilding).
+- Settings: “Daddy Setup” section labels updated (Suggest Daddy for Me / Build Your Daddy).
+- Suggest Class in Settings opens a confirm sheet with card + radar + description; class selection list now also opens confirm sheet (not auto-apply).
+- Suggested/confirm sheets show CharacterCardView + StatRadarView + class flavor description.
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Auth/GuidedOnboardingFlow.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Constants.swift
+
+## 2026-02-10 Update: Fonts + Typography
+- Primary font: GodofThunder (1.5x scaling). Secondary font: Solander-Demo (1.5x scaling).
+- Fonts added to Resources + UIAppFonts: Godofthunder-0WO1P.ttf, solander demo.ttf.
+- Pixel font helper now maps to primary (GodofThunder).
+- Replaced monospaced/system body fonts with secondary (Solander).
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Utilities/Extensions.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Info.plist
+  - /Users/tj/MuscleDaddies/MuscleDaddies.xcodeproj/project.pbxproj
+
+## 2026-02-10 Update: Card + UI Tweaks
+- My Card tab title changed to “Your Daddy” with primary font.
+- Pixel card progress bars reworked to rectangle blocks for alignment after font scaling.
+- Radar chart behind cards slightly more visible (opacity 0.12).
+- Files:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/App/ContentView.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/PixelArtTheme.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/ModernTheme.swift
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Card/CardThemes/TradingCardTheme.swift
+
+## Notes
+- Simulator install via simctl still fails due to CoreSimulatorService connection issues in this environment; run in Xcode.
+- Build last succeeded after font/name fixes; rerun if needed.

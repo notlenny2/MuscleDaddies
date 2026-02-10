@@ -73,7 +73,7 @@ struct LeaderboardView: View {
                                         .foregroundColor(.white)
 
                                     Text("Level \(member.stats.level)")
-                                        .font(.system(size: 11, design: .monospaced))
+                                        .font(.secondary(11))
                                         .foregroundColor(.gray)
                                 }
 
@@ -88,7 +88,7 @@ struct LeaderboardView: View {
                                         Image(systemName: "flame.fill")
                                             .font(.system(size: 10))
                                         Text("\(member.currentStreak)")
-                                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                            .font(.secondary(11, weight: .bold))
                                     }
                                     .foregroundColor(.orange)
                                 }

@@ -72,7 +72,15 @@ struct ContentView: View {
                             .padding(.vertical)
                         }
                     }
-                    .navigationTitle("My Card")
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Your Daddy")
+                                .font(.primary(24))
+                                .foregroundColor(.white)
+                        }
+                    }
                     .toolbarColorScheme(.dark, for: .navigationBar)
                 }
                 .tabItem {
@@ -132,7 +140,7 @@ struct ContentView: View {
                                 .shadow(color: .black.opacity(0.5), radius: 0, x: 2, y: 2)
 
                             Image(systemName: "plus")
-                                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                                .font(.secondary(20, weight: .bold))
                                 .foregroundColor(.black)
                         }
                     }
@@ -188,7 +196,7 @@ struct ContentView: View {
                 .foregroundColor(color)
 
             Text(value)
-                .font(.pixel(14))
+                .font(.secondary(14, weight: .bold))
                 .foregroundColor(.white)
 
             Text(label)

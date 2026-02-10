@@ -58,7 +58,7 @@ struct GroupView: View {
                 .foregroundColor(.white)
 
             Text("Get an invite code from your friends\nor create a new group")
-                .font(.system(.subheadline, design: .monospaced))
+                .font(.secondary(15))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
 
@@ -195,7 +195,7 @@ struct JoinGroupSheet: View {
                         .foregroundColor(.white)
 
                     TextField("CODE", text: $inviteCode)
-                        .font(.system(size: 24, weight: .bold, design: .monospaced))
+                        .font(.secondary(24, weight: .bold))
                         .multilineTextAlignment(.center)
                         .textFieldStyle(.roundedBorder)
                         .textInputAutocapitalization(.characters)
@@ -203,7 +203,7 @@ struct JoinGroupSheet: View {
 
                     if let error {
                         Text(error)
-                            .font(.system(.caption, design: .monospaced))
+                            .font(.secondary(12))
                             .foregroundColor(.red)
                     }
 
