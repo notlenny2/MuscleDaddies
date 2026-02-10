@@ -34,6 +34,15 @@ class StatCalculator {
         levelFromXP(totalXP)
     }
 
+    static func recalculateStatsWithXP(stats: UserStats) -> UserStats {
+        var updated = stats
+        let levelInfo = levelInfoFromXP(updated.totalXP)
+        updated.level = levelInfo.level
+        updated.xpCurrent = levelInfo.xpCurrent
+        updated.xpToNext = levelInfo.xpToNext
+        return updated
+    }
+
     static func statXP(
         for workouts: [Workout],
         stat: Constants.PriorityStat,

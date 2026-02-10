@@ -371,41 +371,123 @@ class FirestoreService: ObservableObject {
             // Check if achievement criteria is met
             let shouldUnlock: Bool = {
                 switch type {
+                // Original Achievements
                 case .firstBlood:
-                    // Log your first workout
                     return !allWorkouts.isEmpty
 
                 case .ironWill:
-                    // 7-day workout streak
                     return user.currentStreak >= 7
 
                 case .renaissanceMan:
-                    // 5 different workout types in a week
                     let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
                     let recentWorkouts = allWorkouts.filter { $0.createdAt >= oneWeekAgo }
                     let uniqueTypes = Set(recentWorkouts.map { $0.type })
                     return uniqueTypes.count >= 5
 
                 case .beastMode:
-                    // 20 workouts in a month
                     let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
                     let monthWorkouts = allWorkouts.filter { $0.createdAt >= oneMonthAgo }
                     return monthWorkouts.count >= 20
 
                 case .zenMaster:
-                    // 10 mindfulness sessions (yoga, meditation, stretching)
                     let mindfulWorkouts = allWorkouts.filter {
                         $0.type == .yoga || $0.type == .meditation || $0.type == .stretching
                     }
                     return mindfulWorkouts.count >= 10
 
                 case .accountabilityPartner:
-                    // Poke 10 friends
                     return user.pokesSent >= 10
 
                 case .daddyOfTheMonth:
-                    // Highest overall level at month end (skip for now, needs cron job)
-                    return false
+                    return false // Requires cron job
+
+                // Class & Theme Exploration
+                case .identityCrisis:
+                    return user.classChanges >= 3
+
+                case .tripleThreat:
+                    return user.themesUsed.count >= 3
+
+                case .sportsLegend:
+                    guard user.classTheme == .sports, let startDate = user.classStartDate else { return false }
+                    let daysSinceStart = Calendar.current.dateComponents([.day], from: startDate, to: Date()).day ?? 0
+                    return daysSinceStart >= 30
+
+                case .fantasyHero:
+                    guard user.classTheme == .fantasy, let startDate = user.classStartDate else { return false }
+                    let daysSinceStart = Calendar.current.dateComponents([.day], from: startDate, to: Date()).day ?? 0
+                    return daysSinceStart >= 30
+
+                case .sciFiCommander:
+                    guard user.classTheme == .scifi, let startDate = user.classStartDate else { return false }
+                    let daysSinceStart = Calendar.current.dateComponents([.day], from: startDate, to: Date()).day ?? 0
+                    return daysSinceStart >= 30
+
+                case .loyalToTheEnd:
+                    guard let startDate = user.classStartDate else { return false }
+                    let daysSinceStart = Calendar.current.dateComponents([.day], from: startDate, to: Date()).day ?? 0
+                    return daysSinceStart >= 60
+
+                // Consistency & Dedication
+                case .gettingSerious:
+                    return user.currentStreak >= 14
+
+                case .unstoppable:
+                    return user.currentStreak >= 30
+
+                case .legendaryDiscipline:
+                    return user.currentStreak >= 60
+
+                // Workout Mastery
+                case .masterOfAll:
+                    let uniqueTypes = Set(allWorkouts.map { $0.type })
+                    return uniqueTypes.count >= 10
+
+                case .distanceDemon:
+                    let totalMiles = user.totalDistanceKm * 0.621371 // Convert km to miles
+                    return totalMiles >= 100
+
+                case .timeLord:
+                    let totalHours = Double(user.totalWorkoutMinutes) / 60.0
+                    return totalHours >= 100
+
+                case .powerHouse:
+                    let strengthWorkouts = allWorkouts.filter { $0.type == .strength }
+                    return strengthWorkouts.count >= 50
+
+                case .cardioKing:
+                    let cardioWorkouts = allWorkouts.filter {
+                        $0.type == .running || $0.type == .cycling || $0.type == .swimming
+                    }
+                    return cardioWorkouts.count >= 50
+
+                // Social Engagement
+                case .socialButterfly:
+                    return user.feedReactions >= 50
+
+                case .superMotivator:
+                    return user.pokesSent >= 25
+
+                case .beltMaster:
+                    return user.beltWins >= 5
+
+                case .challengeChampion:
+                    return user.challengesCompleted >= 10
+
+                case .squadGoals:
+                    guard let groupId = user.groupId else { return false }
+                    let members = try? await getGroupMembers(groupId: groupId)
+                    return (members?.count ?? 0) >= 8
+
+                // App Engagement
+                case .earlyRiser:
+                    return user.earlyWorkouts >= 10
+
+                case .nightWarrior:
+                    return user.lateWorkouts >= 10
+
+                case .consistentUser:
+                    return user.appOpenDates.count >= 30
                 }
             }()
 

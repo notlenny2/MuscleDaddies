@@ -24,6 +24,24 @@ struct AppUser: Codable, Identifiable {
     var goals: UserGoals?
     var pokesSent: Int
 
+    // New achievement tracking fields
+    var classChanges: Int
+    var themesUsedRaw: [String]
+    var feedReactions: Int
+    var beltWins: Int
+    var challengesCompleted: Int
+    var earlyWorkouts: Int
+    var lateWorkouts: Int
+    var appOpenDates: [String] // Store as "yyyy-MM-dd" strings
+    var classStartDate: Date? // Track when current class was selected
+    var totalDistanceKm: Double
+    var totalWorkoutMinutes: Int
+
+    var themesUsed: Set<Constants.ClassTheme> {
+        get { Set(themesUsedRaw.compactMap { Constants.ClassTheme(rawValue: $0) }) }
+        set { themesUsedRaw = Array(newValue.map { $0.rawValue }) }
+    }
+
     init(
         id: String? = nil,
         displayName: String,
@@ -45,7 +63,18 @@ struct AppUser: Codable, Identifiable {
         heightCategory: Constants.HeightCategory? = nil,
         bodyType: Constants.BodyType? = nil,
         goals: UserGoals? = nil,
-        pokesSent: Int = 0
+        pokesSent: Int = 0,
+        classChanges: Int = 0,
+        themesUsedRaw: [String] = [],
+        feedReactions: Int = 0,
+        beltWins: Int = 0,
+        challengesCompleted: Int = 0,
+        earlyWorkouts: Int = 0,
+        lateWorkouts: Int = 0,
+        appOpenDates: [String] = [],
+        classStartDate: Date? = nil,
+        totalDistanceKm: Double = 0,
+        totalWorkoutMinutes: Int = 0
     ) {
         self.id = id
         self.displayName = displayName
@@ -68,6 +97,17 @@ struct AppUser: Codable, Identifiable {
         self.bodyType = bodyType
         self.goals = goals
         self.pokesSent = pokesSent
+        self.classChanges = classChanges
+        self.themesUsedRaw = themesUsedRaw
+        self.feedReactions = feedReactions
+        self.beltWins = beltWins
+        self.challengesCompleted = challengesCompleted
+        self.earlyWorkouts = earlyWorkouts
+        self.lateWorkouts = lateWorkouts
+        self.appOpenDates = appOpenDates
+        self.classStartDate = classStartDate
+        self.totalDistanceKm = totalDistanceKm
+        self.totalWorkoutMinutes = totalWorkoutMinutes
     }
 
     enum CodingKeys: String, CodingKey {
@@ -92,6 +132,17 @@ struct AppUser: Codable, Identifiable {
         case bodyType
         case goals
         case pokesSent
+        case classChanges
+        case themesUsedRaw
+        case feedReactions
+        case beltWins
+        case challengesCompleted
+        case earlyWorkouts
+        case lateWorkouts
+        case appOpenDates
+        case classStartDate
+        case totalDistanceKm
+        case totalWorkoutMinutes
     }
 
     init(from decoder: Decoder) throws {
@@ -117,6 +168,17 @@ struct AppUser: Codable, Identifiable {
         bodyType = try container.decodeIfPresent(Constants.BodyType.self, forKey: .bodyType)
         goals = try container.decodeIfPresent(UserGoals.self, forKey: .goals)
         pokesSent = try container.decodeIfPresent(Int.self, forKey: .pokesSent) ?? 0
+        classChanges = try container.decodeIfPresent(Int.self, forKey: .classChanges) ?? 0
+        themesUsedRaw = try container.decodeIfPresent([String].self, forKey: .themesUsedRaw) ?? []
+        feedReactions = try container.decodeIfPresent(Int.self, forKey: .feedReactions) ?? 0
+        beltWins = try container.decodeIfPresent(Int.self, forKey: .beltWins) ?? 0
+        challengesCompleted = try container.decodeIfPresent(Int.self, forKey: .challengesCompleted) ?? 0
+        earlyWorkouts = try container.decodeIfPresent(Int.self, forKey: .earlyWorkouts) ?? 0
+        lateWorkouts = try container.decodeIfPresent(Int.self, forKey: .lateWorkouts) ?? 0
+        appOpenDates = try container.decodeIfPresent([String].self, forKey: .appOpenDates) ?? []
+        classStartDate = try container.decodeIfPresent(Date.self, forKey: .classStartDate)
+        totalDistanceKm = try container.decodeIfPresent(Double.self, forKey: .totalDistanceKm) ?? 0
+        totalWorkoutMinutes = try container.decodeIfPresent(Int.self, forKey: .totalWorkoutMinutes) ?? 0
     }
 
     func encode(to encoder: Encoder) throws {
@@ -142,6 +204,17 @@ struct AppUser: Codable, Identifiable {
         try container.encodeIfPresent(bodyType, forKey: .bodyType)
         try container.encodeIfPresent(goals, forKey: .goals)
         try container.encode(pokesSent, forKey: .pokesSent)
+        try container.encode(classChanges, forKey: .classChanges)
+        try container.encode(themesUsedRaw, forKey: .themesUsedRaw)
+        try container.encode(feedReactions, forKey: .feedReactions)
+        try container.encode(beltWins, forKey: .beltWins)
+        try container.encode(challengesCompleted, forKey: .challengesCompleted)
+        try container.encode(earlyWorkouts, forKey: .earlyWorkouts)
+        try container.encode(lateWorkouts, forKey: .lateWorkouts)
+        try container.encode(appOpenDates, forKey: .appOpenDates)
+        try container.encodeIfPresent(classStartDate, forKey: .classStartDate)
+        try container.encode(totalDistanceKm, forKey: .totalDistanceKm)
+        try container.encode(totalWorkoutMinutes, forKey: .totalWorkoutMinutes)
     }
 }
 

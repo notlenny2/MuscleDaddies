@@ -80,6 +80,14 @@ struct ContentView: View {
                                 .font(.primary(24))
                                 .foregroundColor(.white)
                         }
+                        if let user = authService.currentUser {
+                            ToolbarItem(placement: .primaryAction) {
+                                ShareLink(item: shareText(for: user)) {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .foregroundColor(.cardGold)
+                                }
+                            }
+                        }
                     }
                     .toolbarColorScheme(.dark, for: .navigationBar)
                 }
@@ -210,6 +218,33 @@ struct ContentView: View {
                 }
             }
         }
+    }
+
+    private func shareText(for user: AppUser) -> String {
+        let className = user.selectedClass.displayName
+        let level = user.stats.level
+        let str = Int(user.stats.strength)
+        let spd = Int(user.stats.speed)
+        let end = Int(user.stats.endurance)
+        let int = Int(user.stats.intelligence)
+        let streak = user.currentStreak
+
+        return """
+        💪 Muscle Daddies
+
+        \(user.displayName) - Level \(level) \(className)
+
+        📊 Stats:
+        💪 Strength: \(str)
+        ⚡️ Speed: \(spd)
+        ❤️ Endurance: \(end)
+        🧠 Mobility: \(int)
+
+        🔥 Current Streak: \(streak) days
+        🏆 Best Streak: \(user.longestStreak) days
+
+        Join me on Muscle Daddies!
+        """
     }
 
     private func quickStatCard(icon: String, label: String, value: String, color: Color) -> some View {

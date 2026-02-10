@@ -396,6 +396,7 @@ enum Constants {
     }
 
     enum AchievementType: String, CaseIterable, Codable {
+        // Original achievements
         case firstBlood = "first_blood"
         case ironWill = "iron_will"
         case renaissanceMan = "renaissance_man"
@@ -403,6 +404,38 @@ enum Constants {
         case zenMaster = "zen_master"
         case accountabilityPartner = "accountability_partner"
         case daddyOfTheMonth = "daddy_of_the_month"
+
+        // Class & Theme Exploration
+        case identityCrisis = "identity_crisis"
+        case tripleThreat = "triple_threat"
+        case sportsLegend = "sports_legend"
+        case fantasyHero = "fantasy_hero"
+        case sciFiCommander = "scifi_commander"
+        case loyalToTheEnd = "loyal_to_the_end"
+
+        // Consistency & Dedication
+        case gettingSerious = "getting_serious"
+        case unstoppable = "unstoppable"
+        case legendaryDiscipline = "legendary_discipline"
+
+        // Workout Mastery
+        case masterOfAll = "master_of_all"
+        case distanceDemon = "distance_demon"
+        case timeLord = "time_lord"
+        case powerHouse = "power_house"
+        case cardioKing = "cardio_king"
+
+        // Social Engagement
+        case socialButterfly = "social_butterfly"
+        case superMotivator = "super_motivator"
+        case beltMaster = "belt_master"
+        case challengeChampion = "challenge_champion"
+        case squadGoals = "squad_goals"
+
+        // App Engagement
+        case earlyRiser = "early_riser"
+        case nightWarrior = "night_warrior"
+        case consistentUser = "consistent_user"
 
         var displayName: String {
             switch self {
@@ -413,6 +446,28 @@ enum Constants {
             case .zenMaster: return "Zen Master"
             case .accountabilityPartner: return "Accountability Partner"
             case .daddyOfTheMonth: return "Daddy of the Month"
+            case .identityCrisis: return "Identity Crisis"
+            case .tripleThreat: return "Triple Threat"
+            case .sportsLegend: return "Sports Legend"
+            case .fantasyHero: return "Fantasy Hero"
+            case .sciFiCommander: return "Sci-Fi Commander"
+            case .loyalToTheEnd: return "Loyal to the End"
+            case .gettingSerious: return "Getting Serious"
+            case .unstoppable: return "Unstoppable"
+            case .legendaryDiscipline: return "Legendary Discipline"
+            case .masterOfAll: return "Master of All"
+            case .distanceDemon: return "Distance Demon"
+            case .timeLord: return "Time Lord"
+            case .powerHouse: return "Power House"
+            case .cardioKing: return "Cardio King"
+            case .socialButterfly: return "Social Butterfly"
+            case .superMotivator: return "Super Motivator"
+            case .beltMaster: return "Belt Master"
+            case .challengeChampion: return "Challenge Champion"
+            case .squadGoals: return "Squad Goals"
+            case .earlyRiser: return "Early Riser"
+            case .nightWarrior: return "Night Warrior"
+            case .consistentUser: return "Consistent User"
             }
         }
 
@@ -425,6 +480,28 @@ enum Constants {
             case .zenMaster: return "10 mindfulness sessions"
             case .accountabilityPartner: return "Poke 10 friends"
             case .daddyOfTheMonth: return "Highest overall level at month end"
+            case .identityCrisis: return "Change your class 3 times"
+            case .tripleThreat: return "Try all 3 class themes"
+            case .sportsLegend: return "Use a Sports class for 30 days"
+            case .fantasyHero: return "Use a Fantasy class for 30 days"
+            case .sciFiCommander: return "Use a Sci-Fi class for 30 days"
+            case .loyalToTheEnd: return "Keep same class for 60 days"
+            case .gettingSerious: return "14-day workout streak"
+            case .unstoppable: return "30-day workout streak"
+            case .legendaryDiscipline: return "60-day workout streak"
+            case .masterOfAll: return "Log all 10 workout types"
+            case .distanceDemon: return "Log 100 total miles"
+            case .timeLord: return "Log 100 total hours of workouts"
+            case .powerHouse: return "Log 50 strength workouts"
+            case .cardioKing: return "Log 50 cardio workouts"
+            case .socialButterfly: return "React to 50 feed items"
+            case .superMotivator: return "Poke 25 friends"
+            case .beltMaster: return "Win 5 belt challenges"
+            case .challengeChampion: return "Complete 10 group challenges"
+            case .squadGoals: return "Be in a group with 8+ members"
+            case .earlyRiser: return "Log 10 workouts before 8am"
+            case .nightWarrior: return "Log 10 workouts after 9pm"
+            case .consistentUser: return "Open app 30 days in a row"
             }
         }
 
@@ -437,6 +514,73 @@ enum Constants {
             case .zenMaster: return "leaf.fill"
             case .accountabilityPartner: return "hand.point.right.fill"
             case .daddyOfTheMonth: return "crown.fill"
+            case .identityCrisis: return "person.crop.circle.badge.questionmark"
+            case .tripleThreat: return "star.circle.fill"
+            case .sportsLegend: return "sportscourt.fill"
+            case .fantasyHero: return "shield.fill"
+            case .sciFiCommander: return "sparkles"
+            case .loyalToTheEnd: return "heart.fill"
+            case .gettingSerious: return "flame.circle.fill"
+            case .unstoppable: return "bolt.shield.fill"
+            case .legendaryDiscipline: return "trophy.fill"
+            case .masterOfAll: return "star.fill"
+            case .distanceDemon: return "figure.run.circle.fill"
+            case .timeLord: return "clock.badge.checkmark.fill"
+            case .powerHouse: return "dumbbell.fill"
+            case .cardioKing: return "heart.circle.fill"
+            case .socialButterfly: return "bubble.left.and.bubble.right.fill"
+            case .superMotivator: return "hand.thumbsup.fill"
+            case .beltMaster: return "medal.fill"
+            case .challengeChampion: return "rosette"
+            case .squadGoals: return "person.3.fill"
+            case .earlyRiser: return "sunrise.fill"
+            case .nightWarrior: return "moon.stars.fill"
+            case .consistentUser: return "calendar.badge.clock"
+            }
+        }
+
+        var xpBonus: Double {
+            switch self {
+            // Original - Basic (100-200 XP)
+            case .firstBlood: return 100
+            case .ironWill: return 250
+            case .renaissanceMan: return 200
+            case .beastMode: return 400
+            case .zenMaster: return 200
+            case .accountabilityPartner: return 150
+            case .daddyOfTheMonth: return 1000
+
+            // Class & Theme - Medium (150-400 XP)
+            case .identityCrisis: return 150
+            case .tripleThreat: return 250
+            case .sportsLegend: return 300
+            case .fantasyHero: return 300
+            case .sciFiCommander: return 300
+            case .loyalToTheEnd: return 400
+
+            // Consistency - Hard to Epic (300-1500 XP)
+            case .gettingSerious: return 300
+            case .unstoppable: return 750
+            case .legendaryDiscipline: return 1500
+
+            // Workout Mastery - Medium to Hard (350-500 XP)
+            case .masterOfAll: return 400
+            case .distanceDemon: return 500
+            case .timeLord: return 500
+            case .powerHouse: return 350
+            case .cardioKing: return 350
+
+            // Social - Medium (200-600 XP)
+            case .socialButterfly: return 200
+            case .superMotivator: return 300
+            case .beltMaster: return 600
+            case .challengeChampion: return 500
+            case .squadGoals: return 200
+
+            // App Engagement - Medium (250-400 XP)
+            case .earlyRiser: return 250
+            case .nightWarrior: return 250
+            case .consistentUser: return 400
             }
         }
     }

@@ -324,6 +324,19 @@ struct LogWorkoutView: View {
                 print("   - ✅ \(ach.achievementType.displayName)")
             }
 
+            // Apply XP bonuses from achievements
+            if !unlockedAchievements.isEmpty {
+                let totalXPBonus = unlockedAchievements.reduce(0) { $0 + $1.achievementType.xpBonus }
+                updatedUser.stats.xpCurrent += totalXPBonus
+                updatedUser.stats.totalXP += totalXPBonus
+                print("   💰 Total XP Bonus: +\(Int(totalXPBonus)) XP")
+
+                // Recalculate level in case XP bonus causes level up
+                updatedUser.stats = StatCalculator.recalculateStatsWithXP(stats: updatedUser.stats)
+                try? await firestoreService.updateUser(updatedUser)
+                authService.currentUser = updatedUser
+            }
+
             // Post achievement unlocks to feed
             if let groupId = user.groupId {
                 for achievement in unlockedAchievements {
@@ -458,6 +471,7 @@ struct LogWorkoutView: View {
 private struct AchievementCelebrationOverlay: View {
     let achievements: [Achievement]
     @State private var animate = false
+    @EnvironmentObject var authService: AuthService
 
     var body: some View {
         ZStack {
@@ -487,6 +501,16 @@ private struct AchievementCelebrationOverlay: View {
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
 
+                        HStack(spacing: 8) {
+                            Text("+\(Int(achievement.achievementType.xpBonus)) XP")
+                                .font(.pixel(12))
+                                .foregroundColor(.cardGold)
+                            Image(systemName: "bolt.fill")
+                                .font(.system(size: 14))
+                                .foregroundColor(.cardGold)
+                        }
+                        .padding(.top, 4)
+
                         Text("UNLOCKED")
                             .font(.pixel(10))
                             .foregroundColor(.black)
@@ -494,6 +518,19 @@ private struct AchievementCelebrationOverlay: View {
                             .padding(.vertical, 8)
                             .background(Color.cardGold)
                             .cornerRadius(4)
+
+                        // Share button
+                        if let userName = authService.currentUser?.displayName {
+                            ShareLink(item: shareText(for: achievement, userName: userName)) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "square.and.arrow.up")
+                                    Text("Share")
+                                }
+                                .font(.secondary(12, weight: .bold))
+                                .foregroundColor(.cardGold)
+                                .padding(.top, 8)
+                            }
+                        }
                     }
                     .padding(24)
                     .background(
@@ -516,6 +553,20 @@ private struct AchievementCelebrationOverlay: View {
                 animate = true
             }
         }
+    }
+
+    private func shareText(for achievement: Achievement, userName: String) -> String {
+        let xpBonus = Int(achievement.achievementType.xpBonus)
+        return """
+        🏆 Achievement Unlocked!
+
+        \(achievement.achievementType.displayName)
+        \(achievement.achievementType.description)
+
+        +\(xpBonus) XP earned by \(userName)
+
+        💪 Muscle Daddies
+        """
     }
 }
 
