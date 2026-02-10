@@ -361,6 +361,13 @@ class FirestoreService: ObservableObject {
         print("   - Total workouts: \(allWorkouts.count)")
         print("   - Current streak: \(user.currentStreak)")
 
+        // Pre-fetch group members for squadGoals achievement
+        let groupMembers: [AppUser]? = if let groupId = user.groupId {
+            try? await getGroupMembers(groupId: groupId)
+        } else {
+            nil
+        }
+
         var newlyUnlocked: [Achievement] = []
 
         // Check each achievement type
@@ -475,9 +482,7 @@ class FirestoreService: ObservableObject {
                     return user.challengesCompleted >= 10
 
                 case .squadGoals:
-                    guard let groupId = user.groupId else { return false }
-                    let members = try? await getGroupMembers(groupId: groupId)
-                    return (members?.count ?? 0) >= 8
+                    return (groupMembers?.count ?? 0) >= 8
 
                 // App Engagement
                 case .earlyRiser:
