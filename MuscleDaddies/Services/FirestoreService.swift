@@ -340,6 +340,74 @@ class FirestoreService: ObservableObject {
         return snapshot.documents.compactMap { try? $0.data(as: Achievement.self) }
     }
 
+    func checkAndUnlockAchievements(userId: String, user: AppUser) async throws -> [Achievement] {
+        if isDemoMode { return [] }
+
+        // Get already unlocked achievements
+        let unlocked = try await getAchievements(userId: userId)
+        let unlockedTypes = Set(unlocked.map { $0.achievementType })
+
+        // Get all workouts for checking
+        let allWorkouts = try await getWorkouts(userId: userId)
+
+        var newlyUnlocked: [Achievement] = []
+
+        // Check each achievement type
+        for type in Constants.AchievementType.allCases {
+            // Skip if already unlocked
+            guard !unlockedTypes.contains(type) else { continue }
+
+            // Check if achievement criteria is met
+            let shouldUnlock: Bool = {
+                switch type {
+                case .firstBlood:
+                    // Log your first workout
+                    return !allWorkouts.isEmpty
+
+                case .ironWill:
+                    // 7-day workout streak
+                    return user.currentStreak >= 7
+
+                case .renaissanceMan:
+                    // 5 different workout types in a week
+                    let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+                    let recentWorkouts = allWorkouts.filter { $0.createdAt >= oneWeekAgo }
+                    let uniqueTypes = Set(recentWorkouts.map { $0.type })
+                    return uniqueTypes.count >= 5
+
+                case .beastMode:
+                    // 20 workouts in a month
+                    let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
+                    let monthWorkouts = allWorkouts.filter { $0.createdAt >= oneMonthAgo }
+                    return monthWorkouts.count >= 20
+
+                case .zenMaster:
+                    // 10 mindfulness sessions (yoga, meditation, stretching)
+                    let mindfulWorkouts = allWorkouts.filter {
+                        $0.type == .yoga || $0.type == .meditation || $0.type == .stretching
+                    }
+                    return mindfulWorkouts.count >= 10
+
+                case .accountabilityPartner:
+                    // Poke 10 friends
+                    return user.pokesSent >= 10
+
+                case .daddyOfTheMonth:
+                    // Highest overall level at month end (skip for now, needs cron job)
+                    return false
+                }
+            }()
+
+            if shouldUnlock {
+                let achievement = Achievement(achievementType: type)
+                try await unlockAchievement(userId: userId, achievement: achievement)
+                newlyUnlocked.append(achievement)
+            }
+        }
+
+        return newlyUnlocked
+    }
+
     // MARK: - Belt Challenges
 
     func createBeltChallenge(_ challenge: BeltChallenge) async throws {

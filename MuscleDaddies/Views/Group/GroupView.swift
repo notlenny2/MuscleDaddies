@@ -170,7 +170,29 @@ struct GroupView: View {
             content: "\(user.displayName) poked \(member.displayName)! Get to the gym! 👉"
         )
         Task {
+            // Increment poke counter for achievement tracking
+            var updatedUser = user
+            updatedUser.pokesSent += 1
+            try? await firestoreService.updateUser(updatedUser)
+            authService.currentUser = updatedUser
+
+            // Post to feed
             try? await firestoreService.postFeedItem(feedItem)
+
+            // Check if Accountability Partner achievement was unlocked
+            let newAchievements = try? await firestoreService.checkAndUnlockAchievements(userId: uid, user: updatedUser)
+            if let achievements = newAchievements, !achievements.isEmpty {
+                for achievement in achievements {
+                    let achievementFeed = FeedItem(
+                        groupId: groupId,
+                        userId: uid,
+                        userName: user.displayName,
+                        type: .achievement,
+                        content: "\(user.displayName) unlocked \(achievement.achievementType.displayName) — \(achievement.achievementType.description)!"
+                    )
+                    try? await firestoreService.postFeedItem(achievementFeed)
+                }
+            }
         }
     }
 }

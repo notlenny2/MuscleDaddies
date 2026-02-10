@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct LogWorkoutView: View {
     @EnvironmentObject var authService: AuthService
@@ -16,6 +17,8 @@ struct LogWorkoutView: View {
     @State private var strengthReps: Int = 8
     @State private var strengthWeight: Double = 135
     @State private var strengthUnit: StrengthUnit = .lb
+    @State private var newAchievements: [Achievement] = []
+    @State private var showAchievementCelebration = false
 
     enum StrengthUnit: String, CaseIterable {
         case lb = "lb"
@@ -209,6 +212,12 @@ struct LogWorkoutView: View {
                         .foregroundColor(.cardGold)
                 }
             }
+            .overlay {
+                if showAchievementCelebration && !newAchievements.isEmpty {
+                    AchievementCelebrationOverlay(achievements: newAchievements)
+                        .transition(.opacity)
+                }
+            }
         }
         .onAppear {
             applyPreferredUnitIfNeeded()
@@ -265,7 +274,42 @@ struct LogWorkoutView: View {
             try await firestoreService.updateUser(updatedUser)
             authService.currentUser = updatedUser
 
-            dismiss()
+            // Check for newly unlocked achievements
+            let unlockedAchievements = try await firestoreService.checkAndUnlockAchievements(userId: uid, user: updatedUser)
+
+            // Post achievement unlocks to feed
+            if let groupId = user.groupId {
+                for achievement in unlockedAchievements {
+                    let feedItem = FeedItem(
+                        groupId: groupId,
+                        userId: uid,
+                        userName: user.displayName,
+                        type: .achievement,
+                        content: "\(user.displayName) unlocked \(achievement.achievementType.displayName) — \(achievement.achievementType.description)!"
+                    )
+                    try? await firestoreService.postFeedItem(feedItem)
+                }
+            }
+
+            // Show celebration if achievements were unlocked
+            if !unlockedAchievements.isEmpty {
+                newAchievements = unlockedAchievements
+                showAchievementCelebration = true
+
+                // Trigger success haptic
+                let haptic = UINotificationFeedbackGenerator()
+                haptic.notificationOccurred(.success)
+
+                // Auto-dismiss celebration after 3 seconds, then dismiss workout sheet
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    showAchievementCelebration = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        dismiss()
+                    }
+                }
+            } else {
+                dismiss()
+            }
         } catch {
             print("Failed to save workout: \(error)")
         }
@@ -331,5 +375,99 @@ struct LogWorkoutView: View {
         default: base = 130
         }
         return base + (selectedType == .hiit ? 10 : 0)
+    }
+}
+
+// MARK: - Achievement Celebration Overlay
+private struct AchievementCelebrationOverlay: View {
+    let achievements: [Achievement]
+    @State private var animate = false
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.85)
+                .ignoresSafeArea()
+
+            VStack(spacing: 20) {
+                ForEach(achievements) { achievement in
+                    VStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.cardGold.opacity(0.2))
+                                .frame(width: 100, height: 100)
+                            Image(systemName: achievement.achievementType.icon)
+                                .font(.system(size: 44))
+                                .foregroundColor(.cardGold)
+                        }
+                        .scaleEffect(animate ? 1.0 : 0.5)
+                        .opacity(animate ? 1.0 : 0.0)
+
+                        Text(achievement.achievementType.displayName)
+                            .font(.pixel(14))
+                            .foregroundColor(.white)
+
+                        Text(achievement.achievementType.description)
+                            .font(.secondary(13))
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+
+                        Text("UNLOCKED")
+                            .font(.pixel(10))
+                            .foregroundColor(.black)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 8)
+                            .background(Color.cardGold)
+                            .cornerRadius(4)
+                    }
+                    .padding(24)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.cardDarkGray)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.cardGold.opacity(0.6), lineWidth: 2)
+                    )
+                }
+            }
+            .padding(.horizontal, 40)
+
+            ConfettiView()
+                .ignoresSafeArea()
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                animate = true
+            }
+        }
+    }
+}
+
+private struct ConfettiView: View {
+    @State private var animate = false
+
+    private let colors: [Color] = [
+        .cardGold, .orange, .statGreen, .statBlue, .statPurple, .white
+    ]
+
+    var body: some View {
+        GeometryReader { geo in
+            ForEach(0..<60, id: \.self) { i in
+                let size = CGFloat(Int.random(in: 4...10))
+                let x = CGFloat(Int.random(in: 0...Int(geo.size.width)))
+                let y = CGFloat(Int.random(in: -50...0))
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(colors[i % colors.count])
+                    .frame(width: size, height: size * 1.6)
+                    .position(x: x, y: animate ? geo.size.height + 40 : y)
+                    .rotationEffect(.degrees(animate ? Double.random(in: 0...360) : 0))
+                    .animation(
+                        .easeIn(duration: Double.random(in: 1.2...2.2))
+                        .delay(Double.random(in: 0...0.4)),
+                        value: animate
+                    )
+            }
+        }
+        .onAppear { animate = true }
     }
 }

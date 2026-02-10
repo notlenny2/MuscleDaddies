@@ -192,6 +192,21 @@ struct ContentView: View {
                     updated.lastWorkoutDate = workouts.first?.createdAt
                     try? await firestoreService.updateUser(updated)
                     authService.currentUser = updated
+
+                    // Check for newly unlocked achievements from HealthKit sync
+                    let newAchievements = try? await firestoreService.checkAndUnlockAchievements(userId: uid, user: updated)
+                    if let achievements = newAchievements, !achievements.isEmpty, let groupId = user.groupId {
+                        for achievement in achievements {
+                            let feedItem = FeedItem(
+                                groupId: groupId,
+                                userId: uid,
+                                userName: user.displayName,
+                                type: .achievement,
+                                content: "\(user.displayName) unlocked \(achievement.achievementType.displayName) — \(achievement.achievementType.description)!"
+                            )
+                            try? await firestoreService.postFeedItem(feedItem)
+                        }
+                    }
                 }
             }
         }
