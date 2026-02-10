@@ -341,14 +341,25 @@ class FirestoreService: ObservableObject {
     }
 
     func checkAndUnlockAchievements(userId: String, user: AppUser) async throws -> [Achievement] {
-        if isDemoMode { return [] }
+        if isDemoMode {
+            print("🎮 Demo mode: skipping achievement checks")
+            return []
+        }
 
         // Get already unlocked achievements
         let unlocked = try await getAchievements(userId: userId)
         let unlockedTypes = Set(unlocked.map { $0.achievementType })
 
+        print("🔍 Checking achievements for user \(userId):")
+        print("   - Already unlocked: \(unlocked.count) achievements")
+        for ach in unlocked {
+            print("     - \(ach.achievementType.displayName)")
+        }
+
         // Get all workouts for checking
         let allWorkouts = try await getWorkouts(userId: userId)
+        print("   - Total workouts: \(allWorkouts.count)")
+        print("   - Current streak: \(user.currentStreak)")
 
         var newlyUnlocked: [Achievement] = []
 
@@ -399,12 +410,16 @@ class FirestoreService: ObservableObject {
             }()
 
             if shouldUnlock {
+                print("   ✅ UNLOCKING: \(type.displayName)")
                 let achievement = Achievement(achievementType: type)
                 try await unlockAchievement(userId: userId, achievement: achievement)
                 newlyUnlocked.append(achievement)
+            } else if !unlockedTypes.contains(type) {
+                print("   ⏸️ Not unlocked yet: \(type.displayName)")
             }
         }
 
+        print("   🎯 Result: \(newlyUnlocked.count) newly unlocked")
         return newlyUnlocked
     }
 

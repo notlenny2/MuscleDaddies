@@ -17,6 +17,8 @@ struct LogWorkoutView: View {
     @State private var strengthReps: Int = 8
     @State private var strengthWeight: Double = 135
     @State private var strengthUnit: StrengthUnit = .lb
+    @State private var distance: Double = 3.0
+    @State private var distanceUnit: DistanceUnit = .mi
     @State private var newAchievements: [Achievement] = []
     @State private var showAchievementCelebration = false
 
@@ -25,8 +27,17 @@ struct LogWorkoutView: View {
         case kg = "kg"
     }
 
+    enum DistanceUnit: String, CaseIterable {
+        case mi = "mi"
+        case km = "km"
+    }
+
     private var preferredStrengthUnit: StrengthUnit {
         unitsSystemRaw == Constants.UnitsSystem.metric.rawValue ? .kg : .lb
+    }
+
+    private var preferredDistanceUnit: DistanceUnit {
+        unitsSystemRaw == Constants.UnitsSystem.metric.rawValue ? .km : .mi
     }
 
     var body: some View {
@@ -180,6 +191,32 @@ struct LogWorkoutView: View {
                             }
                         }
 
+                        if selectedType == .running || selectedType == .cycling || selectedType == .swimming || selectedType == .walking {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("DISTANCE (OPTIONAL)")
+                                    .font(.secondary(12, weight: .bold))
+                                    .foregroundColor(.gray)
+
+                                HStack(spacing: 12) {
+                                    Stepper("Distance: \(String(format: "%.1f", distance))", value: $distance, in: 0.1...50, step: 0.5)
+                                        .font(.secondary(13))
+                                        .foregroundColor(.white)
+
+                                    Picker("Unit", selection: $distanceUnit) {
+                                        ForEach(DistanceUnit.allCases, id: \.rawValue) { unit in
+                                            Text(unit.rawValue.uppercased()).tag(unit)
+                                        }
+                                    }
+                                    .pickerStyle(.segmented)
+                                    .frame(width: 120)
+                                }
+
+                                Text("Track your distance for better stats.")
+                                    .font(.secondary(11))
+                                    .foregroundColor(.gray.opacity(0.7))
+                            }
+                        }
+
                         // Save button
                         Button {
                             Task { await saveWorkout() }
@@ -237,6 +274,7 @@ struct LogWorkoutView: View {
             type: selectedType,
             duration: duration,
             intensity: intensity,
+            distance: distanceInKm(),
             estimatedHeartRate: estimateHeartRate(),
             strengthExercise: selectedType == .strength && !strengthExercise.isEmpty ? strengthExercise : nil,
             strengthReps: selectedType == .strength ? strengthReps : nil,
@@ -277,6 +315,15 @@ struct LogWorkoutView: View {
             // Check for newly unlocked achievements
             let unlockedAchievements = try await firestoreService.checkAndUnlockAchievements(userId: uid, user: updatedUser)
 
+            print("🏆 Achievement Check Complete:")
+            print("   - Checked for user: \(uid)")
+            print("   - Total workouts: \(allWorkouts.count)")
+            print("   - Current streak: \(updatedUser.currentStreak)")
+            print("   - Newly unlocked: \(unlockedAchievements.count)")
+            for ach in unlockedAchievements {
+                print("   - ✅ \(ach.achievementType.displayName)")
+            }
+
             // Post achievement unlocks to feed
             if let groupId = user.groupId {
                 for achievement in unlockedAchievements {
@@ -293,6 +340,7 @@ struct LogWorkoutView: View {
 
             // Show celebration if achievements were unlocked
             if !unlockedAchievements.isEmpty {
+                print("🎉 Showing celebration for \(unlockedAchievements.count) achievement(s)")
                 newAchievements = unlockedAchievements
                 showAchievementCelebration = true
 
@@ -308,6 +356,7 @@ struct LogWorkoutView: View {
                     }
                 }
             } else {
+                print("ℹ️ No new achievements unlocked")
                 dismiss()
             }
         } catch {
@@ -347,11 +396,29 @@ struct LogWorkoutView: View {
         }
     }
 
+    private func distanceInKm() -> Double? {
+        guard selectedType == .running || selectedType == .cycling || selectedType == .swimming || selectedType == .walking else { return nil }
+        guard distance > 0 else { return nil }
+        switch distanceUnit {
+        case .km: return distance
+        case .mi: return distance * 1.60934
+        }
+    }
+
     private func applyPreferredUnitIfNeeded() {
-        let preferred = preferredStrengthUnit
-        guard strengthUnit != preferred else { return }
-        strengthWeight = convertWeight(strengthWeight, from: strengthUnit, to: preferred)
-        strengthUnit = preferred
+        // Apply strength unit preference
+        let preferredStrength = preferredStrengthUnit
+        if strengthUnit != preferredStrength {
+            strengthWeight = convertWeight(strengthWeight, from: strengthUnit, to: preferredStrength)
+            strengthUnit = preferredStrength
+        }
+
+        // Apply distance unit preference
+        let preferredDistance = preferredDistanceUnit
+        if distanceUnit != preferredDistance {
+            distance = convertDistance(distance, from: distanceUnit, to: preferredDistance)
+            distanceUnit = preferredDistance
+        }
     }
 
     private func convertWeight(_ value: Double, from: StrengthUnit, to: StrengthUnit) -> Double {
@@ -359,6 +426,15 @@ struct LogWorkoutView: View {
         switch (from, to) {
         case (.lb, .kg): return value * 0.45359237
         case (.kg, .lb): return value / 0.45359237
+        default: return value
+        }
+    }
+
+    private func convertDistance(_ value: Double, from: DistanceUnit, to: DistanceUnit) -> Double {
+        guard from != to else { return value }
+        switch (from, to) {
+        case (.mi, .km): return value * 1.60934
+        case (.km, .mi): return value / 1.60934
         default: return value
         }
     }
