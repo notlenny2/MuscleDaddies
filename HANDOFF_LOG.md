@@ -369,3 +369,8 @@ Modified files (not committed):
   - /Users/tj/MuscleDaddies/MuscleDaddies/App/ContentView.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Settings/SettingsView.swift
   - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Group/ChallengeView.swift
+
+## 2026-02-10 Update: Challenge Roster Class Images
+- Challenge roster rows now show each member's class image (using `classArtAsset`).
+- File:
+  - /Users/tj/MuscleDaddies/MuscleDaddies/Views/Group/ChallengeView.swift

@@ -91,6 +91,12 @@ struct ChallengeView: View {
             } else {
                 ForEach(groupMembers) { member in
                     HStack {
+                        if let asset = member.selectedClass.classArtAsset {
+                            Image(asset)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 44, height: 44)
+                        }
                         VStack(alignment: .leading, spacing: 4) {
                             Text(member.displayName)
                                 .font(.secondary(12, weight: .semibold))
