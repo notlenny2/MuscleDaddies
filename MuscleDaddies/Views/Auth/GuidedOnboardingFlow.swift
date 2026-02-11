@@ -122,7 +122,8 @@ struct GuidedOnboardingFlowView: View {
                     ProgressView().tint(.black)
                 } else {
                     Text(stepIndex == 0 ? "Begin the Trial" : (stepIndex == totalSteps - 1 ? "Build My Daddy" : "Next"))
-                        .font(.pixel(10))
+                        .font(.pixel(11))
+                        .tracking(1)
                 }
             }
             .foregroundColor(.black)
@@ -445,10 +446,10 @@ private extension GuidedOnboardingFlowView {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(text)
-                    .font(.secondary(14, weight: .semibold))
+                    .font(.secondary(13, weight: .semibold))
                     .foregroundColor(.white)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.8)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 4) {
                     ForEach(0..<3) { index in
