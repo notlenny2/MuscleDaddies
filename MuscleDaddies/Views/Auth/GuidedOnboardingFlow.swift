@@ -122,8 +122,8 @@ struct GuidedOnboardingFlowView: View {
                     ProgressView().tint(.black)
                 } else {
                     Text(stepIndex == 0 ? "Begin the Trial" : (stepIndex == totalSteps - 1 ? "Build My Daddy" : "Next"))
-                        .font(.pixel(11))
-                        .tracking(1)
+                        .font(.secondary(16, weight: .bold))
+                        .textCase(.uppercase)
                 }
             }
             .foregroundColor(.black)
